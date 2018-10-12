@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import SwipeableViews from "react-swipeable-views";
+import Zoom from "@material-ui/core/Zoom";
 
 import Forecast from "./Forecast";
 import Field from "./Field";
@@ -15,20 +16,23 @@ class Main extends Component {
   };
 
   render() {
+    const { isLanding } = this.props;
     return (
-      <SwipeableViews
-        enableMouseEvents
-        index={this.state.index}
-        onChangeIndex={idx => this.handleIndex(idx)}
-      >
-        <Forecast index={this.state.index} handleIndex={this.handleIndex} />
-        <Field index={this.state.index} handleIndex={this.handleIndex} />
-        <FieldList
+      <Zoom in={!isLanding}>
+        <SwipeableViews
+          enableMouseEvents
           index={this.state.index}
-          handleIndex={this.handleIndex}
-          navigateToLanding={this.props.navigateToLanding}
-        />
-      </SwipeableViews>
+          onChangeIndex={idx => this.props.handleIndex(idx, "mainIdx")}
+        >
+          <Forecast index={this.state.index} handleIndex={this.handleIndex} />
+          <Field index={this.state.index} handleIndex={this.handleIndex} />
+          <FieldList
+            index={this.state.index}
+            handleIndex={this.handleIndex}
+            navigateToLanding={this.props.navigateToLanding}
+          />
+        </SwipeableViews>
+      </Zoom>
     );
   }
 }

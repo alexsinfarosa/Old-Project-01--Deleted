@@ -8,9 +8,6 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import SwipeableViews from "react-swipeable-views";
 
-import FieldLocation from "./FieldLocation";
-import FieldIrrigationDate from "./FieldIrrigationDate";
-
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -33,32 +30,23 @@ const styles = theme => ({
 });
 
 class Landing extends Component {
-  state = {
-    index: 1
-  };
-
-  handleIndex = index => {
-    this.setState({ index });
-  };
-
   render() {
-    const { classes, isLanding, landingIdx } = this.props;
+    const { classes, isCreateNewField } = this.props;
     return (
-      <Zoom in={isLanding}>
-        <SwipeableViews
-          enableMouseEvents
-          index={landingIdx}
-          onChangeIndex={idx => this.handleIndex(idx)}
-        >
-          <div className={classes.root}>
+      <div className={classes.root}>
+        <Zoom in={isCreateNewField}>
+          <SwipeableViews
+            enableMouseEvents
+            index={0}
+            // onChangeIndex={idx => this.handleIndex(idx)}
+          >
             <Grid
               item
               xs={12}
               container
-              direction="column"
               justify="center"
               alignItems="center"
-              style={{ height: "100%" }}
+              style={{ background: "pink", height: "100%" }}
             >
               <Typography component="h1" variant="h5" gutterBottom>
                 Welcome To CSF
@@ -76,17 +64,40 @@ class Landing extends Component {
                 variant="outlined"
                 color="secondary"
                 className={classes.button}
-                onClick={() => this.props.handleIndex(1, "landingIdx")}
+                onClick={this.props.navigateToMain}
               >
                 Create Field
               </Button>
             </Grid>
-          </div>
 
-          <FieldLocation />
-          <FieldIrrigationDate />
-        </SwipeableViews>
-      </Zoom>
+            <Grid
+              container
+              justify="center"
+              alignItems="center"
+              style={{ height: "100%", background: "orange" }}
+            >
+              <Grid item xs={12} style={{ textAlign: "center" }}>
+                <Typography component="h1" variant="h5" gutterBottom>
+                  Location
+                </Typography>
+              </Grid>
+            </Grid>
+
+            <Grid
+              container
+              justify="center"
+              alignItems="center"
+              style={{ height: "100%" }}
+            >
+              <Grid item xs={12} style={{ textAlign: "center" }}>
+                <Typography component="h1" variant="h5" gutterBottom>
+                  Irrigation Date
+                </Typography>
+              </Grid>
+            </Grid>
+          </SwipeableViews>
+        </Zoom>
+      </div>
     );
   }
 }
