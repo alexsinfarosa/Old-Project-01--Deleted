@@ -2,7 +2,7 @@
   "name": "irri-tool-v4",
   "version": "0.1.0",
   "author": "alexsinfarosa <as898@cornell.edu>",
-  "homepage": "https://alexsinfarosa.github.io/irriTollV4/",
+  "homepage": "https://alexsinfarosa.github.io/irriToolV4/",
   "description": "NRCC Irrigation Tool",
   "private": true,
   "dependencies": {
