@@ -23,7 +23,11 @@ class Main extends Component {
       >
         <Forecast index={this.state.index} handleIndex={this.handleIndex} />
         <Field index={this.state.index} handleIndex={this.handleIndex} />
-        <FieldList index={this.state.index} handleIndex={this.handleIndex} />
+        <FieldList
+          index={this.state.index}
+          handleIndex={this.handleIndex}
+          navigateToLanding={this.props.navigateToLanding}
+        />
       </SwipeableViews>
     );
   }

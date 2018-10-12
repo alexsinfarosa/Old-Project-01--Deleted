@@ -3,9 +3,9 @@ import { withStyles } from "@material-ui/core/styles";
 import withRoot from "../withRoot";
 
 import Grid from "@material-ui/core/Grid";
-import HomeIcon from "@material-ui/icons/Home";
-import ListIcon from "@material-ui/icons/List";
-import CloudIcon from "@material-ui/icons/Cloud";
+import HomeIcon from "@material-ui/icons/HomeOutlined";
+import ListIcon from "@material-ui/icons/ListOutlined";
+import CloudIcon from "@material-ui/icons/CloudOutlined";
 
 const styles = theme => ({
   root: {
