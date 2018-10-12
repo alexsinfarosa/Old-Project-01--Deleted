@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.2/workbox-sw.js");
 
 importScripts(
-  "/irriTollV4/precache-manifest.4a658d42cf4c7daa46562f33ecabd6b0.js"
+  "/irriToolV4/precache-manifest.defdf92777b78091fad70aad42608c67.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("/irriTollV4/index.html", {
+workbox.routing.registerNavigationRoute("/irriToolV4/index.html", {
   
   blacklist: [/^\/_/,/\/[^\/]+\.[^\/]+$/],
 });
