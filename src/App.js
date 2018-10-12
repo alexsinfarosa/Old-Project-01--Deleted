@@ -15,11 +15,11 @@ class App extends Component {
   };
 
   navigateToMain = () => {
-    this.setState({ isLanding: false });
+    this.setState({ isLanding: false, landingIdx: 0 });
   };
 
   navigateToLanding = () => {
-    this.setState({ isLanding: true });
+    this.setState({ isLanding: true, mainIdx: 1 });
   };
 
   render() {

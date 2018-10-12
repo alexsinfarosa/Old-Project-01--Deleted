@@ -4,6 +4,7 @@ import withRoot from "./withRoot";
 
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
   root: {
@@ -13,6 +14,9 @@ const styles = theme => ({
     margin: 0,
     padding: 0,
     background: "#fff"
+  },
+  button: {
+    marginTop: theme.spacing.unit * 8
   }
 });
 
@@ -33,6 +37,14 @@ class FieldIrrigationDate extends Component {
           <Typography component="h1" variant="h5" gutterBottom>
             Irrigation Date
           </Typography>
+          <Button
+            variant="outlined"
+            color="secondary"
+            className={classes.button}
+            onClick={this.props.navigateToMain}
+          >
+            Create Field
+          </Button>
         </Grid>
       </div>
     );

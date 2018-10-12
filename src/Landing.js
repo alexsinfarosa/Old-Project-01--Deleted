@@ -33,22 +33,14 @@ const styles = theme => ({
 });
 
 class Landing extends Component {
-  state = {
-    index: 1
-  };
-
-  handleIndex = index => {
-    this.setState({ index });
-  };
-
   render() {
-    const { classes, isLanding, landingIdx } = this.props;
+    const { classes, isLanding, landingIdx, handleIndex } = this.props;
     return (
       <Zoom in={isLanding}>
         <SwipeableViews
           enableMouseEvents
           index={landingIdx}
-          onChangeIndex={idx => this.handleIndex(idx)}
+          onChangeIndex={idx => handleIndex(idx, "landingIdx")}
         >
           <div className={classes.root}>
             <Grid
@@ -76,15 +68,21 @@ class Landing extends Component {
                 variant="outlined"
                 color="secondary"
                 className={classes.button}
-                onClick={() => this.props.handleIndex(1, "landingIdx")}
+                onClick={() => handleIndex(1, "landingIdx")}
               >
                 Create Field
               </Button>
             </Grid>
           </div>
 
-          <FieldLocation />
-          <FieldIrrigationDate />
+          <FieldLocation
+            landingIdx={landingIdx}
+            handleIndex={this.props.handleIndex}
+          />
+          <FieldIrrigationDate
+            landingIdx={landingIdx}
+            navigateToMain={this.props.navigateToMain}
+          />
         </SwipeableViews>
       </Zoom>
     );
