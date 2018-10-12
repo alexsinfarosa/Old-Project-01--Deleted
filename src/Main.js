@@ -6,18 +6,24 @@ import Field from "./Field";
 import FieldList from "./FieldList";
 
 class Main extends Component {
+  state = {
+    index: 1
+  };
+
+  handleIndex = index => {
+    this.setState({ index });
+  };
+
   render() {
     return (
       <SwipeableViews
         enableMouseEvents
-        index={1}
-        onChangeIndex={(idx, idxLatest, meta) =>
-          console.log(idx, idxLatest, meta)
-        }
+        index={this.state.index}
+        onChangeIndex={idx => this.handleIndex(idx)}
       >
-        <Forecast />
-        <Field />
-        <FieldList />
+        <Forecast index={this.state.index} handleIndex={this.handleIndex} />
+        <Field index={this.state.index} handleIndex={this.handleIndex} />
+        <FieldList index={this.state.index} handleIndex={this.handleIndex} />
       </SwipeableViews>
     );
   }

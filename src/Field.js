@@ -19,10 +19,10 @@ const styles = theme => ({
 
 class Field extends Component {
   render() {
-    const { classes } = this.props;
+    const { classes, index, handleIndex } = this.props;
     return (
       <Grid container className={classes.root}>
-        <Navigation />
+        <Navigation index={index} handleIndex={handleIndex} />
         <Grid item xs={12} style={{ textAlign: "center" }}>
           <p>Field</p>
         </Grid>

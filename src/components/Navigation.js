@@ -17,7 +17,7 @@ const styles = theme => ({
 
 class Navigation extends Component {
   render() {
-    const { classes } = this.props;
+    const { classes, index, handleIndex } = this.props;
     return (
       <Grid item xs={12}>
         <Grid
@@ -27,13 +27,19 @@ class Navigation extends Component {
           alignItems="center"
         >
           <Grid item xs={4} style={{ textAlign: "center" }}>
-            <CloudIcon style={{ fontSize: 35 }} />
+            <CloudIcon
+              style={{ fontSize: 35 }}
+              onClick={() => handleIndex(index - 1)}
+            />
           </Grid>
           <Grid item xs={4} style={{ textAlign: "center" }}>
             <HomeIcon style={{ fontSize: 35 }} />
           </Grid>
           <Grid item xs={4} style={{ textAlign: "center" }}>
-            <ListIcon style={{ fontSize: 35 }} />
+            <ListIcon
+              style={{ fontSize: 35 }}
+              onClick={() => handleIndex(index + 1)}
+            />
           </Grid>
         </Grid>
       </Grid>
