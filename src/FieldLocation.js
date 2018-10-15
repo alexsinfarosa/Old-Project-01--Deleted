@@ -22,14 +22,13 @@ import Divider from "@material-ui/core/Divider";
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    height: "100vh",
-    width: "100%",
+    height: "100%",
     margin: 0,
     background: "#fff",
     paddingTop: 0,
     paddingBottom: 0,
-    paddingLeft: theme.spacing.unit,
-    paddingRight: theme.spacing.unit
+    paddingLeft: theme.spacing.unit * 4,
+    paddingRight: theme.spacing.unit * 4
   },
   list: {
     width: "100%",
@@ -37,7 +36,8 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.paper
   },
   button: {
-    marginTop: theme.spacing.unit * 8
+    marginTop: theme.spacing.unit * 8,
+    height: theme.spacing.unit * 8
   }
 });
 
@@ -60,7 +60,7 @@ class FieldLocation extends Component {
   };
 
   handleSelect = address => {
-    console.log(address);
+    // console.log(address);
     this.setState({ isGeocoding: true, address });
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
@@ -100,7 +100,7 @@ class FieldLocation extends Component {
           direction="column"
           // justify="center"
           alignItems="center"
-          style={{ height: "100%", paddingTop: 32 }}
+          style={{ paddingTop: 32 }}
         >
           <Typography component="h1" variant="h5" gutterBottom>
             Insert Field Location
@@ -139,8 +139,9 @@ class FieldLocation extends Component {
                       disabled: false,
                       error: errorMessage ? true : false,
                       helperText: errorMessage ? "Invalid Address" : "",
-                      margin: "normal",
-                      variant: "outlined"
+                      margin: "normal"
+
+                      // variant: "outlined" // BUG...
                     })}
                   />
 
@@ -151,6 +152,7 @@ class FieldLocation extends Component {
                           return (
                             <div key={i}>
                               <ListItem
+                                style={{ paddingLeft: 0 }}
                                 button
                                 {...getSuggestionItemProps(suggestion)}
                               >
@@ -177,7 +179,7 @@ class FieldLocation extends Component {
 
           {((lat && lng) || isGeocoding) && (
             <Button
-              fullWidth
+              fullWidth={false}
               size="large"
               variant="outlined"
               color="secondary"
