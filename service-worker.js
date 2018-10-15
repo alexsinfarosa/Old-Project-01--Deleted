@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.2/workbox-sw.js");
 
 importScripts(
-  "/irriToolV4/precache-manifest.defdf92777b78091fad70aad42608c67.js"
+  "/irriToolV4/precache-manifest.d3c589b56a9ee7022e6c07e4af5046db.js"
 );
 
 workbox.clientsClaim();
