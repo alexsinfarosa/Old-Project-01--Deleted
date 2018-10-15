@@ -56,7 +56,7 @@ class Forecast extends Component {
             </Grid>
           </Grid>
           <Grid item xs={12}>
-            <p>Field</p>
+            <p>Forecast</p>
           </Grid>
         </Grid>
       </div>

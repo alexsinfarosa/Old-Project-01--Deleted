@@ -62,7 +62,7 @@ class FieldList extends Component {
             </Grid>
           </Grid>
           <Grid item xs={12}>
-            <p>Field</p>
+            <p>Field List</p>
           </Grid>
         </Grid>
       </div>

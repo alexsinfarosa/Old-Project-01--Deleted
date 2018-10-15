@@ -7,7 +7,7 @@ class App extends Component {
     mainIdx: 1,
     landingIdx: 0,
     fields: [],
-    isLanding: true
+    isLanding: false
   };
 
   handleIndex = (idx, comp) => {
