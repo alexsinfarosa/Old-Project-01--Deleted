@@ -4414,6 +4414,11 @@ hex-color-regex@^1.1.0:
   resolved "https://registry.yarnpkg.com/hex-color-regex/-/hex-color-regex-1.1.0.tgz#4c06fccb4602fe2602b3c93df82d7e7dbf1a8a8e"
   integrity sha512-l9sfDFsuqtOqKDsQdqrMRk0U85RZc0RtOR9yPI7mRVOa4FsR/BVnZ0shmQRM96Ji99kYZP/7hn1cedc1+ApsTQ==
 
+hide-virtual-keyboard@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/hide-virtual-keyboard/-/hide-virtual-keyboard-1.0.1.tgz#88ade91319d1602ff4931012a2e22357698a2394"
+  integrity sha512-LhXIR5C8028et39q8LGWzUkKPMZrngMrQNSrN3GwLQCguyftWFapMrD6nQtR9Xm1voe5pTGYgvVgIu8cmJ6Y+g==
+
 hmac-drbg@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/hmac-drbg/-/hmac-drbg-1.0.1.tgz#d2745701025a6c775a6c545793ed502fc0c649a1"

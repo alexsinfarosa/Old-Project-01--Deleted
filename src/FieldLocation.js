@@ -19,6 +19,8 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
 
+import hideVirtualKeyboard from "hide-virtual-keyboard";
+
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -69,6 +71,7 @@ class FieldLocation extends Component {
         this.setState({ isGeocoding: false });
         console.error("Error", error);
       });
+    hideVirtualKeyboard();
   };
 
   handleCloseClick = () => {
