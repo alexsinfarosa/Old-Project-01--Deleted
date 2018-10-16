@@ -6,21 +6,36 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
+// import DatePicker from "material-ui-pickers/DatePicker";
+import { InlineDatePicker } from "material-ui-pickers/DatePicker";
+
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    height: "100vh",
-    width: "100%",
+    height: window.innerHeight,
     margin: 0,
-    padding: 0,
-    background: "#fff"
+    background: "#fff",
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingLeft: theme.spacing.unit * 4,
+    paddingRight: theme.spacing.unit * 4
   },
   button: {
-    marginTop: theme.spacing.unit * 8
+    marginTop: theme.spacing.unit * 8,
+    height: theme.spacing.unit * 8
   }
 });
 
 class FieldIrrigationDate extends Component {
+  state = {
+    selectedDate: new Date()
+  };
+
+  handleDateChange = date => {
+    console.log(date);
+    this.setState({ selectedDate: date });
+  };
+
   render() {
     const { classes } = this.props;
     return (
@@ -30,14 +45,31 @@ class FieldIrrigationDate extends Component {
           xs={12}
           container
           direction="column"
-          justify="center"
+          // justify="center"
           alignItems="center"
-          style={{ height: "100%" }}
+          style={{ paddingTop: 32 }}
         >
-          <Typography component="h1" variant="h5" gutterBottom>
+          <Typography
+            component="h1"
+            variant="h5"
+            gutterBottom
+            style={{ paddingBottom: 32 }}
+          >
             Irrigation Date
           </Typography>
+
+          <InlineDatePicker
+            onlyCalendar
+            style={{ width: "100%" }}
+            value={this.state.selectedDate}
+            onChange={this.handleDateChange}
+            format="MMMM do, yyyy"
+            disableFuture
+          />
+
           <Button
+            fullWidth={false}
+            size="large"
             variant="outlined"
             color="secondary"
             className={classes.button}

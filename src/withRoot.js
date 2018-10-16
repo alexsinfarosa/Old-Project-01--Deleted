@@ -8,7 +8,8 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 // It's optional.
 const theme = createMuiTheme({
   typography: {
-    useNextVariants: true
+    useNextVariants: true,
+    suppressDeprecationWarnings: true
   },
   palette: {
     primary: {

@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import withRoot from "./withRoot";
 
+import { AppConsumer } from "./AppContext";
+
 import Grid from "@material-ui/core/Grid";
 import Zoom from "@material-ui/core/Zoom";
 import Button from "@material-ui/core/Button";
@@ -12,13 +14,6 @@ import FieldLocation from "./FieldLocation";
 import FieldIrrigationDate from "./FieldIrrigationDate";
 
 const styles = theme => ({
-  root: {
-    flexGrow: 1,
-    height: "100%",
-    margin: 0,
-    padding: 0,
-    background: "#fff"
-  },
   padding: {
     paddingTop: theme.spacing.unit,
     paddingBottom: theme.spacing.unit
@@ -33,57 +28,59 @@ const styles = theme => ({
 
 class Landing extends Component {
   render() {
-    const { classes, isLanding, landingIdx, handleIndex } = this.props;
+    const { classes, landingIdx, handleIndex } = this.props;
     return (
-      <Zoom in={isLanding}>
-        <SwipeableViews
-          enableMouseEvents
-          index={landingIdx}
-          onChangeIndex={idx => handleIndex(idx, "landingIdx")}
-        >
-          <div className={classes.root}>
-            <Grid
-              item
-              xs={12}
-              container
-              direction="column"
-              justify="center"
-              alignItems="center"
-              style={{ height: "100%" }}
+      <AppConsumer>
+        {context => (
+          <Zoom in={context.isLanding}>
+            <SwipeableViews
+              enableMouseEvents
+              index={context.landingIdx}
+              onChangeIndex={idx => context.handleIndex(idx, "landingIdx")}
             >
-              <Typography component="h1" variant="h5" gutterBottom>
-                Welcome To CSF
-              </Typography>
-              <Typography component="h1" variant="h5" gutterBottom>
-                <span className={classes.firstLetter}>W</span>
-                ater <span className={classes.firstLetter}>D</span>
-                eficit
-              </Typography>
-              <Typography component="h1" variant="h5" gutterBottom>
-                <span className={classes.firstLetter}>C</span>
-                alculator
-              </Typography>
-              <Button
-                variant="outlined"
-                color="secondary"
-                className={classes.button}
-                onClick={() => handleIndex(1, "landingIdx")}
+              <Grid
+                item
+                xs={12}
+                container
+                direction="column"
+                justify="center"
+                alignItems="center"
+                style={{ height: "100%" }}
               >
-                Create Field
-              </Button>
-            </Grid>
-          </div>
+                <Typography component="h1" variant="h5" gutterBottom>
+                  Welcome To CSF
+                </Typography>
+                <Typography component="h1" variant="h5" gutterBottom>
+                  <span className={classes.firstLetter}>W</span>
+                  ater <span className={classes.firstLetter}>D</span>
+                  eficit
+                </Typography>
+                <Typography component="h1" variant="h5" gutterBottom>
+                  <span className={classes.firstLetter}>C</span>
+                  alculator
+                </Typography>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  className={classes.button}
+                  onClick={() => handleIndex(1, "landingIdx")}
+                >
+                  Create Field
+                </Button>
+              </Grid>
 
-          <FieldLocation
-            landingIdx={landingIdx}
-            handleIndex={this.props.handleIndex}
-          />
-          <FieldIrrigationDate
-            landingIdx={landingIdx}
-            navigateToMain={this.props.navigateToMain}
-          />
-        </SwipeableViews>
-      </Zoom>
+              <FieldLocation
+                landingIdx={landingIdx}
+                handleIndex={this.props.handleIndex}
+              />
+              <FieldIrrigationDate
+                landingIdx={landingIdx}
+                navigateToMain={this.props.navigateToMain}
+              />
+            </SwipeableViews>
+          </Zoom>
+        )}
+      </AppConsumer>
     );
   }
 }

@@ -32,7 +32,7 @@ Geocode.setApiKey(GOOGLEPLACES_API_KEY);
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    height: "100%",
+    height: window.innerHeight,
     margin: 0,
     background: "#fff",
     paddingTop: 0,
