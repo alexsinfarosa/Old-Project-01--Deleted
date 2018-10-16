@@ -5,9 +5,9 @@ import Landing from "./Landing";
 class App extends Component {
   state = {
     mainIdx: 1,
-    landingIdx: 0,
+    landingIdx: 1,
     fields: [],
-    isLanding: false
+    isLanding: true
   };
 
   handleIndex = (idx, comp) => {

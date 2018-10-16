@@ -7,6 +7,8 @@ import PlacesAutocomplete, {
   getLatLng
 } from "react-places-autocomplete";
 
+import Geocode from "react-geocode";
+
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -20,6 +22,12 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
 
 import hideVirtualKeyboard from "hide-virtual-keyboard";
+import { geolocated } from "react-geolocated";
+
+import { GOOGLEPLACES_API_KEY } from "./utils/api";
+Geocode.setApiKey(GOOGLEPLACES_API_KEY);
+// Enable or disable logs. Its optional.
+// Geocode.enableDebug();
 
 const styles = theme => ({
   root: {
@@ -40,6 +48,9 @@ const styles = theme => ({
   button: {
     marginTop: theme.spacing.unit * 8,
     height: theme.spacing.unit * 8
+  },
+  extendedIcon: {
+    marginRight: theme.spacing.unit
   }
 });
 
@@ -91,9 +102,48 @@ class FieldLocation extends Component {
     });
   };
 
+  // Get latitude and longitude
+  currentLocation = () => {
+    const { coords } = this.props;
+    if (coords) {
+      this.setState({
+        lat: coords.latitude,
+        lng: coords.longitude
+      });
+    }
+  };
+
+  // Get address from latidude & longitude
+  latLngToAddress = () => {
+    const { latitude, longitude } = this.props.coords;
+    this.setState({
+      isGeocoding: true,
+      lat: latitude,
+      lng: longitude
+    });
+    Geocode.fromLatLng(`${latitude}`, `${longitude}`).then(
+      response => {
+        const address = response.results[0].formatted_address;
+        this.setState({ isGeocoding: false, address });
+      },
+      error => {
+        this.setState({ isGeocoding: false });
+        console.error(error);
+      }
+    );
+  };
+
   render() {
     const { address, errorMessage, lat, lng, isGeocoding } = this.state;
-    const { classes, landingIdx, handleIndex } = this.props;
+    const {
+      classes,
+      landingIdx,
+      handleIndex,
+      isGeolocationAvailable,
+      coords,
+      isGeolocationEnabled
+    } = this.props;
+
     return (
       <div className={classes.root}>
         <Grid
@@ -106,7 +156,7 @@ class FieldLocation extends Component {
           style={{ paddingTop: 32 }}
         >
           <Typography component="h1" variant="h5" gutterBottom>
-            Insert Field Location
+            Field Location
           </Typography>
 
           <PlacesAutocomplete
@@ -114,7 +164,7 @@ class FieldLocation extends Component {
             value={address}
             onSelect={this.handleSelect}
             onError={this.handleError}
-            shouldFetchSuggestions={address.length > 2}
+            shouldFetchSuggestions={address.length > 3}
           >
             {({ getInputProps, suggestions, getSuggestionItemProps }) => {
               return (
@@ -180,7 +230,14 @@ class FieldLocation extends Component {
             }}
           </PlacesAutocomplete>
 
-          {((lat && lng) || isGeocoding) && (
+          {!isGeolocationAvailable &&
+            !isGeolocationEnabled && (
+              <Typography variant="caption" align="center">
+                Geolocation is not supported!
+              </Typography>
+            )}
+
+          {(lat && lng) || isGeocoding ? (
             <Button
               fullWidth={false}
               size="large"
@@ -189,8 +246,24 @@ class FieldLocation extends Component {
               className={classes.button}
               onClick={() => handleIndex(landingIdx + 1, "landingIdx")}
             >
-              set Irrigation Date
+              Irrigation Date
             </Button>
+          ) : (
+            isGeolocationAvailable &&
+            isGeolocationEnabled &&
+            !address && (
+              <Button
+                fullWidth={false}
+                size="large"
+                variant="outlined"
+                color="primary"
+                className={classes.button}
+                onClick={this.latLngToAddress}
+                disabled={coords ? false : true}
+              >
+                {coords ? `Current Location` : `Loading...`}
+              </Button>
+            )
           )}
         </Grid>
       </div>
@@ -198,4 +271,12 @@ class FieldLocation extends Component {
   }
 }
 
-export default withRoot(withStyles(styles)(FieldLocation));
+export default withRoot(
+  withStyles(styles)(
+    geolocated({
+      positionOptions: { enableHighAccuracy: false },
+      userDecisionTimeout: 5000,
+      suppressLocationOnMount: false
+    })(FieldLocation)
+  )
+);
