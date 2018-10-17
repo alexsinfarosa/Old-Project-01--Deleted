@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import withRoot from "./withRoot";
 
+import { AppConsumer } from "./AppContext";
+
 import Grid from "@material-ui/core/Grid";
 import HomeIcon from "@material-ui/icons/HomeOutlined";
 import CloudIcon from "@material-ui/icons/Cloud";
@@ -32,34 +34,41 @@ const styles = theme => ({
 
 class Forecast extends Component {
   render() {
-    const { classes, handleIndex } = this.props;
+    const { classes } = this.props;
     return (
-      <div className={classes.root}>
-        <Grid container>
-          <Grid
-            item
-            xs={12}
-            container
-            justify="center"
-            alignItems="center"
-            className={classes.padding}
-          >
-            <Grid item xs={4} style={{ textAlign: "center" }} />
-            <Grid item xs={4} style={{ textAlign: "center" }}>
-              <CloudIcon className={classes.iconOnFocus} />
-            </Grid>
-            <Grid item xs={4} style={{ textAlign: "center" }}>
-              <HomeIcon
-                className={classes.iconNotOnFocus}
-                onClick={() => handleIndex(1)}
-              />
-            </Grid>
-          </Grid>
-          <Grid item xs={12}>
-            <p>Forecast</p>
-          </Grid>
-        </Grid>
-      </div>
+      <AppConsumer>
+        {context => {
+          const { handleIndex, mainIdx } = context;
+          return (
+            <div className={classes.root}>
+              <Grid container>
+                <Grid
+                  item
+                  xs={12}
+                  container
+                  justify="center"
+                  alignItems="center"
+                  className={classes.padding}
+                >
+                  <Grid item xs={4} style={{ textAlign: "center" }} />
+                  <Grid item xs={4} style={{ textAlign: "center" }}>
+                    <CloudIcon className={classes.iconOnFocus} />
+                  </Grid>
+                  <Grid item xs={4} style={{ textAlign: "center" }}>
+                    <HomeIcon
+                      className={classes.iconNotOnFocus}
+                      onClick={() => handleIndex(mainIdx + 1, "mainIdx")}
+                    />
+                  </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                  <p>Forecast</p>
+                </Grid>
+              </Grid>
+            </div>
+          );
+        }}
+      </AppConsumer>
     );
   }
 }

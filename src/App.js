@@ -9,7 +9,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mainIdx: 1,
+      mainIdx: 2,
       landingIdx: 1,
       isLanding: false,
       irrigationDate: new Date(),
@@ -51,7 +51,7 @@ class App extends Component {
 
   readFromLocalstorage = () => {
     const localStorageRef = localStorage.getItem("nrcc-irrigation-tool");
-    console.log(localStorageRef);
+    // console.log(localStorageRef);
     if (localStorageRef) {
       const params = JSON.parse(localStorageRef);
       this.setState({ fields: params });
@@ -64,24 +64,21 @@ class App extends Component {
   }
 
   render() {
-    const { mainIdx, landingIdx, isLanding } = this.state;
+    const { landingIdx, isLanding } = this.state;
     return (
       <AppProvider value={this.state}>
         <div style={{ background: "#fff" }}>
-          {!isLanding && (
-            <Main
-              mainIdx={mainIdx}
-              isLanding={isLanding}
-              handleIndex={this.handleIndex}
-              navigateToLanding={this.navigateToLanding}
-            />
-          )}
-          {isLanding && (
+          {isLanding ? (
             <Landing
               landingIdx={landingIdx}
               isLanding={isLanding}
               handleIndex={this.handleIndex}
               navigateToMain={this.navigateToMain}
+            />
+          ) : (
+            <Main
+              handleIndex={this.handleIndex}
+              navigateToLanding={this.navigateToLanding}
             />
           )}
         </div>

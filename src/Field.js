@@ -35,42 +35,45 @@ const styles = theme => ({
 
 class Field extends Component {
   render() {
-    const { classes, index, handleIndex } = this.props;
+    const { classes } = this.props;
     return (
       <AppConsumer>
-        {context => (
-          <div className={classes.root}>
-            <Grid container>
-              <Grid
-                item
-                xs={12}
-                container
-                justify="center"
-                alignItems="center"
-                className={classes.padding}
-              >
-                <Grid item xs={4} style={{ textAlign: "center" }}>
-                  <CloudIcon
-                    className={classes.iconNotOnFocus}
-                    onClick={() => handleIndex(index - 1)}
-                  />
+        {context => {
+          const { handleIndex, mainIdx } = context;
+          return (
+            <div className={classes.root}>
+              <Grid container>
+                <Grid
+                  item
+                  xs={12}
+                  container
+                  justify="center"
+                  alignItems="center"
+                  className={classes.padding}
+                >
+                  <Grid item xs={4} style={{ textAlign: "center" }}>
+                    <CloudIcon
+                      className={classes.iconNotOnFocus}
+                      onClick={() => handleIndex(mainIdx - 1, "mainIdx")}
+                    />
+                  </Grid>
+                  <Grid item xs={4} style={{ textAlign: "center" }}>
+                    <HomeIcon className={classes.iconOnFocus} />
+                  </Grid>
+                  <Grid item xs={4} style={{ textAlign: "center" }}>
+                    <ListIcon
+                      className={classes.iconNotOnFocus}
+                      onClick={() => handleIndex(mainIdx + 1, "mainIdx")}
+                    />
+                  </Grid>
                 </Grid>
-                <Grid item xs={4} style={{ textAlign: "center" }}>
-                  <HomeIcon className={classes.iconOnFocus} />
-                </Grid>
-                <Grid item xs={4} style={{ textAlign: "center" }}>
-                  <ListIcon
-                    className={classes.iconNotOnFocus}
-                    onClick={() => handleIndex(index + 1)}
-                  />
+                <Grid item xs={12}>
+                  <p>Field</p>
                 </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <p>Field</p>
-              </Grid>
-            </Grid>
-          </div>
-        )}
+            </div>
+          );
+        }}
       </AppConsumer>
     );
   }
