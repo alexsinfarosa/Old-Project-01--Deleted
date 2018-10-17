@@ -37,6 +37,7 @@ class Landing extends Component {
               enableMouseEvents
               index={context.landingIdx}
               onChangeIndex={idx => context.handleIndex(idx, "landingIdx")}
+              containerStyle={{ height: window.innerHeight }}
             >
               <Grid
                 item

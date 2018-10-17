@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import SwipeableViews from "react-swipeable-views";
-import Zoom from "@material-ui/core/Zoom";
 
 import { AppConsumer } from "./AppContext";
 
@@ -13,19 +12,18 @@ class Main extends Component {
     return (
       <AppConsumer>
         {context => {
-          const { handleIndex, isLanding, mainIdx } = context;
+          const { handleIndex, mainIdx } = context;
           return (
-            <Zoom in={!isLanding}>
-              <SwipeableViews
-                enableMouseEvents
-                index={mainIdx}
-                onChangeIndex={idx => handleIndex(idx, "mainIdx")}
-              >
-                <Forecast />
-                <Field />
-                <FieldList />
-              </SwipeableViews>
-            </Zoom>
+            <SwipeableViews
+              index={mainIdx}
+              onChangeIndex={idx => handleIndex(idx, "mainIdx")}
+              containerStyle={{ height: window.innerHeight }}
+              slideStyle={{ height: "100%" }}
+            >
+              <Forecast />
+              <Field />
+              <FieldList />
+            </SwipeableViews>
           );
         }}
       </AppConsumer>

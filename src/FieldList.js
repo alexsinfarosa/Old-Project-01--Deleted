@@ -10,14 +10,6 @@ import ListIcon from "@material-ui/icons/List";
 import Add from "@material-ui/icons/PlaylistAdd";
 
 const styles = theme => ({
-  root: {
-    flexGrow: 1,
-    height: "100vh",
-    width: "100%",
-    margin: 0,
-    padding: 0,
-    background: "#fff"
-  },
   iconOnFocus: {
     color: theme.palette.primary.main,
     fontSize: 40,
@@ -39,39 +31,38 @@ class FieldList extends Component {
     return (
       <AppConsumer>
         {context => {
+          console.log("FieldList");
           const { handleIndex, mainIdx, navigateToLanding } = context;
           return (
-            <div className={classes.root}>
-              <Grid container>
-                <Grid
-                  item
-                  xs={12}
-                  container
-                  justify="center"
-                  alignItems="center"
-                  className={classes.padding}
-                >
-                  <Grid item xs={4} style={{ textAlign: "center" }}>
-                    <HomeIcon
-                      className={classes.iconNotOnFocus}
-                      onClick={() => handleIndex(mainIdx - 1, "mainIdx")}
-                    />
-                  </Grid>
-                  <Grid item xs={4} style={{ textAlign: "center" }}>
-                    <ListIcon className={classes.iconOnFocus} />
-                  </Grid>
-                  <Grid item xs={4} style={{ textAlign: "center" }}>
-                    <Add
-                      className={classes.iconNotOnFocus}
-                      onClick={navigateToLanding}
-                    />
-                  </Grid>
+            <Grid container>
+              <Grid
+                item
+                xs={12}
+                container
+                justify="center"
+                alignItems="center"
+                className={classes.padding}
+              >
+                <Grid item xs={4} style={{ textAlign: "center" }}>
+                  <HomeIcon
+                    className={classes.iconNotOnFocus}
+                    onClick={() => handleIndex(mainIdx - 1, "mainIdx")}
+                  />
                 </Grid>
-                <Grid item xs={12}>
-                  <p>Field List</p>
+                <Grid item xs={4} style={{ textAlign: "center" }}>
+                  <ListIcon className={classes.iconOnFocus} />
+                </Grid>
+                <Grid item xs={4} style={{ textAlign: "center" }}>
+                  <Add
+                    className={classes.iconNotOnFocus}
+                    onClick={navigateToLanding}
+                  />
                 </Grid>
               </Grid>
-            </div>
+              <Grid item xs={12}>
+                <p>Field List</p>
+              </Grid>
+            </Grid>
           );
         }}
       </AppConsumer>

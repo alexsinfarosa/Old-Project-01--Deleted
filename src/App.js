@@ -9,8 +9,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mainIdx: 2,
-      landingIdx: 1,
+      mainIdx: 1,
+      landingIdx: 0,
       isLanding: false,
       irrigationDate: new Date(),
       field: {},
@@ -67,21 +67,16 @@ class App extends Component {
     const { landingIdx, isLanding } = this.state;
     return (
       <AppProvider value={this.state}>
-        <div style={{ background: "#fff" }}>
-          {isLanding ? (
-            <Landing
-              landingIdx={landingIdx}
-              isLanding={isLanding}
-              handleIndex={this.handleIndex}
-              navigateToMain={this.navigateToMain}
-            />
-          ) : (
-            <Main
-              handleIndex={this.handleIndex}
-              navigateToLanding={this.navigateToLanding}
-            />
-          )}
-        </div>
+        {isLanding ? (
+          <Landing
+            landingIdx={landingIdx}
+            isLanding={isLanding}
+            handleIndex={this.handleIndex}
+            navigateToMain={this.navigateToMain}
+          />
+        ) : (
+          <Main />
+        )}
       </AppProvider>
     );
   }
