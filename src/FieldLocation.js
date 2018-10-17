@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import withRoot from "./withRoot";
 
+import { AppConsumer } from "./AppContext";
+
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng
@@ -57,27 +59,29 @@ const styles = theme => ({
 class FieldLocation extends Component {
   state = {
     address: "",
-    lat: null,
-    lng: null,
+    latitude: null,
+    longitude: null,
     errorMessage: "",
     isGeocoding: false
   };
 
-  handleChange = address => {
+  handleFieldLocationChange = address => {
     this.setState({
       address,
-      lat: null,
-      lng: null,
+      latitude: null,
+      longitude: null,
       errorMessage: ""
     });
   };
 
-  handleSelect = address => {
+  handleSelectAddress = address => {
     // console.log(address);
     this.setState({ isGeocoding: true, address });
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
-      .then(({ lat, lng }) => this.setState({ lat, lng, isGeocoding: false }))
+      .then(({ lat, lng }) =>
+        this.setState({ latitude: lat, longitude: lng, isGeocoding: false })
+      )
       .catch(error => {
         this.setState({ isGeocoding: false });
         console.error("Error", error);
@@ -88,8 +92,8 @@ class FieldLocation extends Component {
   handleCloseClick = () => {
     this.setState({
       address: "",
-      lat: null,
-      lng: null,
+      latitude: null,
+      longitude: null,
       errorMessage: "",
       isGeocoding: false
     });
@@ -107,8 +111,8 @@ class FieldLocation extends Component {
     const { coords } = this.props;
     if (coords) {
       this.setState({
-        lat: coords.latitude,
-        lng: coords.longitude
+        latitude: coords.latitude,
+        longitude: coords.longitude
       });
     }
   };
@@ -118,8 +122,8 @@ class FieldLocation extends Component {
     const { latitude, longitude } = this.props.coords;
     this.setState({
       isGeocoding: true,
-      lat: latitude,
-      lng: longitude
+      latitude,
+      longitude
     });
     Geocode.fromLatLng(`${latitude}`, `${longitude}`).then(
       response => {
@@ -134,139 +138,152 @@ class FieldLocation extends Component {
   };
 
   render() {
-    const { address, errorMessage, lat, lng, isGeocoding } = this.state;
+    const {
+      address,
+      errorMessage,
+      latitude,
+      longitude,
+      isGeocoding
+    } = this.state;
+
     const {
       classes,
-      landingIdx,
-      handleIndex,
       isGeolocationAvailable,
       coords,
       isGeolocationEnabled
     } = this.props;
 
     return (
-      <div className={classes.root}>
-        <Grid
-          item
-          xs={12}
-          container
-          direction="column"
-          // justify="center"
-          alignItems="center"
-          style={{ paddingTop: 32 }}
-        >
-          <Typography component="h1" variant="h5" gutterBottom>
-            Field Location
-          </Typography>
-
-          <PlacesAutocomplete
-            onChange={this.handleChange}
-            value={address}
-            onSelect={this.handleSelect}
-            onError={this.handleError}
-            shouldFetchSuggestions={address.length > 3}
-          >
-            {({ getInputProps, suggestions, getSuggestionItemProps }) => {
-              return (
-                <div style={{ width: "100%" }}>
-                  <TextField
-                    {...getInputProps({
-                      id: "outlined-select-address-native",
-                      label: "Search",
-                      fullWidth: true,
-                      SelectProps: {
-                        native: true
-                      },
-                      InputProps: {
-                        endAdornment: (
-                          <InputAdornment variant="outlined" position="end">
-                            <IconButton
-                              aria-label="Clear address field"
-                              onClick={this.handleCloseClick}
-                            >
-                              <ClearIcon />
-                            </IconButton>
-                          </InputAdornment>
-                        )
-                      },
-                      disabled: false,
-                      error: errorMessage ? true : false,
-                      helperText: errorMessage ? "Invalid Address" : "",
-                      margin: "normal"
-
-                      // variant: "outlined" // BUG...
-                    })}
-                  />
-
-                  <div className={classes.list}>
-                    {suggestions.length > 0 && (
-                      <List component="nav">
-                        {suggestions.map((suggestion, i) => {
-                          return (
-                            <div key={i}>
-                              <ListItem
-                                style={{ paddingLeft: 0 }}
-                                button
-                                {...getSuggestionItemProps(suggestion)}
-                              >
-                                <ListItemText
-                                  primary={
-                                    suggestion.formattedSuggestion.mainText
-                                  }
-                                  secondary={
-                                    suggestion.formattedSuggestion.secondaryText
-                                  }
-                                />
-                              </ListItem>
-                              <Divider />
-                            </div>
-                          );
-                        })}
-                      </List>
-                    )}
-                  </div>
-                </div>
-              );
-            }}
-          </PlacesAutocomplete>
-
-          {!isGeolocationAvailable &&
-            !isGeolocationEnabled && (
-              <Typography variant="caption" align="center">
-                Geolocation is not supported!
-              </Typography>
-            )}
-
-          {(lat && lng) || isGeocoding ? (
-            <Button
-              fullWidth={false}
-              size="large"
-              variant="outlined"
-              color="secondary"
-              className={classes.button}
-              onClick={() => handleIndex(landingIdx + 1, "landingIdx")}
+      <AppConsumer>
+        {context => (
+          <div className={classes.root}>
+            <Grid
+              item
+              xs={12}
+              container
+              direction="column"
+              // justify="center"
+              alignItems="center"
+              style={{ paddingTop: 32 }}
             >
-              Irrigation Date
-            </Button>
-          ) : (
-            isGeolocationAvailable &&
-            isGeolocationEnabled &&
-            !address && (
-              <Button
-                fullWidth={false}
-                size="large"
-                variant="outlined"
-                color="primary"
-                className={classes.button}
-                onClick={this.latLngToAddress}
-                disabled={coords ? false : true}
+              <Typography component="h1" variant="h5" gutterBottom>
+                Field Location
+              </Typography>
+
+              <PlacesAutocomplete
+                onChange={this.handleFieldLocationChange}
+                value={address}
+                onSelect={this.handleSelectAddress}
+                onError={this.handleError}
+                shouldFetchSuggestions={address.length > 3}
               >
-                {coords ? `Current Location` : `Loading...`}
-              </Button>
-            )
-          )}
-        </Grid>
-      </div>
+                {({ getInputProps, suggestions, getSuggestionItemProps }) => {
+                  return (
+                    <div style={{ width: "100%" }}>
+                      <TextField
+                        {...getInputProps({
+                          id: "outlined-select-address-native",
+                          label: "Search",
+                          fullWidth: true,
+                          SelectProps: {
+                            native: true
+                          },
+                          InputProps: {
+                            endAdornment: (
+                              <InputAdornment variant="outlined" position="end">
+                                <IconButton
+                                  aria-label="Clear address field"
+                                  onClick={this.handleCloseClick}
+                                >
+                                  <ClearIcon />
+                                </IconButton>
+                              </InputAdornment>
+                            )
+                          },
+                          disabled: false,
+                          error: errorMessage ? true : false,
+                          helperText: errorMessage ? "Invalid Address" : "",
+                          margin: "normal"
+
+                          // variant: "outlined" // BUG...
+                        })}
+                      />
+
+                      <div className={classes.list}>
+                        {suggestions.length > 0 && (
+                          <List component="nav">
+                            {suggestions.map((suggestion, i) => {
+                              return (
+                                <div key={i}>
+                                  <ListItem
+                                    style={{ paddingLeft: 0 }}
+                                    button
+                                    {...getSuggestionItemProps(suggestion)}
+                                  >
+                                    <ListItemText
+                                      primary={
+                                        suggestion.formattedSuggestion.mainText
+                                      }
+                                      secondary={
+                                        suggestion.formattedSuggestion
+                                          .secondaryText
+                                      }
+                                    />
+                                  </ListItem>
+                                  <Divider />
+                                </div>
+                              );
+                            })}
+                          </List>
+                        )}
+                      </div>
+                    </div>
+                  );
+                }}
+              </PlacesAutocomplete>
+
+              {!isGeolocationAvailable &&
+                !isGeolocationEnabled && (
+                  <Typography variant="caption" align="center">
+                    Geolocation is not supported!
+                  </Typography>
+                )}
+
+              {(latitude && longitude) || isGeocoding ? (
+                <Button
+                  fullWidth={false}
+                  size="large"
+                  variant="outlined"
+                  color="secondary"
+                  className={classes.button}
+                  onClick={() => {
+                    context.handleIndex(context.landingIdx + 1, "landingIdx");
+                    context.handleField({ address, latitude, longitude });
+                  }}
+                >
+                  Irrigation Date
+                </Button>
+              ) : (
+                isGeolocationAvailable &&
+                isGeolocationEnabled &&
+                !address && (
+                  <Button
+                    fullWidth={false}
+                    size="large"
+                    variant="outlined"
+                    color="primary"
+                    className={classes.button}
+                    onClick={this.latLngToAddress}
+                    disabled={coords ? false : true}
+                  >
+                    {coords ? `Current Location` : `Loading...`}
+                  </Button>
+                )
+              )}
+            </Grid>
+          </div>
+        )}
+      </AppConsumer>
     );
   }
 }

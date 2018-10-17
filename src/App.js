@@ -10,27 +10,58 @@ class App extends Component {
     super(props);
     this.state = {
       mainIdx: 1,
-      landingIdx: 2,
+      landingIdx: 1,
+      isLanding: false,
+      irrigationDate: new Date(),
+      field: {},
       fields: [],
-      isLanding: true,
+      handleIrrigationDate: this.handleIrrigationDate,
+      handleField: this.handleField,
+      addField: this.addField,
       handleIndex: this.handleIndex,
       navigateToMain: this.navigateToMain,
-      navigateToLanding: this.navigateToLanding,
-      getFields: this.getFields
+      navigateToLanding: this.navigateToLanding
     };
   }
 
-  handleIndex = (idx, comp) => {
-    this.setState({ [comp]: idx });
+  // NAVIGATION-------------------------------------------------------------
+  navigateToMain = () => this.setState({ isLanding: false, landingIdx: 0 });
+  navigateToLanding = () => this.setState({ isLanding: true, mainIdx: 1 });
+
+  // HANDLING EVENTs--------------------------------------------------------
+  handleIndex = (idx, comp) => this.setState({ [comp]: idx });
+  handleField = field => this.setState({ field });
+  handleIrrigationDate = irrigationDate => this.setState({ irrigationDate });
+
+  // CRUD OPERATIONS--------------------------------------------------------
+  addField = () => {
+    const field = {
+      ...this.state.field,
+      irrigationDate: this.state.irrigationDate
+    };
+    const fields = [field, ...this.state.fields];
+    this.setState({ fields, field: {}, irrigationDate: new Date() });
+    this.writeToLocalstorage(fields);
   };
 
-  navigateToMain = () => {
-    this.setState({ isLanding: false, landingIdx: 0 });
+  // LOCALSTORAGE------------------------------------------------------------
+  writeToLocalstorage = fields => {
+    localStorage.setItem("nrcc-irrigation-tool", JSON.stringify(fields));
   };
 
-  navigateToLanding = () => {
-    this.setState({ isLanding: true, mainIdx: 1 });
+  readFromLocalstorage = () => {
+    const localStorageRef = localStorage.getItem("nrcc-irrigation-tool");
+    console.log(localStorageRef);
+    if (localStorageRef) {
+      const params = JSON.parse(localStorageRef);
+      this.setState({ fields: params });
+    }
   };
+
+  // LIFE CYLCES--------------------------------------------------------------
+  componentDidMount() {
+    this.readFromLocalstorage();
+  }
 
   render() {
     const { mainIdx, landingIdx, isLanding } = this.state;

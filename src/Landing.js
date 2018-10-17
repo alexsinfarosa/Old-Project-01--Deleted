@@ -69,10 +69,7 @@ class Landing extends Component {
                 </Button>
               </Grid>
 
-              <FieldLocation
-                landingIdx={landingIdx}
-                handleIndex={this.props.handleIndex}
-              />
+              <FieldLocation />
               <FieldIrrigationDate
                 landingIdx={landingIdx}
                 navigateToMain={this.props.navigateToMain}
