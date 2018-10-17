@@ -60,7 +60,7 @@ class Field extends Component {
                 </Grid>
               </Grid>
               <Grid item xs={12}>
-                <p>Field</p>
+                <p>Field...</p>
               </Grid>
             </Grid>
           );
