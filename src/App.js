@@ -9,7 +9,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mainIdx: 1,
+      mainIdx: 2,
       landingIdx: 0,
       isLanding: false,
       irrigationDate: new Date(),

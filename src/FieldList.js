@@ -8,6 +8,13 @@ import Grid from "@material-ui/core/Grid";
 import HomeIcon from "@material-ui/icons/HomeOutlined";
 import ListIcon from "@material-ui/icons/List";
 import Add from "@material-ui/icons/PlaylistAdd";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import Divider from "@material-ui/core/Divider";
+import InboxIcon from "@material-ui/icons/Inbox";
+import DraftsIcon from "@material-ui/icons/Drafts";
 
 const styles = theme => ({
   iconOnFocus: {
@@ -32,7 +39,7 @@ class FieldList extends Component {
       <AppConsumer>
         {context => {
           console.log("FieldList");
-          const { handleIndex, mainIdx, navigateToLanding } = context;
+          const { handleIndex, mainIdx, navigateToLanding, fields } = context;
           return (
             <Grid container>
               <Grid
@@ -60,7 +67,16 @@ class FieldList extends Component {
                 </Grid>
               </Grid>
               <Grid item xs={12}>
-                <p>Field List</p>
+                {/** <List component="nav">
+                  {fields.map((field, i) => (
+                    <div key={i}>
+                      <ListItem button>
+                        <ListItemText primary={field.address} />
+                      </ListItem>
+                      <Divider />
+                    </div>
+                  ))}
+                  </List> */}
               </Grid>
             </Grid>
           );
