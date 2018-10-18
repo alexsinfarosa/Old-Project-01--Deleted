@@ -34,10 +34,7 @@ class Field extends Component {
       <AppConsumer>
         {context => {
           console.log("Field");
-          const { handleIndex, mainIdx, fields, field } = context;
-
-          const fieldInView = field ? field : fields[0];
-
+          const { handleIndex, mainIdx, field } = context;
           return (
             <Grid container>
               <Grid
@@ -66,8 +63,8 @@ class Field extends Component {
               </Grid>
 
               <Grid item xs={12} container justify="center">
-                <p>{fieldInView.address}</p>
-                <p>{format(fieldInView.irrigationDate, "MMMM do, YYYY")}</p>
+                <p>{field.address}</p>
+                <p>{format(field.irrigationDate, "MMMM do, YYYY")}</p>
               </Grid>
             </Grid>
           );

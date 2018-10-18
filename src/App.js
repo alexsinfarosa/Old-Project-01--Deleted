@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { AppProvider } from "./AppContext";
 
+import axios from "axios";
+import { WEATHER_API_KEY } from "./utils/api";
+
 import Main from "./Main";
 import Landing from "./Landing";
 
@@ -8,12 +11,12 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mainIdx: 1,
+      mainIdx: 0,
       landingIdx: 0,
       isLanding: false,
       irrigationDate: new Date(),
-      field: null,
       fields: [],
+      field: null,
       handleIrrigationDate: this.handleIrrigationDate,
       handleField: this.handleField,
       addField: this.addField,
@@ -21,7 +24,9 @@ class App extends Component {
       deleteField: this.deleteField,
       handleIndex: this.handleIndex,
       navigateToMain: this.navigateToMain,
-      navigateToLanding: this.navigateToLanding
+      navigateToLanding: this.navigateToLanding,
+      forecastData: null,
+      fetchForecastData: this.fetchForecastData
     };
   }
 
@@ -65,6 +70,26 @@ class App extends Component {
     this.setState({ field });
   };
 
+  fetchForecastData = () => {
+    const url = `https://api.darksky.net/forecast/${WEATHER_API_KEY}/42.4439614,-76.5018807?exclude=flags,minutely,alerts,hourly`;
+    return axios
+      .get(url)
+      .then(res => {
+        // console.log(res.data);
+        const { currently, daily, latitude, longitude } = res.data;
+        const forecastData = {
+          currently,
+          daily,
+          latitude,
+          longitude
+        };
+        this.setState({ forecastData });
+      })
+      .catch(err => {
+        console.log("Failed to load forecast weather data", err);
+      });
+  };
+
   // LOCALSTORAGE------------------------------------------------------------
   writeToLocalstorage = fields => {
     localStorage.setItem("nrcc-irrigation-tool", JSON.stringify(fields));
@@ -75,13 +100,14 @@ class App extends Component {
     // console.log(localStorageRef);
     if (localStorageRef) {
       const params = JSON.parse(localStorageRef);
-      this.setState({ fields: params });
+      this.setState({ fields: params, field: params[0] });
     }
   };
 
   // LIFE CYLCES--------------------------------------------------------------
   componentDidMount() {
     this.readFromLocalstorage();
+    this.fetchForecastData();
   }
 
   render() {
