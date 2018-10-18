@@ -19,7 +19,8 @@ const styles = theme => ({
     paddingBottom: theme.spacing.unit
   },
   button: {
-    marginTop: theme.spacing.unit * 8
+    marginTop: theme.spacing.unit * 8,
+    height: theme.spacing.unit * 8
   },
   firstLetter: {
     color: theme.palette.error.main
@@ -28,56 +29,61 @@ const styles = theme => ({
 
 class Landing extends Component {
   render() {
-    const { classes, landingIdx, handleIndex } = this.props;
+    const { classes } = this.props;
     return (
       <AppConsumer>
-        {context => (
-          <Zoom in={context.isLanding}>
-            <SwipeableViews
-              enableMouseEvents
-              index={context.landingIdx}
-              onChangeIndex={idx => context.handleIndex(idx, "landingIdx")}
-              containerStyle={{ height: window.innerHeight }}
-            >
-              <Grid
-                item
-                xs={12}
-                container
-                direction="column"
-                justify="center"
-                alignItems="center"
-                style={{ height: "100%" }}
+        {context => {
+          const { handleIndex, landingIdx } = context;
+          return (
+            <Zoom in={true}>
+              <SwipeableViews
+                disabled
+                // enableMouseEvents
+                index={landingIdx}
+                onChangeIndex={idx => handleIndex(idx, "landingIdx")}
+                containerStyle={{ height: window.innerHeight }}
               >
-                <Typography component="h1" variant="h5" gutterBottom>
-                  Welcome To CSF
-                </Typography>
-                <Typography component="h1" variant="h5" gutterBottom>
-                  <span className={classes.firstLetter}>W</span>
-                  ater <span className={classes.firstLetter}>D</span>
-                  eficit
-                </Typography>
-                <Typography component="h1" variant="h5" gutterBottom>
-                  <span className={classes.firstLetter}>C</span>
-                  alculator
-                </Typography>
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  className={classes.button}
-                  onClick={() => handleIndex(1, "landingIdx")}
+                <Grid
+                  item
+                  xs={12}
+                  container
+                  direction="column"
+                  justify="center"
+                  alignItems="center"
+                  style={{ height: "100%" }}
                 >
-                  Create Field
-                </Button>
-              </Grid>
+                  <Typography component="h1" variant="h5" gutterBottom>
+                    Welcome To CSF
+                  </Typography>
+                  <Typography component="h1" variant="h5" gutterBottom>
+                    <span className={classes.firstLetter}>W</span>
+                    ater <span className={classes.firstLetter}>D</span>
+                    eficit
+                  </Typography>
+                  <Typography component="h1" variant="h5" gutterBottom>
+                    <span className={classes.firstLetter}>C</span>
+                    alculator
+                  </Typography>
+                  <Button
+                    size="large"
+                    variant="outlined"
+                    color="secondary"
+                    className={classes.button}
+                    onClick={() => handleIndex(1, "landingIdx")}
+                  >
+                    Create Field
+                  </Button>
+                </Grid>
 
-              <FieldLocation />
-              <FieldIrrigationDate
-                landingIdx={landingIdx}
-                navigateToMain={this.props.navigateToMain}
-              />
-            </SwipeableViews>
-          </Zoom>
-        )}
+                <FieldLocation />
+                <FieldIrrigationDate
+                  landingIdx={landingIdx}
+                  navigateToMain={this.props.navigateToMain}
+                />
+              </SwipeableViews>
+            </Zoom>
+          );
+        }}
       </AppConsumer>
     );
   }

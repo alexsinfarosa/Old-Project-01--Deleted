@@ -7,6 +7,7 @@ import { AppConsumer } from "./AppContext";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 // import DatePicker from "material-ui-pickers/DatePicker";
 import { InlineDatePicker } from "material-ui-pickers/DatePicker";
@@ -23,49 +24,58 @@ class FieldIrrigationDate extends Component {
     const { classes } = this.props;
     return (
       <AppConsumer>
-        {context => (
-          <Grid
-            item
-            xs={12}
-            container
-            direction="column"
-            // justify="center"
-            alignItems="center"
-            style={{ padding: 32 }}
-          >
-            <Typography
-              component="h1"
-              variant="h5"
-              gutterBottom
-              style={{ paddingBottom: 32 }}
+        {context => {
+          const { handleIndex, landingIdx } = context;
+          return (
+            <Grid
+              item
+              xs={12}
+              container
+              direction="column"
+              // justify="center"
+              alignItems="center"
+              style={{ padding: 32 }}
             >
-              Irrigation Date
-            </Typography>
+              <Grid container justify="space-between" alignItems="center">
+                <Grid item>
+                  <ArrowBackIcon
+                    style={{ paddingBottom: 2 }}
+                    onClick={() => handleIndex(landingIdx - 1, "landingIdx")}
+                  />
+                </Grid>
+                <Grid item>
+                  <Typography component="h1" variant="h5" gutterBottom>
+                    Irrigation Date
+                  </Typography>
+                </Grid>
+                <Grid />
+              </Grid>
 
-            <InlineDatePicker
-              onlyCalendar
-              style={{ width: "100%" }}
-              value={context.irrigationDate}
-              onChange={date => context.handleIrrigationDate(date)}
-              format="MMMM do, yyyy"
-              disableFuture
-            />
+              <InlineDatePicker
+                onlyCalendar
+                style={{ width: "100%", marginTop: 32 }}
+                value={context.irrigationDate}
+                onChange={date => context.handleIrrigationDate(date)}
+                format="MMMM do, yyyy"
+                disableFuture
+              />
 
-            <Button
-              fullWidth={false}
-              size="large"
-              variant="outlined"
-              color="secondary"
-              className={classes.button}
-              onClick={() => {
-                context.navigateToMain();
-                context.addField();
-              }}
-            >
-              Create Field
-            </Button>
-          </Grid>
-        )}
+              <Button
+                fullWidth={false}
+                size="large"
+                variant="outlined"
+                color="secondary"
+                className={classes.button}
+                onClick={() => {
+                  context.navigateToMain(1);
+                  context.addField();
+                }}
+              >
+                Create Field
+              </Button>
+            </Grid>
+          );
+        }}
       </AppConsumer>
     );
   }

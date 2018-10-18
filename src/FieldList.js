@@ -10,11 +10,12 @@ import ListIcon from "@material-ui/icons/List";
 import Add from "@material-ui/icons/PlaylistAdd";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import Divider from "@material-ui/core/Divider";
-import InboxIcon from "@material-ui/icons/Inbox";
-import DraftsIcon from "@material-ui/icons/Drafts";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import DeleteIcon from "@material-ui/icons/Delete";
+import IconButton from "@material-ui/core/IconButton";
+
+import format from "date-fns/format";
 
 const styles = theme => ({
   iconOnFocus: {
@@ -39,7 +40,14 @@ class FieldList extends Component {
       <AppConsumer>
         {context => {
           console.log("FieldList");
-          const { handleIndex, mainIdx, navigateToLanding, fields } = context;
+          const {
+            handleIndex,
+            mainIdx,
+            navigateToLanding,
+            fields,
+            deleteField,
+            selectField
+          } = context;
           return (
             <Grid container>
               <Grid
@@ -66,17 +74,39 @@ class FieldList extends Component {
                   />
                 </Grid>
               </Grid>
+
               <Grid item xs={12}>
-                {/** <List component="nav">
-                  {fields.map((field, i) => (
-                    <div key={i}>
-                      <ListItem button>
-                        <ListItemText primary={field.address} />
+                <List component="nav">
+                  {fields.map(field => (
+                    <div key={field.id}>
+                      <ListItem
+                        button
+                        divider
+                        style={{ height: 128 }}
+                        onClick={() => {
+                          selectField(field.id);
+                          handleIndex(mainIdx - 1, "mainIdx");
+                        }}
+                      >
+                        <ListItemText
+                          primary={field.address}
+                          secondary={format(
+                            field.irrigationDate,
+                            "MMMM do, YYYY"
+                          )}
+                        />
+                        <ListItemSecondaryAction>
+                          <IconButton
+                            aria-label="Delete"
+                            onClick={() => deleteField(field.id)}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </ListItemSecondaryAction>
                       </ListItem>
-                      <Divider />
                     </div>
                   ))}
-                  </List> */}
+                </List>
               </Grid>
             </Grid>
           );

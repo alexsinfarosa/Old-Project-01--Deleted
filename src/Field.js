@@ -9,6 +9,8 @@ import HomeIcon from "@material-ui/icons/Home";
 import ListIcon from "@material-ui/icons/ListOutlined";
 import CloudIcon from "@material-ui/icons/CloudOutlined";
 
+import format from "date-fns/format";
+
 const styles = theme => ({
   iconOnFocus: {
     color: theme.palette.primary.main,
@@ -32,7 +34,10 @@ class Field extends Component {
       <AppConsumer>
         {context => {
           console.log("Field");
-          const { handleIndex, mainIdx } = context;
+          const { handleIndex, mainIdx, fields, field } = context;
+
+          const fieldInView = field ? field : fields[0];
+
           return (
             <Grid container>
               <Grid
@@ -59,8 +64,10 @@ class Field extends Component {
                   />
                 </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <p>Field...</p>
+
+              <Grid item xs={12} container justify="center">
+                <p>{fieldInView.address}</p>
+                <p>{format(fieldInView.irrigationDate, "MMMM do, YYYY")}</p>
               </Grid>
             </Grid>
           );
