@@ -11,12 +11,17 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mainIdx: 0,
+      mainIdx: 1,
       landingIdx: 0,
       isLanding: false,
       irrigationDate: new Date(),
       fields: [],
-      field: null,
+
+      fieldName: "",
+      address: "",
+      latitude: null,
+      longitude: null,
+
       handleIrrigationDate: this.handleIrrigationDate,
       handleField: this.handleField,
       addField: this.addField,
@@ -38,18 +43,29 @@ class App extends Component {
 
   // HANDLING EVENTs--------------------------------------------------------
   handleIndex = (idx, comp) => this.setState({ [comp]: idx });
-  handleField = field => this.setState({ field });
+  handleField = ({ ...field }) => this.setState({ ...field });
   handleIrrigationDate = irrigationDate => this.setState({ irrigationDate });
 
   // CRUD OPERATIONS--------------------------------------------------------
   addField = () => {
     const field = {
-      ...this.state.field,
-      irrigationDate: this.state.irrigationDate,
-      id: Date.now()
+      id: Date.now(),
+      fieldName: this.state.fieldName,
+      address: this.state.address,
+      latitude: this.state.latitude,
+      longitude: this.state.longitude,
+      irrigationDate: this.state.irrigationDate
     };
     const fields = [field, ...this.state.fields];
-    this.setState({ fields, field: null, irrigationDate: new Date() });
+    this.setState({ fields });
+    // this.setState({
+    //   fields,
+    //   fieldName: "",
+    //   address: "",
+    //   latitude: null,
+    //   longitude: null,
+    //   irrigationDate: new Date()
+    // });
     this.writeToLocalstorage(fields);
   };
 
@@ -62,12 +78,22 @@ class App extends Component {
       isLanding: fields.length === 0 ? true : false,
       landingIdx: 0
     });
-    this.writeToLocalstorage(fields);
+
+    fields.length === 0
+      ? this.deleteFromLocalstorage()
+      : this.writeToLocalstorage(fields);
   };
 
   selectField = id => {
     const field = this.state.fields.find(field => field.id === id);
-    this.setState({ field });
+    this.setState({
+      id: field.id,
+      fieldName: field.fieldName,
+      address: field.address,
+      latitude: field.latitude,
+      longitude: field.longitude,
+      irrigationDate: field.irrigationDate
+    });
   };
 
   fetchForecastData = () => {
@@ -100,8 +126,21 @@ class App extends Component {
     // console.log(localStorageRef);
     if (localStorageRef) {
       const params = JSON.parse(localStorageRef);
-      this.setState({ fields: params, field: params[0] });
+      const field = {
+        id: params[0].id,
+        fieldName: params[0].fieldName,
+        address: params[0].address,
+        latitude: params[0].latitude,
+        longitude: params[0].longitude,
+        irrigationDate: params[0].irrigationDate
+      };
+
+      this.setState({ fields: params, ...field });
     }
+  };
+
+  deleteFromLocalstorage = () => {
+    localStorage.removeItem("nrcc-irrigation-tool");
   };
 
   // LIFE CYLCES--------------------------------------------------------------

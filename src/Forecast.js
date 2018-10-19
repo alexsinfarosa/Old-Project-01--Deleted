@@ -58,7 +58,7 @@ class Forecast extends Component {
       <AppConsumer>
         {context => {
           console.log("Forecast");
-          const { handleIndex, mainIdx, forecastData, field } = context;
+          const { handleIndex, mainIdx, forecastData, address } = context;
 
           return (
             <Grid container>
@@ -86,7 +86,7 @@ class Forecast extends Component {
                 <Grid container justify="center" style={{ marginTop: 16 }}>
                   <Grid item xs={12}>
                     <Typography variant="h6" align="center" gutterBottom>
-                      {field.address}
+                      {address}
                     </Typography>
                   </Grid>
 
@@ -121,7 +121,12 @@ class Forecast extends Component {
                     style={{ marginTop: 16, paddingLeft: 16, paddingRight: 16 }}
                   >
                     <Grid item>
-                      <Typography variant="button">NEXT 7 DAYS</Typography>
+                      <Typography
+                        variant="button"
+                        style={{ fontWeight: "bold" }}
+                      >
+                        NEXT 7 DAYS
+                      </Typography>
                     </Grid>
                     <Grid item>
                       <Typography variant="caption">
@@ -150,7 +155,9 @@ class Forecast extends Component {
                           container
                           direction="column"
                           xs={3}
-                          style={{ textAlign: "center" }}
+                          style={{
+                            textAlign: "center"
+                          }}
                         >
                           <Grid item style={{ fontWeight: "bold" }}>
                             {format(

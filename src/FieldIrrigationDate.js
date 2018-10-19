@@ -67,8 +67,8 @@ class FieldIrrigationDate extends Component {
                 color="secondary"
                 className={classes.button}
                 onClick={() => {
-                  context.navigateToMain(1);
                   context.addField();
+                  context.navigateToMain(1);
                 }}
               >
                 Create Field
