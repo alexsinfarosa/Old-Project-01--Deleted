@@ -8,11 +8,13 @@ import Grid from "@material-ui/core/Grid";
 import HomeIcon from "@material-ui/icons/HomeOutlined";
 import CloudIcon from "@material-ui/icons/Cloud";
 import Typography from "@material-ui/core/Typography";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
 
 import format from "date-fns/format";
 
 import { weatherIcons } from "./utils/weatherIcons";
-import { ReactComponent as DropIcon } from "./assets/drops.svg";
 
 const styles = theme => ({
   iconOnFocus: {
@@ -96,11 +98,7 @@ class Forecast extends Component {
                         <img
                           src={weatherIcons[forecastData.daily.data[0].icon]}
                           alt="daily icon"
-                          style={{
-                            width: 40,
-                            height: 40,
-                            marginRight: 8
-                          }}
+                          style={{ width: 40, height: 40, marginRight: 8 }}
                         />
                       </Grid>
                       <Grid item>
@@ -130,75 +128,69 @@ class Forecast extends Component {
                     </Grid>
                   </Grid>
 
-                  <Grid
-                    container
-                    style={{ marginTop: 16, paddingLeft: 16, paddingRight: 16 }}
-                  >
-                    {forecastData.daily.data.map(day => (
-                      <Grid
-                        key={day.time}
-                        item
-                        xs={12}
-                        container
-                        style={{ height: 80 }}
-                        spacing={16}
-                        justify="space-between"
-                        alignItems="center"
-                      >
-                        <Grid
-                          item
-                          container
-                          direction="column"
-                          xs={3}
-                          style={{ textAlign: "center" }}
-                        >
-                          <Grid item style={{ fontWeight: "bold" }}>
-                            {format(
-                              new Date(day.time) * 1000,
-                              "EEE"
-                            ).toUpperCase()}
-                          </Grid>
-                          <Grid
-                            container
-                            justify="center"
-                            alignItems="baseline"
+                  <Grid container>
+                    <List style={{ width: "100%" }}>
+                      {forecastData.daily.data.map(day => {
+                        console.log(day);
+                        return (
+                          <ListItem
+                            key={day.time}
+                            style={{
+                              height: 64,
+                              display: "flex",
+
+                              // justifyContent: "space-between",
+                              // alignItems: "center",
+                              background: "pink"
+                            }}
                           >
-                            <Grid item style={{ marginRight: 4 }}>
-                              <DropIcon
+                            <ListItemText
+                              style={{
+                                textAlign: "center",
+                                background: "teal"
+                              }}
+                              classes={{ secondary: classes.secondary }}
+                              primary={format(
+                                new Date(day.time) * 1000,
+                                "EEE"
+                              ).toUpperCase()}
+                              secondary={`${Math.round(
+                                day.precipProbability * 100
+                              )}%`}
+                            />
+
+                            <ListItemText
+                              style={{
+                                textAlign: "center",
+                                background: "tomato"
+                              }}
+                            >
+                              <img
+                                src={weatherIcons[day.icon]}
+                                alt={day.summary}
                                 style={{
-                                  width: 12,
-                                  height: 12,
-                                  fill: "#3f51b5"
+                                  width: 40,
+                                  height: 40
+                                  // marginRight: 8,
                                 }}
                               />
-                            </Grid>
-                            <Grid
-                              item
-                              style={{ color: "#3f51b5", fontSize: 12 }}
-                            >{`${Math.round(
-                              day.precipProbability * 100
-                            )}%`}</Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={3} style={{ textAlign: "center" }}>
-                          <img
-                            src={weatherIcons[day.icon]}
-                            alt={day.summary}
-                            style={{
-                              width: 40,
-                              height: 40
-                              // marginRight: 8,
-                            }}
-                          />
-                        </Grid>
-                        <Grid item xs={3} style={{ textAlign: "center" }}>
-                          {`${Math.round(day.temperatureLow, 1)}˚`}
-                        </Grid>
-                        <Grid item xs={3} style={{ textAlign: "center" }}>
-                          {`${Math.round(day.temperatureHigh, 1)}˚`}
-                        </Grid>
-                      </Grid>
-                    ))}
+                            </ListItemText>
+
+                            <ListItemText
+                              style={{ textAlign: "center" }}
+                              classes={{ secondary: classes.secondary }}
+                              primary={`${Math.round(day.temperatureLow, 1)}˚`}
+                            />
+
+                            <ListItemText
+                              style={{ textAlign: "center" }}
+                              classes={{ secondary: classes.secondary }}
+                              primary={`${Math.round(day.temperatureHigh, 1)}˚`}
+                            />
+                          </ListItem>
+                        );
+                      })}
+                    </List>
                   </Grid>
                 </Grid>
               )}
