@@ -97,7 +97,7 @@ class App extends Component {
   };
 
   fetchForecastData = () => {
-    const url = `https://api.darksky.net/forecast/${WEATHER_API_KEY}/42.4439614,-76.5018807?exclude=flags,minutely,alerts,hourly`;
+    const url = `/${WEATHER_API_KEY}/42.4439614,-76.5018807?exclude=flags,minutely,alerts,hourly`;
     return axios
       .get(url)
       .then(res => {

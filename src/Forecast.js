@@ -118,6 +118,7 @@ class Forecast extends Component {
 
                   <Grid
                     container
+                    direction="column"
                     style={{ marginTop: 16, paddingLeft: 16, paddingRight: 16 }}
                   >
                     <Grid item>
