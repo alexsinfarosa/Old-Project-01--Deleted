@@ -83,7 +83,11 @@ class Forecast extends Component {
               </Grid>
 
               {forecastData && (
-                <Grid container justify="center" style={{ marginTop: 16 }}>
+                <Grid
+                  container
+                  justify="center"
+                  style={{ marginTop: 16, paddingLeft: 16, paddingRight: 16 }}
+                >
                   <Grid item xs={12}>
                     <Typography variant="h6" align="center" gutterBottom>
                       {address}
@@ -116,11 +120,7 @@ class Forecast extends Component {
                     </Grid>
                   </Grid>
 
-                  <Grid
-                    container
-                    direction="column"
-                    style={{ marginTop: 16, paddingLeft: 16, paddingRight: 16 }}
-                  >
+                  <Grid container direction="column" style={{ marginTop: 16 }}>
                     <Grid item>
                       <Typography
                         variant="button"
@@ -136,17 +136,14 @@ class Forecast extends Component {
                     </Grid>
                   </Grid>
 
-                  <Grid
-                    container
-                    style={{ marginTop: 16, paddingLeft: 16, paddingRight: 16 }}
-                  >
+                  <Grid container style={{ marginTop: 16 }}>
                     {forecastData.daily.data.map(day => (
                       <Grid
                         key={day.time}
                         item
                         xs={12}
                         container
-                        style={{ height: 80 }}
+                        style={{ height: 64 }}
                         spacing={16}
                         justify="space-between"
                         alignItems="center"
