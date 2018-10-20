@@ -3,42 +3,62 @@
   "name": "NRCC Irrigation Tool",
   "icons": [
     {
-      "src": "src/assets/manifestIcons/irrigation-16.png",
-      "size": "16x16",
+      "src": "src/assets/manifestIcons/android-launchericon-48-48.png",
+      "sizes": "48x48",
       "type": "image/png"
     },
     {
-      "src": "src/assets/manifestIcons/irrigation-24.png",
-      "size": "24x24",
+      "src": "src/assets/manifestIcons/android-launchericon-72-72.png",
+      "sizes": "72x72",
       "type": "image/png"
     },
     {
-      "src": "src/assets/manifestIcons/irrigation-32.png",
-      "size": "32x32",
+      "src": "src/assets/manifestIcons/android-launchericon-96-96.png",
+      "sizes": "96x96",
       "type": "image/png"
     },
     {
-      "src": "src/assets/manifestIcons/irrigation-64.png",
-      "size": "64x64",
+      "src": "src/assets/manifestIcons/android-launchericon-144-144.png",
+      "sizes": "144x144",
       "type": "image/png"
     },
     {
-      "src": "src/assets/manifestIcons/irrigation-128.png",
-      "size": "128x128",
+      "src": "src/assets/manifestIcons/android-launchericon-192-192.png",
+      "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "src/assets/manifestIcons/irrigation-256.png",
-      "size": "256x256",
+      "src": "src/assets/manifestIcons/android-launchericon-512-512.png",
+      "sizes": "512x512",
       "type": "image/png"
     },
     {
-      "src": "src/assets/manifestIcons/irrigation-512.png",
-      "size": "512x512",
+      "src": "src/assets/manifestIcons/ios-appicon-76-76.png",
+      "sizes": "76x76",
+      "type": "image/png"
+    },
+    {
+      "src": "src/assets/manifestIcons/ios-appicon-120-120.png",
+      "sizes": "120x120",
+      "type": "image/png"
+    },
+    {
+      "src": "src/assets/manifestIcons/ios-appicon-152-152.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    },
+    {
+      "src": "src/assets/manifestIcons/ios-appicon-180-180.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "src/assets/manifestIcons/ios-appicon-1024-1024.png",
+      "sizes": "1024x1024",
       "type": "image/png"
     }
   ],
-  "start_url": "/index.html",
+  "start_url": ".",
   "display": "standalone",
   "theme_color": "#8f36aa",
   "background_color": "#ffffff"
