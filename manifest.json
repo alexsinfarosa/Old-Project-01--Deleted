@@ -1,15 +1,45 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "IrriTollV4",
+  "name": "NRCC Irrigation Tool",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "src/assets/manifestIcons/irrigation-16.png",
+      "size": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "src/assets/manifestIcons/irrigation-24.png",
+      "size": "24x24",
+      "type": "image/png"
+    },
+    {
+      "src": "src/assets/manifestIcons/irrigation-32.png",
+      "size": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "src/assets/manifestIcons/irrigation-64.png",
+      "size": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "src/assets/manifestIcons/irrigation-128.png",
+      "size": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "src/assets/manifestIcons/irrigation-256.png",
+      "size": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "src/assets/manifestIcons/irrigation-512.png",
+      "size": "512x512",
+      "type": "image/png"
     }
   ],
-  "start_url": ".",
+  "start_url": "/index.html",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#8f36aa",
   "background_color": "#ffffff"
 }
