@@ -12,7 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import format from "date-fns/format";
 
 import { weatherIcons } from "./utils/weatherIcons";
-import { ReactComponent as DropIcon } from "./assets/drops.svg";
+import { ReactComponent as DropIcon } from "./assets/weatherIcons/drops.svg";
 
 const styles = theme => ({
   iconOnFocus: {

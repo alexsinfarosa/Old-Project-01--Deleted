@@ -162,7 +162,8 @@ class FieldLocation extends Component {
               direction="column"
               // justify="center"
               alignItems="center"
-              style={{ padding: 32 }}
+              style={{ padding: 32, background: '#fff' }}
+
             >
               <Grid container justify="space-between" alignItems="center">
                 <Grid item>

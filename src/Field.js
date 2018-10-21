@@ -62,7 +62,14 @@ class Field extends Component {
                 </Grid>
               </Grid>
 
-              <Grid item xs={12} container justify="center">
+              <Grid
+                item
+                xs={12}
+                container
+                direction="column"
+                justify="center"
+                alignItems="center"
+              >
                 <p>{address}</p>
                 <p>{format(irrigationDate, "MMMM do, YYYY")}</p>
               </Grid>

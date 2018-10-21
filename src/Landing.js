@@ -42,6 +42,7 @@ class Landing extends Component {
                 index={landingIdx}
                 onChangeIndex={idx => handleIndex(idx, "landingIdx")}
                 containerStyle={{ height: window.innerHeight }}
+                slideStyle={{ height: "100%", background: "#fff" }}
               >
                 <Grid
                   item
@@ -50,7 +51,7 @@ class Landing extends Component {
                   direction="column"
                   justify="center"
                   alignItems="center"
-                  style={{ height: "100%" }}
+                  style={{ height: "100%", background: "#fff" }}
                 >
                   <Typography component="h1" variant="h5" gutterBottom>
                     Welcome To CSF

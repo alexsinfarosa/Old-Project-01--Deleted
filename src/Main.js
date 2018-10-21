@@ -18,7 +18,7 @@ class Main extends Component {
               index={mainIdx}
               onChangeIndex={idx => handleIndex(idx, "mainIdx")}
               containerStyle={{ height: window.innerHeight }}
-              slideStyle={{ height: "100%" }}
+              slideStyle={{ height: "100%", background: "#fff" }}
             >
               <Forecast />
               <Field />

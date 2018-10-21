@@ -10,7 +10,7 @@
   <!-- Material ui -->
   <!-- <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no" /> -->
   <!-- FOR IPHONE X -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"> -->
   <!-- <meta name="apple-mobile-web-app-capable" content="yes"> -->
   <!-- <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> -->
 
@@ -18,6 +18,32 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUk9begav92si1W6yVe39GlOO7Au2aB0A&libraries=places"></script>
+
+
+  <!-- PWA IOS -->
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <link href="src/assets/splashscreens/iphone5_splash.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+  <link href="src/assets/splashscreens/iphone6_splash.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+  <link href="src/assets/splashscreens/iphoneplus_splash.png" media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+  <link href="src/assets/splashscreens/iphonex_splash.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+  <link href="src/assets/splashscreens/ipad_splash.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+  <link href="src/assets/splashscreens/ipadpro1_splash.png" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+  <link href="src/assets/splashscreens/ipadpro2_splash.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+
+  <link rel="apple-touch-icon" href="src/assets/manifestIcons/ios-appicon-152-152.png">
+  <link rel="apple-touch-icon" href="src/assets/manifestIcons/ios-appicon-167-167.png">
+  <link rel="apple-touch-icon" href="src/assets/manifestIcons/ios-appicon-180-180.png">
+
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+
+
+
+
+
 
   <!--
       manifest.json provides metadata used when your web app is added to the
@@ -36,7 +62,7 @@
   <title>Irri Tool</title>
 </head>
 
-<body>
+<body ontouchstart=””>
   <noscript>
     You need to enable JavaScript to run this app.
   </noscript>
