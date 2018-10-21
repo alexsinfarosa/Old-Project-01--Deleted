@@ -11,6 +11,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoading: true,
       mainIdx: 1,
       landingIdx: 0,
       isLanding: false,
@@ -94,10 +95,12 @@ class App extends Component {
       longitude: field.longitude,
       irrigationDate: field.irrigationDate
     });
+    this.fetchForecastData(field.latitude, field.longitude);
   };
 
-  fetchForecastData = () => {
-    const url = `/${WEATHER_API_KEY}/42.4439614,-76.5018807?exclude=flags,minutely,alerts,hourly`;
+  fetchForecastData = (latitude, longitude) => {
+    const url = `/${WEATHER_API_KEY}/${latitude},${longitude}?exclude=flags,minutely,alerts,hourly`;
+    // const url = `/${WEATHER_API_KEY}/42.4439614,-76.5018807?exclude=flags,minutely,alerts,hourly`;
     return axios
       .get(url)
       .then(res => {
@@ -144,9 +147,18 @@ class App extends Component {
   };
 
   // LIFE CYLCES--------------------------------------------------------------
-  componentDidMount() {
-    this.readFromLocalstorage();
-    this.fetchForecastData();
+  async componentDidMount() {
+    this.setState({ isLoading: true });
+    try {
+      await this.readFromLocalstorage();
+      if (this.state.fields.length !== 0) {
+        await this.fetchForecastData(this.state.latitude, this.state.longitude);
+        this.setState({ isLoading: false });
+      }
+    } catch (error) {
+      console.log(error);
+      this.setState({ isLoading: false });
+    }
   }
 
   render() {
