@@ -39,7 +39,7 @@ class FieldList extends Component {
     return (
       <AppConsumer>
         {context => {
-          console.log("FieldList");
+          // console.log("FieldList");
           const {
             handleIndex,
             mainIdx,

@@ -20,6 +20,11 @@ const styles = theme => ({
 });
 
 class FieldIrrigationDate extends Component {
+  state = {
+    irrigationDate: new Date()
+  };
+  handleIrrigationDate = irrigationDate => this.setState({ irrigationDate });
+
   render() {
     const { classes } = this.props;
     return (
@@ -34,7 +39,7 @@ class FieldIrrigationDate extends Component {
               direction="column"
               // justify="center"
               alignItems="center"
-              style={{ padding: 32, background: '#fff' }}
+              style={{ padding: 32, background: "#fff" }}
             >
               <Grid container justify="space-between" alignItems="center">
                 <Grid item>
@@ -54,8 +59,11 @@ class FieldIrrigationDate extends Component {
               <InlineDatePicker
                 onlyCalendar
                 style={{ width: "100%", marginTop: 32 }}
-                value={context.irrigationDate}
-                onChange={date => context.handleIrrigationDate(date)}
+                value={this.state.irrigationDate}
+                onChange={date => {
+                  this.handleIrrigationDate(date);
+                  context.handleIrrigationDate(date);
+                }}
                 format="MMMM do, yyyy"
                 disableFuture
               />

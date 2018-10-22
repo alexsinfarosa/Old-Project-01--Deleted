@@ -57,7 +57,7 @@ class Forecast extends Component {
     return (
       <AppConsumer>
         {context => {
-          console.log("Forecast");
+          // console.log("Forecast");
           const { handleIndex, mainIdx, forecastData, address } = context;
 
           return (

@@ -33,7 +33,7 @@ class Field extends Component {
     return (
       <AppConsumer>
         {context => {
-          console.log("Field");
+          // console.log("Field");
           const { handleIndex, mainIdx, address, irrigationDate } = context;
           return (
             <Grid container>
