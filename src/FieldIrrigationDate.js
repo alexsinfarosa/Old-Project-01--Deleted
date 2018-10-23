@@ -49,11 +49,17 @@ class FieldIrrigationDate extends Component {
                   />
                 </Grid>
                 <Grid item>
-                  <Typography component="h1" variant="h5" gutterBottom>
-                    Irrigation Date
+                  <Typography variant="subtitle1" gutterBottom>
+                    Create a field - step 2/2
                   </Typography>
                 </Grid>
                 <Grid />
+              </Grid>
+
+              <Grid item style={{ marginTop: 64 }}>
+                <Typography variant="h6" gutterBottom>
+                  When is your last irrigation?
+                </Typography>
               </Grid>
 
               <InlineDatePicker
@@ -79,7 +85,7 @@ class FieldIrrigationDate extends Component {
                   context.navigateToMain(1);
                 }}
               >
-                Create Field
+                Start
               </Button>
             </Grid>
           );

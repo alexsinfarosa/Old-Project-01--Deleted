@@ -63,7 +63,7 @@ class Landing extends Component {
                   </Typography>
                   <Typography component="h1" variant="h5" gutterBottom>
                     <span className={classes.firstLetter}>C</span>
-                    alculator
+                    alculator!
                   </Typography>
                   <Button
                     size="large"
@@ -72,7 +72,7 @@ class Landing extends Component {
                     className={classes.button}
                     onClick={() => handleIndex(1, "landingIdx")}
                   >
-                    Create Field
+                    Start creating a field
                   </Button>
                 </Grid>
 

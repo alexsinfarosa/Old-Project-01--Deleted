@@ -10,6 +10,8 @@ import Main from "./Main";
 import Landing from "./Landing";
 
 import differenceInHours from "date-fns/differenceInHours";
+import { getPcpn } from "./utils/utils";
+// import { getPcpn } from "./assets/lawnWater";
 
 class App extends Component {
   constructor(props) {
@@ -163,6 +165,11 @@ class App extends Component {
     this.setState({ isLoading: true });
     try {
       await this.readFromLocalstorage();
+      getPcpn(
+        new Date("2018-10-01"),
+        this.state.latitude,
+        this.state.longitude
+      );
 
       if (this.state.fields.length !== 0) {
         const countHrs = differenceInHours(new Date(), new Date(this.state.id));

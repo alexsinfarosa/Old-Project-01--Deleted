@@ -182,11 +182,17 @@ class FieldLocation extends Component {
                   />
                 </Grid>
                 <Grid item>
-                  <Typography component="h1" variant="h5" gutterBottom>
-                    Field Location
+                  <Typography variant="subtitle1" gutterBottom>
+                    Create a field - step 1/2
                   </Typography>
                 </Grid>
                 <Grid />
+              </Grid>
+
+              <Grid item style={{ marginTop: 64 }}>
+                <Typography variant="h6" gutterBottom>
+                  Where is your field?
+                </Typography>
               </Grid>
 
               <PlacesAutocomplete
@@ -281,7 +287,7 @@ class FieldLocation extends Component {
                     fetchForecastData(latitude, longitude);
                   }}
                 >
-                  Irrigation Date
+                  Continue
                 </Button>
               ) : (
                 isGeolocationAvailable &&
