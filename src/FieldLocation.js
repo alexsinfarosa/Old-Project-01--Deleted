@@ -151,7 +151,8 @@ class FieldLocation extends Component {
             handleField,
             handleIndex,
             fields,
-            landingIdx
+            landingIdx,
+            fetchForecastData
           } = context;
 
           return (
@@ -162,8 +163,7 @@ class FieldLocation extends Component {
               direction="column"
               // justify="center"
               alignItems="center"
-              style={{ padding: 32, background: '#fff' }}
-
+              style={{ padding: 32, background: "#fff" }}
             >
               <Grid container justify="space-between" alignItems="center">
                 <Grid item>
@@ -220,7 +220,7 @@ class FieldLocation extends Component {
                             )
                           },
                           disabled: false,
-                          error: errorMessage ? true : false,
+                          error: errorMessage === "" ? false : true,
                           helperText: errorMessage ? "Invalid Address" : "",
                           margin: "normal"
 
@@ -278,6 +278,7 @@ class FieldLocation extends Component {
                   onClick={() => {
                     handleIndex(context.landingIdx + 1, "landingIdx");
                     handleField({ address, latitude, longitude });
+                    fetchForecastData(latitude, longitude);
                   }}
                 >
                   Irrigation Date

@@ -53,8 +53,8 @@ class App extends Component {
   handleIrrigationDate = irrigationDate => this.setState({ irrigationDate });
 
   // CRUD OPERATIONS--------------------------------------------------------
-  addField = async () => {
-    await this.fetchForecastData(this.state.latitude, this.state.longitude);
+  addField = () => {
+    // await this.fetchForecastData(this.state.latitude, this.state.longitude);
     const field = {
       id: Date.now(),
       fieldName: this.state.fieldName,
@@ -97,7 +97,7 @@ class App extends Component {
     });
 
     const countHrs = differenceInHours(new Date(), new Date(field.id));
-    if (countHrs > 1) {
+    if (countHrs > 3) {
       this.fetchForecastData(field.latitude, field.longitude);
       const idx = this.state.fields.findIndex(field => field.id === id);
       const copyFields = [...this.state.fields];
@@ -108,7 +108,7 @@ class App extends Component {
 
   fetchForecastData = (latitude, longitude) => {
     console.log("fetchForecastData called");
-    this.setState({ isLoading: true });
+    // this.setState({ isLoading: true });
     const url = `/${WEATHER_API_KEY}/${latitude},${longitude}?exclude=flags,minutely,alerts,hourly`;
     return axios
       .get(url)
@@ -166,7 +166,7 @@ class App extends Component {
 
       if (this.state.fields.length !== 0) {
         const countHrs = differenceInHours(new Date(), new Date(this.state.id));
-        if (countHrs > 1) {
+        if (countHrs > 3) {
           this.fetchForecastData(this.state.latitude, this.state.longitude);
           const idx = this.state.fields.findIndex(
             field => field.id === this.state.id
