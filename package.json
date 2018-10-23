@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "author": "alexsinfarosa <as898@cornell.edu>",
   "homepage": "https://alexsinfarosa.github.io/irriToolV4/",
-  "proxy": "https://api.darksky.net/forecast",
   "description": "NRCC Irrigation Tool",
   "private": true,
   "dependencies": {

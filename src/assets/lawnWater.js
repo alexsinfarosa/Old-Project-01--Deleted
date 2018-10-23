@@ -44,6 +44,7 @@ function calcDeficit(pcpn, values_pet, dates_pet) {
       $("#lastday").html(mmdd);
     }
   });
+
   // calculate the daily water deficits
   deficitResults = runWaterDeficitModel(
     precip,
@@ -52,6 +53,7 @@ function calcDeficit(pcpn, values_pet, dates_pet) {
     soilcap,
     croptype
   );
+
   if (deficitResults.deficitDaily.length > 0) {
     var finalDeficit =
       -1.0 *

@@ -10,7 +10,7 @@ import Main from "./Main";
 import Landing from "./Landing";
 
 import differenceInHours from "date-fns/differenceInHours";
-import { getPcpn } from "./utils/utils";
+import { getPcpnANDPET } from "./utils/utils";
 // import { getPcpn } from "./assets/lawnWater";
 
 class App extends Component {
@@ -111,7 +111,7 @@ class App extends Component {
   fetchForecastData = (latitude, longitude) => {
     console.log("fetchForecastData called");
     // this.setState({ isLoading: true });
-    const url = `/${WEATHER_API_KEY}/${latitude},${longitude}?exclude=flags,minutely,alerts,hourly`;
+    const url = `https://cf0mjzcjk3.execute-api.us-east-1.amazonaws.com/production/${latitude},${longitude}?exclude=flags,minutely,alerts,hourly`;
     return axios
       .get(url)
       .then(res => {
@@ -165,13 +165,13 @@ class App extends Component {
     this.setState({ isLoading: true });
     try {
       await this.readFromLocalstorage();
-      getPcpn(
-        new Date("2018-10-01"),
-        this.state.latitude,
-        this.state.longitude
-      );
-
       if (this.state.fields.length !== 0) {
+        // getPcpnANDPET(
+        //   new Date("2018-10-01"),
+        //   this.state.latitude,
+        //   this.state.longitude
+        // );
+
         const countHrs = differenceInHours(new Date(), new Date(this.state.id));
         if (countHrs > 3) {
           this.fetchForecastData(this.state.latitude, this.state.longitude);
