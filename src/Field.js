@@ -34,7 +34,7 @@ class Field extends Component {
       <AppConsumer>
         {context => {
           // console.log("Field");
-          const { handleIndex, mainIdx, address, irrigationDate } = context;
+          const { handleIndex, mainIdx, irrigationDate, fieldName } = context;
           return (
             <Grid container>
               <Grid
@@ -70,7 +70,7 @@ class Field extends Component {
                 justify="center"
                 alignItems="center"
               >
-                <p>{address}</p>
+                <p>{fieldName}</p>
                 <p>{format(irrigationDate, "MMMM do, YYYY")}</p>
               </Grid>
             </Grid>

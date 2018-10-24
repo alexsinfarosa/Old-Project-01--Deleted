@@ -1,6 +1,8 @@
 import format from "date-fns/format";
 import axios from "axios";
 
+import { PROXYIRRIGATION } from "./api";
+
 const protocol = window.location.protocol;
 const formattedDate = date => format(date, "yyyy-MM-d");
 
@@ -25,7 +27,7 @@ export const getPcpn = (sdate, lat, lon) => {
 export const getPET = (sdate, lat, lon) => {
   const year = new Date(sdate).getFullYear();
   // the first date is 03/01
-  const url = `${protocol}//tools.climatesmartfarming.org/irrigationtool/datahdf5/?lat=${lat}&lon=${lon}&year=${year}`;
+  const url = `${PROXYIRRIGATION}?lat=${lat}&lon=${lon}&year=${year}`;
   return axios
     .get(url)
     .then(res => {
@@ -36,7 +38,7 @@ export const getPET = (sdate, lat, lon) => {
           et: res.data.pet[i]
         };
       });
-      // console.log(results);
+      console.log(results);
       return results;
     })
     .catch(err => {
@@ -55,6 +57,7 @@ export const getPcpnANDPET = async (sdate, lat, lon) => {
   return results;
 };
 
-export const calcDeficit = getPcpnANDPET => {
-  return;
+export const calcDeficit = (sdate, lat, lon) => {
+  const results = getPcpnANDPET(sdate, lat, lon);
+  return results;
 };

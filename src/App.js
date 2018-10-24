@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { AppProvider } from "./AppContext";
 
 import axios from "axios";
-import { PROXYSERVER } from "./utils/api";
+import { PROXYDARKSKY } from "./utils/api";
 
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -23,6 +23,8 @@ class App extends Component {
       isLanding: false,
 
       id: null,
+      soilCapacity: "medium",
+      cropType: "grass",
       fieldName: "",
       address: "",
       latitude: null,
@@ -57,9 +59,12 @@ class App extends Component {
   // CRUD OPERATIONS--------------------------------------------------------
   addField = () => {
     // await this.fetchForecastData(this.state.latitude, this.state.longitude);
+
     const field = {
       id: Date.now(),
-      fieldName: this.state.fieldName,
+      fieldName: this.state.address.split(",")[0],
+      soilCapacity: this.state.soilCapacity,
+      cropType: this.state.cropType,
       address: this.state.address,
       latitude: this.state.latitude,
       longitude: this.state.longitude,
@@ -91,6 +96,8 @@ class App extends Component {
     this.setState({
       id: field.id,
       fieldName: field.fieldName,
+      soilCapacity: field.soilCapacity,
+      cropType: field.cropType,
       address: field.address,
       latitude: field.latitude,
       longitude: field.longitude,
@@ -111,18 +118,13 @@ class App extends Component {
   fetchForecastData = (latitude, longitude) => {
     console.log("fetchForecastData called");
     // this.setState({ isLoading: true });
-    const url = `${PROXYSERVER}/${latitude},${longitude}?exclude=flags,minutely,alerts,hourly`;
+    const url = `${PROXYDARKSKY}/${latitude},${longitude}?exclude=flags,minutely,alerts,hourly`;
     return axios
       .get(url)
       .then(res => {
         // console.log(res.data);
-        const { currently, daily, latitude, longitude } = res.data;
-        const forecastData = {
-          currently,
-          daily,
-          latitude,
-          longitude
-        };
+        const { currently, daily } = res.data;
+        const forecastData = { currently, daily };
         this.setState({ forecastData, isLoading: false });
       })
       .catch(err => {
@@ -145,6 +147,8 @@ class App extends Component {
       const field = {
         id: params[0].id,
         fieldName: params[0].fieldName,
+        soilCapacity: params[0].soilCapacity,
+        cropType: params[0].cropType,
         address: params[0].address,
         latitude: params[0].latitude,
         longitude: params[0].longitude,
@@ -166,11 +170,11 @@ class App extends Component {
     try {
       await this.readFromLocalstorage();
       if (this.state.fields.length !== 0) {
-        // getPcpnANDPET(
-        //   new Date("2018-10-01"),
-        //   this.state.latitude,
-        //   this.state.longitude
-        // );
+        getPcpnANDPET(
+          new Date("2018-10-01"),
+          this.state.latitude,
+          this.state.longitude
+        );
 
         const countHrs = differenceInHours(new Date(), new Date(this.state.id));
         if (countHrs > 3) {
