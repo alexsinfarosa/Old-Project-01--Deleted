@@ -142,6 +142,7 @@ class FieldLocation extends Component {
       coords,
       isGeolocationEnabled
     } = this.props;
+    console.log({ isGeolocationAvailable, coords, isGeolocationEnabled });
 
     return (
       <AppConsumer>

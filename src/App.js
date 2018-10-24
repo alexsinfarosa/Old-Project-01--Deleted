@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { AppProvider } from "./AppContext";
 
 import axios from "axios";
-import { WEATHER_API_KEY } from "./utils/api";
+import { PROXYSERVER } from "./utils/api";
 
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -111,7 +111,7 @@ class App extends Component {
   fetchForecastData = (latitude, longitude) => {
     console.log("fetchForecastData called");
     // this.setState({ isLoading: true });
-    const url = `https://cf0mjzcjk3.execute-api.us-east-1.amazonaws.com/production/${latitude},${longitude}?exclude=flags,minutely,alerts,hourly`;
+    const url = `${PROXYSERVER}/${latitude},${longitude}?exclude=flags,minutely,alerts,hourly`;
     return axios
       .get(url)
       .then(res => {
