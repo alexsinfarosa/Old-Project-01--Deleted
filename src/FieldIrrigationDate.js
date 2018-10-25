@@ -11,7 +11,7 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 // import DatePicker from "material-ui-pickers/DatePicker";
 import { InlineDatePicker } from "material-ui-pickers/DatePicker";
-
+import isWithinInterval from "date-fns/isWithinInterval";
 const styles = theme => ({
   button: {
     marginTop: theme.spacing.unit * 8,
@@ -21,9 +21,24 @@ const styles = theme => ({
 
 class FieldIrrigationDate extends Component {
   state = {
-    irrigationDate: new Date()
+    irrigationDate: new Date(),
+    isOutOfSeason: false
   };
-  handleIrrigationDate = irrigationDate => this.setState({ irrigationDate });
+  handleIrrigationDate = irrigationDate => {
+    const year = new Date(irrigationDate).getFullYear();
+    console.log(year);
+    const startSeason = `03-01-${year}`;
+    const endSeason = `10-31-${year}`;
+    const isInSeason = isWithinInterval(new Date(irrigationDate), {
+      start: new Date(startSeason),
+      end: new Date(endSeason)
+    });
+    if (isInSeason) {
+      this.setState({ irrigationDate });
+    } else {
+      this.setState({ isOutOfSeason: true });
+    }
+  };
 
   render() {
     const { classes } = this.props;
@@ -74,19 +89,39 @@ class FieldIrrigationDate extends Component {
                 disableFuture
               />
 
-              <Button
-                fullWidth={false}
-                size="large"
-                variant="outlined"
-                color="secondary"
-                className={classes.button}
-                onClick={() => {
-                  context.addField();
-                  context.navigateToMain(1);
-                }}
-              >
-                Start
-              </Button>
+              {this.state.isOutOfSeason ? (
+                <div>
+                  <Typography
+                    variant="caption"
+                    align="center"
+                    style={{ marginTop: 16 }}
+                  >
+                    Date provided is out of season!
+                  </Typography>
+                  <Typography
+                    variant="caption"
+                    align="center"
+                    style={{ marginTop: 16 }}
+                  >
+                    Season data is available from March 1st. through October
+                    31st.
+                  </Typography>
+                </div>
+              ) : (
+                <Button
+                  fullWidth={false}
+                  size="large"
+                  variant="outlined"
+                  color="secondary"
+                  className={classes.button}
+                  onClick={() => {
+                    context.addField();
+                    context.navigateToMain(1);
+                  }}
+                >
+                  Start
+                </Button>
+              )}
             </Grid>
           );
         }}

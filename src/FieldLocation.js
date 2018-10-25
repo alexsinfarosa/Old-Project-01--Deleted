@@ -52,7 +52,9 @@ class FieldLocation extends Component {
     latitude: null,
     longitude: null,
     errorMessage: "",
-    isGeocoding: false
+    isGeocoding: false,
+    isOutOfBbox: false,
+    outOfBboxMessage: "Data is not available in your area"
   };
 
   handleFieldLocationChange = address => {
@@ -65,13 +67,19 @@ class FieldLocation extends Component {
   };
 
   handleSelectAddress = address => {
-    // console.log(address);
+    console.log(address);
     this.setState({ isGeocoding: true, address });
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
-      .then(({ lat, lng }) =>
-        this.setState({ latitude: lat, longitude: lng, isGeocoding: false })
-      )
+      .then(({ lat, lng }) => {
+        console.log(lat, lng);
+        if (!((lat >= 37.2 && lat <= 47.6) || (lng >= -82.7 && lng <= -66.1))) {
+          console.log(lat, lng);
+          this.setState({ isOutOfBbox: true });
+        } else {
+          this.setState({ latitude: lat, longitude: lng, isGeocoding: false });
+        }
+      })
       .catch(error => {
         this.setState({ isGeocoding: false });
         console.error("Error", error);
@@ -133,7 +141,8 @@ class FieldLocation extends Component {
       errorMessage,
       latitude,
       longitude,
-      isGeocoding
+      isGeocoding,
+      isOutOfBbox
     } = this.state;
 
     const {
@@ -270,12 +279,25 @@ class FieldLocation extends Component {
 
               {!isGeolocationAvailable &&
                 !isGeolocationEnabled && (
-                  <Typography variant="caption" align="center">
+                  <Typography
+                    variant="caption"
+                    align="center"
+                    style={{ marginTop: 16 }}
+                  >
                     Geolocation is not supported!
                   </Typography>
                 )}
 
-              {(latitude && longitude) || isGeocoding ? (
+              {isOutOfBbox ? (
+                <div style={{ marginTop: 16 }}>
+                  <Typography variant="caption" align="center">
+                    The address you provided is outside of North East.
+                  </Typography>
+                  <Typography variant="caption" align="center">
+                    No data is available in your area.
+                  </Typography>
+                </div>
+              ) : (latitude && longitude) || isGeocoding ? (
                 <Button
                   fullWidth={false}
                   size="large"
