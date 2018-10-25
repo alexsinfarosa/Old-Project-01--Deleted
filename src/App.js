@@ -10,7 +10,7 @@ import Main from "./Main";
 import Landing from "./Landing";
 
 import differenceInHours from "date-fns/differenceInHours";
-import { getPcpnANDPET } from "./utils/utils";
+import { calcDeficit } from "./utils/utils";
 // import { getPcpn } from "./assets/lawnWater";
 
 class App extends Component {
@@ -170,10 +170,11 @@ class App extends Component {
     try {
       await this.readFromLocalstorage();
       if (this.state.fields.length !== 0) {
-        getPcpnANDPET(
+        calcDeficit(
           new Date("2018-10-01"),
           this.state.latitude,
-          this.state.longitude
+          this.state.longitude,
+          this.state.soilCapacity
         );
 
         const countHrs = differenceInHours(new Date(), new Date(this.state.id));

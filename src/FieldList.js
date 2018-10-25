@@ -106,7 +106,7 @@ class FieldList extends Component {
                         }}
                       >
                         <ListItemText
-                          primary={field.address}
+                          primary={field.fieldName}
                           secondary={format(
                             field.irrigationDate,
                             "MMMM do, YYYY"
