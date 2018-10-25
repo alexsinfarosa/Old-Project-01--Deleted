@@ -10,7 +10,7 @@ import Main from "./Main";
 import Landing from "./Landing";
 
 import differenceInHours from "date-fns/differenceInHours";
-import { getPET } from "./utils/utils";
+import { calculateDeficit } from "./utils/utils";
 
 class App extends Component {
   constructor(props) {
@@ -59,10 +59,11 @@ class App extends Component {
   // CRUD OPERATIONS--------------------------------------------------------
   addField = async () => {
     // await this.fetchForecastData(this.state.latitude, this.state.longitude);
-    await getPET(
+    await calculateDeficit(
       this.state.irrigationDate,
       this.state.latitude,
-      this.state.longitude
+      this.state.longitude,
+      this.state.soilCapacity
     );
 
     const field = {
@@ -175,10 +176,11 @@ class App extends Component {
     try {
       await this.readFromLocalstorage();
       if (this.state.fields.length !== 0) {
-        getPET(
+        calculateDeficit(
           new Date("2018-10-01"),
           this.state.latitude,
-          this.state.longitude
+          this.state.longitude,
+          this.state.soilCapacity
         );
 
         const countHrs = differenceInHours(new Date(), new Date(this.state.id));
