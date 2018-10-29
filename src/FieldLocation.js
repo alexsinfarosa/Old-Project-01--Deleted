@@ -62,19 +62,20 @@ class FieldLocation extends Component {
       address,
       latitude: null,
       longitude: null,
-      errorMessage: ""
+      errorMessage: "",
+      isOutOfBbox: false,
+      isGeocoding: false
     });
   };
 
   handleSelectAddress = address => {
-    console.log(address);
-    this.setState({ isGeocoding: true, address });
+    // console.log(address);
+    this.setState({ address });
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
       .then(({ lat, lng }) => {
-        console.log(lat, lng);
-        if (!((lat >= 37.2 && lat <= 47.6) || (lng >= -82.7 && lng <= -66.1))) {
-          console.log(lat, lng);
+        if (!(lat >= 37.2 && lat <= 47.6) || !(lng >= -82.7 && lng <= -66.1)) {
+          // console.log(lat, lng);
           this.setState({ isOutOfBbox: true });
         } else {
           this.setState({ latitude: lat, longitude: lng, isGeocoding: false });
@@ -93,7 +94,8 @@ class FieldLocation extends Component {
       latitude: null,
       longitude: null,
       errorMessage: "",
-      isGeocoding: false
+      isGeocoding: false,
+      isOutOfBbox: false
     });
   };
 

@@ -8,8 +8,9 @@ import Grid from "@material-ui/core/Grid";
 import HomeIcon from "@material-ui/icons/Home";
 import ListIcon from "@material-ui/icons/ListOutlined";
 import CloudIcon from "@material-ui/icons/CloudOutlined";
+import Typography from "@material-ui/core/Typography";
 
-import format from "date-fns/format";
+import BarChart3Days from "./components/BarChart3Days";
 
 const styles = theme => ({
   iconOnFocus: {
@@ -34,7 +35,7 @@ class Field extends Component {
       <AppConsumer>
         {context => {
           // console.log("Field");
-          const { handleIndex, mainIdx, irrigationDate, fieldName } = context;
+          const { handleIndex, mainIdx, fieldName } = context;
           return (
             <Grid container>
               <Grid
@@ -70,8 +71,11 @@ class Field extends Component {
                 justify="center"
                 alignItems="center"
               >
-                <p>{fieldName}</p>
-                <p>{format(irrigationDate, "MMMM do, YYYY")}</p>
+                <Typography variant="button" gutterBottom>
+                  {fieldName}
+                </Typography>
+
+                <BarChart3Days />
               </Grid>
             </Grid>
           );

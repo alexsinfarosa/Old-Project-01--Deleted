@@ -29,7 +29,7 @@ class App extends Component {
       latitude: null,
       longitude: null,
       irrigationDate: new Date(),
-      modelData: [],
+      dataModel: [],
 
       fields: [],
 
@@ -75,7 +75,8 @@ class App extends Component {
       latitude: this.state.latitude,
       longitude: this.state.longitude,
       irrigationDate: this.state.irrigationDate,
-      forecastData: this.state.forecastData
+      forecastData: this.state.forecastData,
+      dataModel: this.state.dataModel
     };
     const fields = [field, ...this.state.fields];
     this.setState({ fields });
@@ -108,7 +109,8 @@ class App extends Component {
       latitude: field.latitude,
       longitude: field.longitude,
       irrigationDate: field.irrigationDate,
-      forecastData: field.forecastData
+      forecastData: field.forecastData,
+      dataModel: field.dataModel
     });
 
     const countHrs = differenceInHours(new Date(), new Date(field.id));
@@ -159,7 +161,8 @@ class App extends Component {
         latitude: params[0].latitude,
         longitude: params[0].longitude,
         irrigationDate: new Date(params[0].irrigationDate),
-        forecastData: params[0].forecastData
+        forecastData: params[0].forecastData,
+        dataModel: params[0].dataModel
       };
 
       this.setState({ fields: params, ...field });
@@ -175,8 +178,9 @@ class App extends Component {
     this.setState({ isLoading: true });
     try {
       await this.readFromLocalstorage();
+      let dataModel;
       if (this.state.fields.length !== 0) {
-        calculateDeficit(
+        dataModel = await calculateDeficit(
           new Date("2018-10-01"),
           this.state.latitude,
           this.state.longitude,
@@ -194,7 +198,7 @@ class App extends Component {
           this.writeToLocalstorage(copyFields);
         }
       }
-      this.setState({ isLoading: false });
+      this.setState({ isLoading: false, dataModel });
     } catch (error) {
       console.log(error);
       this.setState({ isLoading: false });

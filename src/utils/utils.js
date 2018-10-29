@@ -173,6 +173,6 @@ export const calculateDeficit = async (sdate, lat, lon, soilCapacity) => {
     return obj;
   });
 
-  console.log(results);
+  // console.log(results[1]);
   return results;
 };
