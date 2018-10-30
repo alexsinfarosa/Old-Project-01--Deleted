@@ -51,6 +51,8 @@ const styles = theme => ({
   }
 });
 
+// TODO: handle case when forecast array is empty
+
 class Forecast extends Component {
   render() {
     const { classes } = this.props;

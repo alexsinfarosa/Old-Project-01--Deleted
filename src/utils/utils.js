@@ -100,7 +100,7 @@ export const getPET = (sdate, lat, lon) => {
   return axios
     .get(url)
     .then(res => {
-      // console.log(`BrianCALL`, res);
+      console.log(`BrianCALL`, res.data);
 
       const results = {
         dates: [...res.data.dates_pet, ...res.data.dates_pet_fcst],
@@ -173,6 +173,6 @@ export const calculateDeficit = async (sdate, lat, lon, soilCapacity) => {
     return obj;
   });
 
-  // console.log(results[1]);
+  // console.log(results);
   return results;
 };

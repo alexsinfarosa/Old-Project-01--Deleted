@@ -9,8 +9,10 @@ import HomeIcon from "@material-ui/icons/Home";
 import ListIcon from "@material-ui/icons/ListOutlined";
 import CloudIcon from "@material-ui/icons/CloudOutlined";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 
 import BarChart3Days from "./components/BarChart3Days";
+import format from "date-fns/format";
 
 const styles = theme => ({
   iconOnFocus: {
@@ -71,11 +73,36 @@ class Field extends Component {
                 justify="center"
                 alignItems="center"
               >
-                <Typography variant="button" gutterBottom>
+                <Typography
+                  variant="button"
+                  gutterBottom
+                  style={{ marginBottom: 32, marginTop: 16 }}
+                >
                   {fieldName}
                 </Typography>
 
                 <BarChart3Days />
+              </Grid>
+
+              <Grid
+                item
+                xs={12}
+                style={{
+                  position: "absolute",
+                  bottom: 0,
+                  width: "100%",
+                  alignItems: "flex-start"
+                }}
+              >
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  style={{ height: 80 }}
+                  size="large"
+                >
+                  I watered!
+                </Button>
               </Grid>
             </Grid>
           );
