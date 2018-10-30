@@ -59,12 +59,14 @@ class App extends Component {
   // CRUD OPERATIONS--------------------------------------------------------
   addField = async () => {
     // await this.fetchForecastData(this.state.latitude, this.state.longitude);
-    await calculateDeficit(
+    const dataModel = await calculateDeficit(
       this.state.irrigationDate,
       this.state.latitude,
       this.state.longitude,
       this.state.soilCapacity
     );
+
+    this.setState({ dataModel });
 
     const field = {
       id: Date.now(),
@@ -178,15 +180,7 @@ class App extends Component {
     this.setState({ isLoading: true });
     try {
       await this.readFromLocalstorage();
-      let dataModel;
       if (this.state.fields.length !== 0) {
-        dataModel = await calculateDeficit(
-          new Date("2018-10-01"),
-          this.state.latitude,
-          this.state.longitude,
-          this.state.soilCapacity
-        );
-
         const countHrs = differenceInHours(new Date(), new Date(this.state.id));
         if (countHrs > 3) {
           this.fetchForecastData(this.state.latitude, this.state.longitude);
@@ -198,7 +192,7 @@ class App extends Component {
           this.writeToLocalstorage(copyFields);
         }
       }
-      this.setState({ isLoading: false, dataModel });
+      this.setState({ isLoading: false });
     } catch (error) {
       console.log(error);
       this.setState({ isLoading: false });

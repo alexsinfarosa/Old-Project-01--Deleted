@@ -77,10 +77,15 @@ class BarChart3Days extends Component {
 
 const CustomizedLabel = props => {
   const { x, y, stroke, value } = props;
+  console.log(props);
+  const radius = 25;
   return (
-    <text x={x} y={y} dy={-14} fill={stroke} fontSize={14} textAnchor="middle">
-      {value}
-    </text>
+    <g>
+      <circle cx={x} cy={y} r={radius} fill="#8884d8" stroke="#8884d8" />
+      <text x={x} y={y} dy={+4} fill="white" fontSize={14} textAnchor="middle">
+        {value}
+      </text>
+    </g>
   );
 };
 
