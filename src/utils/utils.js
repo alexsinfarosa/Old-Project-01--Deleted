@@ -100,7 +100,7 @@ export const getPET = (sdate, lat, lon) => {
   return axios
     .get(url)
     .then(res => {
-      console.log(`BrianCALL`, res.data);
+      // console.log(`BrianCALL`, res.data);
 
       const results = {
         dates: [...res.data.dates_pet, ...res.data.dates_pet_fcst],
@@ -144,8 +144,8 @@ export const calculateDeficit = async (sdate, lat, lon, soilCapacity) => {
         ? getWaterStressCoeff(obj.deficit, TAW)
         : getWaterStressCoeff(data[i - 1].deficit, TAW);
 
-    const totalDailyPET = -1 * obj.pet * Kc * Ks;
-    const hourlyPET = (-1 * totalDailyPET) / 24;
+    const totalDailyPET = obj.pet * Kc * Ks;
+    const hourlyPET = totalDailyPET / 24;
     const hourlyPrecip = obj.pcpn / 24;
     const hourlyPotentialDrainage = dailyPotentialDrainageRate / 24;
 

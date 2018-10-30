@@ -189,6 +189,7 @@ class App extends Component {
         );
 
         this.setState({ dataModel });
+
         const countHrs = differenceInHours(new Date(), new Date(this.state.id));
         if (countHrs > 3) {
           this.fetchForecastData(this.state.latitude, this.state.longitude);

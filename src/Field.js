@@ -12,7 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
 import BarChart3Days from "./components/BarChart3Days";
-import format from "date-fns/format";
+import TopGraph from "./components/TopGraph";
 
 const styles = theme => ({
   iconOnFocus: {
@@ -81,6 +81,7 @@ class Field extends Component {
                   {fieldName}
                 </Typography>
 
+                <TopGraph />
                 <BarChart3Days />
               </Grid>
 
