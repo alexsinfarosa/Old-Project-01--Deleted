@@ -6,16 +6,7 @@ import withRoot from "../withRoot";
 import Typography from "@material-ui/core/Typography";
 
 import format from "date-fns/format";
-import {
-  ComposedChart,
-  Line,
-  Bar,
-  Cell,
-  XAxis,
-  YAxis,
-  Area,
-  BarChart
-} from "recharts";
+import { ComposedChart, Bar, Cell } from "recharts";
 
 const styles = theme => ({
   root: {}
@@ -47,12 +38,11 @@ class BarChart3Days extends Component {
             <>
               <Typography
                 variant="button"
-                gutterBottom
                 style={{
-                  marginLeft: 32,
+                  // marginLeft: 32,
                   color: "#9E9E9E",
                   fontWeight: "bold",
-                  marginTop: 16
+                  marginTop: 32
                 }}
               >
                 Since Last Irrigate:{" "}
@@ -63,9 +53,9 @@ class BarChart3Days extends Component {
 
               <ComposedChart
                 width={window.innerWidth}
-                height={250}
+                height={150}
                 data={dataModel.slice(-30)}
-                margin={{ top: 32, right: 32, left: 32, bottom: 32 }}
+                margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
               >
                 <Bar dataKey="deficit">
                   {dataModel.slice(-30).map((entry, index) => {
