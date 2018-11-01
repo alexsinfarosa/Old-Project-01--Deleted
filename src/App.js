@@ -10,7 +10,7 @@ import Main from "./Main";
 import Landing from "./Landing";
 
 import differenceInHours from "date-fns/differenceInHours";
-import { calculateDeficit } from "./utils/utils";
+import { getPET } from "./utils/utils";
 
 class App extends Component {
   constructor(props) {
@@ -59,7 +59,7 @@ class App extends Component {
   // CRUD OPERATIONS--------------------------------------------------------
   addField = async () => {
     // await this.fetchForecastData(this.state.latitude, this.state.longitude);
-    const dataModel = await calculateDeficit(
+    const dataModel = await getPET(
       this.state.irrigationDate,
       this.state.latitude,
       this.state.longitude,
@@ -181,15 +181,6 @@ class App extends Component {
     try {
       await this.readFromLocalstorage();
       if (this.state.fields.length !== 0) {
-        const dataModel = await calculateDeficit(
-          this.state.irrigationDate,
-          this.state.latitude,
-          this.state.longitude,
-          this.state.soilCapacity
-        );
-
-        this.setState({ dataModel });
-
         const countHrs = differenceInHours(new Date(), new Date(this.state.id));
         if (countHrs > 3) {
           this.fetchForecastData(this.state.latitude, this.state.longitude);
@@ -198,6 +189,15 @@ class App extends Component {
           );
           const copyFields = [...this.state.fields];
           copyFields[idx].forecastData = this.state.forecastData;
+
+          const dataModel = await getPET(
+            this.state.irrigationDate,
+            this.state.latitude,
+            this.state.longitude,
+            this.state.soilCapacity
+          );
+
+          copyFields[idx].dataModel = dataModel;
           this.writeToLocalstorage(copyFields);
         }
       }

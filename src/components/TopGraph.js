@@ -5,14 +5,8 @@ import { withStyles } from "@material-ui/core/styles";
 import withRoot from "../withRoot";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
 
 import format from "date-fns/format";
-import { withHandlers } from "recompose";
 
 const medium = {
   wiltingpoint: 2.0,
@@ -24,21 +18,25 @@ const medium = {
 
 const levels = [
   {
+    id: 0,
     name: "No Deficit",
     color: "#2E933C",
     treshold: medium.saturation - medium.fieldcapacity
   },
   {
+    id: 1,
     name: "Deficit, No Stress",
     color: "#F9DC5C",
     treshold: medium.stressthreshold - medium.fieldcapacity
   },
   {
+    id: 2,
     name: "Deficit, Stress",
     color: "#FC9E4F",
     treshold: medium.prewiltingpoint - medium.fieldcapacity
   },
   {
+    id: 3,
     name: "Severe Stress",
     color: "#BA2D0B",
     treshold: medium.wiltingpoint - medium.fieldcapacity
@@ -47,8 +45,42 @@ const levels = [
 
 const styles = theme => ({
   root: {},
-  table: {}
+  rowHeader: {
+    width: "100%",
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  rowLevel: {
+    width: "100%",
+    height: 70,
+    justifyContent: "center",
+    alignItems: "center"
+  }
 });
+
+const determineLevel = deficit => {
+  if (deficit > medium.stressthreshold - medium.fieldcapacity) {
+    return 0;
+  }
+  if (
+    deficit > medium.prewiltingpoint - medium.fieldcapacity &&
+    deficit <= medium.stressthreshold - medium.fieldcapacity
+  ) {
+    return 1;
+  }
+
+  if (
+    deficit > medium.wiltingpoint - medium.fieldcapacity &&
+    deficit <= medium.prewiltingpoint - medium.fieldcapacity
+  ) {
+    return 2;
+  }
+
+  if (deficit < medium.wiltingpoint - medium.fieldcapacity) {
+    return 3;
+  }
+};
 
 class TopGraph extends Component {
   render() {
@@ -57,35 +89,56 @@ class TopGraph extends Component {
       <AppConsumer>
         {context => {
           const { dataModel } = context;
-          const today = format(new Date(), "MM/d/YYYY");
+          const today = format(new Date(), "MM/dd/YYYY");
           const todayIdx = dataModel.findIndex(obj => obj.date === today);
-          const todayPlus2 = dataModel.slice(todayIdx, todayIdx + 3);
-          console.log(todayPlus2);
+          let todayPlus2;
+          todayIdx === -1
+            ? (todayPlus2 = dataModel.slice(-3))
+            : (todayPlus2 = dataModel.slice(todayIdx, todayIdx + 3));
+
+          const results = todayPlus2.map(obj => {
+            let p = { ...obj };
+            p.level = determineLevel(obj.deficit);
+
+            return p;
+          });
+          // console.log(results);
           return (
             <Grid container>
-              <Table style={{ width: window.innerWidth }}>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>{todayPlus2[0].date}</TableCell>
-                    <TableCell>{todayPlus2[1].date}</TableCell>
-                    <TableCell>{todayPlus2[2].date}</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {todayPlus2.map(row => {
-                    console.log(row);
-                    return (
-                      <TableRow key={row.date}>
-                        <TableCell component="th" scope="row">
-                          {row.deficit.toPrecision(1)}
-                        </TableCell>
-                        <TableCell numeric>{row.calories}</TableCell>
-                        <TableCell numeric>{row.fat}</TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
+              <Grid item container className={classes.rowHeader}>
+                {results.map(obj => (
+                  <Grid
+                    key={obj.date}
+                    item
+                    style={{ flex: 1, textAlign: "center" }}
+                  >
+                    <Typography variant="button">
+                      {format(new Date(obj.date), "EEE d")}
+                      <span style={{ fontSize: 10, marginLeft: 4 }}>8am</span>
+                    </Typography>
+                  </Grid>
+                ))}
+              </Grid>
+
+              {levels.map(level => (
+                <Grid
+                  key={level.id}
+                  item
+                  container
+                  className={classes.rowLevel}
+                  style={{ background: level.color }}
+                >
+                  {results.map(obj => (
+                    <Grid
+                      key={obj.date}
+                      item
+                      style={{ flex: 1, textAlign: "center" }}
+                    >
+                      {obj.level === level.id ? obj.date : null}
+                    </Grid>
+                  ))}
+                </Grid>
+              ))}
             </Grid>
           );
         }}
