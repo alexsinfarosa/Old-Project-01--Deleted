@@ -1,3 +1,0 @@
-- get pcpn from `http://data.rcc-acis.org/GridData` (forecast)
-- get PET from `http://tools.climatesmartfarming.org/irrigationtool/datahdf5/?lat,lng&year` (forecast?)
-- calculate water deficit
