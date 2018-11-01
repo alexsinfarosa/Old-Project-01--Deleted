@@ -48,6 +48,39 @@ const modeldata = {
   }
 };
 
+export const determineColor = deficit => {
+  if (deficit >= 0) {
+    return "#2E933C";
+  }
+  if (
+    deficit >
+      modeldata.soildata.soilmoistureoptions.medium.prewiltingpoint -
+        modeldata.soildata.soilmoistureoptions.medium.fieldcapacity &&
+    deficit < 0
+  ) {
+    return "#F9DC5C";
+  }
+
+  if (
+    deficit >
+      modeldata.soildata.soilmoistureoptions.medium.wiltingpoint -
+        modeldata.soildata.soilmoistureoptions.medium.fieldcapacity &&
+    deficit <=
+      modeldata.soildata.soilmoistureoptions.medium.prewiltingpoint -
+        modeldata.soildata.soilmoistureoptions.medium.fieldcapacity
+  ) {
+    return "#FC9E4F";
+  }
+
+  if (
+    deficit <
+    modeldata.soildata.soilmoistureoptions.medium.wiltingpoint -
+      modeldata.soildata.soilmoistureoptions.medium.fieldcapacity
+  ) {
+    return "#BA2D0B";
+  }
+};
+
 const getPotentialDailyDrainage = soilcap => {
   // -----------------------------------------------------------------------------------------
   // Calculate potential daily drainage of soil
@@ -91,93 +124,6 @@ const getWaterStressCoeff = (Dr, TAW) => {
   return Ks;
 };
 
-// export const getPET = (sdate, lat, lon) => {
-//   const year = new Date(sdate).getFullYear().toString();
-//   const latitude = lat.toFixed(4);
-//   const longitude = lon.toFixed(4);
-//   // the first date is 03/01
-//   const url = `${PROXYIRRIGATION}?lat=${latitude}&lon=${longitude}&year=${year}`;
-//   return axios
-//     .get(url)
-//     .then(res => {
-//       // console.log(`BrianCALL`, res.data);
-
-//       const results = {
-//         dates: [...res.data.dates_pet, ...res.data.dates_pet_fcst],
-//         pets: [...res.data.pet, ...res.data.pet_fcst],
-//         pcpns: [...res.data.precip, ...res.data.precip_fcst]
-//       };
-
-//       let resT = [];
-//       results.dates.forEach((date, i) => {
-//         let p = {};
-//         p["date"] = `${date}/${year}`;
-//         p["pet"] = results.pets[i];
-//         p["pcpn"] = results.pcpns[i];
-//         p["deficit"] = i === 0 ? 0 : null;
-//         resT.push(p);
-//       });
-
-//       // console.log(resT);
-//       return resT;
-//     })
-//     .catch(err => {
-//       console.log("Failed to fetch PET data", err);
-//     });
-// };
-
-// export const calculateDeficit = async (sdate, lat, lon, soilCapacity) => {
-//   const data = await getPET(sdate, lat, lon);
-//   // console.log(data);
-
-//   const TAW = getTawForPlant(soilCapacity);
-//   let Kc = 1;
-//   let hourlyDrainage;
-//   let tempDeficit;
-
-//   // Calculate daily drainage rate that occurs when soil water content is between saturation and field capacity
-//   const dailyPotentialDrainageRate = getPotentialDailyDrainage(soilCapacity);
-
-//   const results = data.map((obj, i) => {
-//     // console.log(obj);
-//     const Ks =
-//       i === 0
-//         ? getWaterStressCoeff(obj.deficit, TAW)
-//         : getWaterStressCoeff(data[i - 1].deficit, TAW);
-
-//     const totalDailyPET = obj.pet * Kc * Ks;
-//     const hourlyPET = totalDailyPET / 24;
-//     const hourlyPrecip = obj.pcpn / 24;
-//     const hourlyPotentialDrainage = dailyPotentialDrainageRate / 24;
-
-//     for (let hr = 1; hr <= 24; hr++) {
-//       if (obj.deficit > 0) {
-//         hourlyDrainage = Math.min(obj.deficit, hourlyPotentialDrainage);
-//       } else {
-//         hourlyDrainage = 0;
-//       }
-
-//       tempDeficit = Math.min(
-//         obj.deficit + hourlyPrecip - hourlyPET - hourlyDrainage,
-//         modeldata.soildata.soilmoistureoptions[soilCapacity].saturation -
-//           modeldata.soildata.soilmoistureoptions[soilCapacity].fieldcapacity
-//       );
-
-//       obj.deficit = Math.max(
-//         tempDeficit,
-//         -1 *
-//           (modeldata.soildata.soilmoistureoptions[soilCapacity].fieldcapacity -
-//             modeldata.soildata.soilmoistureoptions[soilCapacity].wiltingpoint)
-//       );
-//     }
-//     // console.log(obj);
-//     return obj;
-//   });
-
-//   // console.log(results);
-//   return results;
-// };
-
 export const getPET = (sdate, lat, lon, soilCapacity) => {
   console.log("getPET CALLED!");
   const year = new Date(sdate).getFullYear().toString();
@@ -196,12 +142,12 @@ export const getPET = (sdate, lat, lon, soilCapacity) => {
 
       const data = results.deficitDaily.map((val, i) => {
         let p = {};
-        p.date = dates[i];
+        p.date = `${dates[i]}/${year}`;
         p.deficit = +val.toFixed(2);
         return p;
       });
 
-      // console.log(data);
+      console.log(data);
       return data;
     })
     .catch(err => {

@@ -7,39 +7,28 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 
 import format from "date-fns/format";
-
-const medium = {
-  wiltingpoint: 2.0,
-  prewiltingpoint: 2.225,
-  stressthreshold: 2.8,
-  fieldcapacity: 3.5,
-  saturation: 5.5
-};
+import { determineColor } from "../utils/utils";
 
 const levels = [
   {
     id: 0,
     name: "No Deficit",
-    color: "#2E933C",
-    treshold: medium.saturation - medium.fieldcapacity
+    color: "#2E933C"
   },
   {
     id: 1,
     name: "Deficit, No Stress",
-    color: "#F9DC5C",
-    treshold: medium.stressthreshold - medium.fieldcapacity
+    color: "#F9DC5C"
   },
   {
     id: 2,
     name: "Deficit, Stress",
-    color: "#FC9E4F",
-    treshold: medium.prewiltingpoint - medium.fieldcapacity
+    color: "#FC9E4F"
   },
   {
     id: 3,
     name: "Severe Stress",
-    color: "#BA2D0B",
-    treshold: medium.wiltingpoint - medium.fieldcapacity
+    color: "#BA2D0B"
   }
 ];
 
@@ -59,46 +48,22 @@ const styles = theme => ({
   }
 });
 
-const determineLevel = deficit => {
-  if (deficit > medium.stressthreshold - medium.fieldcapacity) {
-    return 0;
-  }
-  if (
-    deficit > medium.prewiltingpoint - medium.fieldcapacity &&
-    deficit <= medium.stressthreshold - medium.fieldcapacity
-  ) {
-    return 1;
-  }
-
-  if (
-    deficit > medium.wiltingpoint - medium.fieldcapacity &&
-    deficit <= medium.prewiltingpoint - medium.fieldcapacity
-  ) {
-    return 2;
-  }
-
-  if (deficit < medium.wiltingpoint - medium.fieldcapacity) {
-    return 3;
-  }
-};
-
 class TopGraph extends Component {
   render() {
     const { classes } = this.props;
     return (
       <AppConsumer>
         {context => {
-          const { dataModel } = context;
-          const today = format(new Date(), "MM/dd/YYYY");
-          const todayIdx = dataModel.findIndex(obj => obj.date === today);
-          let todayPlus2;
-          todayIdx === -1
-            ? (todayPlus2 = dataModel.slice(-3))
-            : (todayPlus2 = dataModel.slice(todayIdx, todayIdx + 3));
+          const { dataModel, irrigationDate } = context;
+          const irriDate = format(new Date(irrigationDate), "MM/dd/YYYY");
+          const irrigationDayIdx = dataModel.findIndex(
+            obj => obj.date === irriDate
+          );
+          const data = dataModel.slice(irrigationDayIdx, irrigationDayIdx + 3);
 
-          const results = todayPlus2.map(obj => {
+          const results = data.map(obj => {
             let p = { ...obj };
-            p.level = determineLevel(obj.deficit);
+            p.level = determineColor(obj.deficit);
 
             return p;
           });

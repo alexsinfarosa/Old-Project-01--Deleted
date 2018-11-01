@@ -7,25 +7,11 @@ import Typography from "@material-ui/core/Typography";
 
 import format from "date-fns/format";
 import { ComposedChart, Bar, Cell } from "recharts";
+import { determineColor } from "../utils/utils";
 
 const styles = theme => ({
   root: {}
 });
-
-const determineColor = val => {
-  if (val > 0) {
-    return "#2E933C ";
-  }
-  if (val <= 0 && val >= -0.02) {
-    return "#F9DC5C";
-  }
-  if (val < -0.02 && val >= -0.08) {
-    return "#FC9E4F";
-  }
-  if (val < -0.08) {
-    return "#BA2D0B";
-  }
-};
 
 class BarChart3Days extends Component {
   render() {
@@ -33,7 +19,18 @@ class BarChart3Days extends Component {
     return (
       <AppConsumer>
         {context => {
-          const { dataModel } = context;
+          const { dataModel, irrigationDate } = context;
+          const irriDate = format(new Date(irrigationDate), "MM/dd/YYYY");
+          const irrigationDayIdx = dataModel.findIndex(
+            obj => obj.date === irriDate
+          );
+          const data = dataModel.slice(irrigationDayIdx - 14).map(obj => {
+            let p = { ...obj };
+            p.deficit = obj.deficit === 0 ? 0.0000001 : obj.deficit;
+            return p;
+          });
+
+          // console.log(data);
           return (
             <>
               <Typography
@@ -47,18 +44,18 @@ class BarChart3Days extends Component {
               >
                 Since Last Irrigate:{" "}
                 <span style={{ color: "#242038" }}>
-                  {format(new Date(dataModel.slice(30)[0].date), "EEE d, YYYY")}
+                  {format(new Date(data[0].date), "MMM d, YYYY")}
                 </span>
               </Typography>
 
               <ComposedChart
                 width={window.innerWidth}
                 height={150}
-                data={dataModel.slice(-30)}
-                margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
+                data={data}
+                margin={{ top: 0, right: -2, left: -2, bottom: 0 }}
               >
                 <Bar dataKey="deficit">
-                  {dataModel.slice(-30).map((entry, index) => {
+                  {data.map((entry, index) => {
                     return (
                       <Cell
                         key={`cell-${index}`}
