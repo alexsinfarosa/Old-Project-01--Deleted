@@ -58,6 +58,7 @@ class App extends Component {
 
   // CRUD OPERATIONS--------------------------------------------------------
   addField = async () => {
+    this.setState({ isLoading: true });
     // await this.fetchForecastData(this.state.latitude, this.state.longitude);
     const dataModel = await getPET(
       this.state.irrigationDate,
@@ -65,8 +66,6 @@ class App extends Component {
       this.state.longitude,
       this.state.soilCapacity
     );
-
-    this.setState({ dataModel });
 
     const field = {
       id: Date.now(),
@@ -78,10 +77,10 @@ class App extends Component {
       longitude: this.state.longitude,
       irrigationDate: this.state.irrigationDate,
       forecastData: this.state.forecastData,
-      dataModel: this.state.dataModel
+      dataModel: dataModel
     };
     const fields = [field, ...this.state.fields];
-    this.setState({ fields });
+    this.setState({ dataModel, fields, isLoading: false });
     this.writeToLocalstorage(fields);
   };
 

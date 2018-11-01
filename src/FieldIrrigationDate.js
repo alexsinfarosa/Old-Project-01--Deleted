@@ -26,7 +26,7 @@ class FieldIrrigationDate extends Component {
   };
   handleIrrigationDate = irrigationDate => {
     const year = new Date(irrigationDate).getFullYear();
-    console.log(year);
+
     const startSeason = `03-01-${year}`;
     const endSeason = `10-31-${year}`;
     const isInSeason = isWithinInterval(new Date(irrigationDate), {
@@ -36,7 +36,7 @@ class FieldIrrigationDate extends Component {
     if (isInSeason) {
       this.setState({ irrigationDate });
     } else {
-      this.setState({ isOutOfSeason: true });
+      this.setState({ irrigationDate, isOutOfSeason: true });
     }
   };
 

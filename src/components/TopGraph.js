@@ -102,7 +102,7 @@ class TopGraph extends Component {
 
             return p;
           });
-          // console.log(results);
+          console.log(results);
           return (
             <Grid container>
               <Grid item container className={classes.rowHeader}>
