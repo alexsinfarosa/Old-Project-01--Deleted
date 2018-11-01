@@ -91,16 +91,20 @@ class TopGraph extends Component {
                   item
                   container
                   className={classes.rowLevel}
-                  style={{ background: level.color }}
+                  style={{
+                    borderTop: `1px solid ${level.color}`
+                  }}
                 >
+                  <Typography variant="button" style={{ color: level.color }}>
+                    {level.name}
+                  </Typography>
+
                   {results.map(obj => (
                     <Grid
                       key={obj.date}
                       item
                       style={{ flex: 1, textAlign: "center" }}
-                    >
-                      {obj.level === level.id ? obj.date : null}
-                    </Grid>
+                    />
                   ))}
                 </Grid>
               ))}

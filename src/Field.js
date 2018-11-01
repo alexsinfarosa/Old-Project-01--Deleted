@@ -11,7 +11,7 @@ import CloudIcon from "@material-ui/icons/CloudOutlined";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
-import BarChart3Days from "./components/BarChart3Days";
+import BarChart3Days from "./components/BarChart";
 import TopGraph from "./components/TopGraph";
 
 const styles = theme => ({
@@ -99,7 +99,7 @@ class Field extends Component {
                   fullWidth
                   variant="contained"
                   color="primary"
-                  style={{ height: 80 }}
+                  style={{ height: 80, borderRadius: 0 }}
                   size="large"
                 >
                   I watered!

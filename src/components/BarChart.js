@@ -24,13 +24,13 @@ class BarChart3Days extends Component {
           const irrigationDayIdx = dataModel.findIndex(
             obj => obj.date === irriDate
           );
-          const data = dataModel.slice(irrigationDayIdx - 14).map(obj => {
+          const data = dataModel.slice(irrigationDayIdx).map(obj => {
             let p = { ...obj };
             p.deficit = obj.deficit === 0 ? 0.0000001 : obj.deficit;
             return p;
           });
 
-          // console.log(data);
+          console.log(data);
           return (
             <>
               <Typography
@@ -52,7 +52,7 @@ class BarChart3Days extends Component {
                 width={window.innerWidth}
                 height={150}
                 data={data}
-                margin={{ top: 0, right: -2, left: -2, bottom: 0 }}
+                margin={{ top: 16, right: -2, left: -2, bottom: 0 }}
               >
                 <Bar dataKey="deficit">
                   {data.map((entry, index) => {
