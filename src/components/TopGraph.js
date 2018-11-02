@@ -138,7 +138,8 @@ class TopGraph extends Component {
                           padding="none"
                           style={{
                             border: "none",
-                            textAlign: "center"
+                            textAlign: "center",
+                            fontWeight: "bold"
                           }}
                         >
                           {d.dayOne}
