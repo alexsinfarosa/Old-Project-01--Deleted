@@ -30,7 +30,7 @@ class BarChart3Days extends Component {
             return p;
           });
 
-          console.log(data);
+          // console.log(data);
           return (
             <>
               <Typography

@@ -147,7 +147,7 @@ export const getPET = (sdate, lat, lon, soilCapacity) => {
         return p;
       });
 
-      console.log(data);
+      // console.log(data);
       return data;
     })
     .catch(err => {
