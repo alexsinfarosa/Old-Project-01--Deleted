@@ -99,7 +99,7 @@ class Field extends Component {
                   fullWidth
                   variant="contained"
                   color="primary"
-                  style={{ height: 70 }}
+                  style={{ height: 70, borderRadius: 0 }}
                   // size="large"
                 >
                   I watered!

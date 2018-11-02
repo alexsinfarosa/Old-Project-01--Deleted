@@ -76,7 +76,7 @@ class TopGraph extends Component {
           const ciccio = levels.map((level, i) => {
             let p = { ...level };
             p.header =
-              i === 0 ? "" : format(new Date(results[i - 1].date), "MMM EEE d");
+              i === 0 ? "" : format(new Date(results[i - 1].date), "MMM do");
             return p;
           });
 
@@ -142,11 +142,23 @@ class TopGraph extends Component {
                           }}
                         >
                           {d.dayOne}
+                          {d.dayOne && (
+                            <div
+                              style={{
+                                width: 10,
+                                height: 10,
+                                background: d.color,
+                                borderRadius: "50%",
+                                margin: "0 auto"
+                              }}
+                            />
+                          )}
                         </TableCell>
                         <TableCell
                           padding="none"
                           style={{ border: "none", textAlign: "center" }}
                         >
+                          {d.dayTwo}
                           {d.dayTwo && (
                             <div
                               style={{
@@ -163,6 +175,7 @@ class TopGraph extends Component {
                           padding="none"
                           style={{ border: "none", textAlign: "center" }}
                         >
+                          {d.dayThree}
                           {d.dayThree && (
                             <div
                               style={{
