@@ -74,9 +74,9 @@ class Field extends Component {
                 alignItems="center"
               >
                 <Typography
-                  variant="button"
+                  variant="h6"
                   gutterBottom
-                  style={{ marginBottom: 32, marginTop: 16 }}
+                  style={{ marginBottom: 16, marginTop: 16 }}
                 >
                   {fieldName}
                 </Typography>
@@ -92,15 +92,15 @@ class Field extends Component {
                   position: "absolute",
                   bottom: 0,
                   width: "100%",
-                  alignItems: "flex-start"
+                  textAlign: "center"
                 }}
               >
                 <Button
                   fullWidth
                   variant="contained"
                   color="primary"
-                  style={{ height: 80, borderRadius: 0 }}
-                  size="large"
+                  style={{ height: 70 }}
+                  // size="large"
                 >
                   I watered!
                 </Button>

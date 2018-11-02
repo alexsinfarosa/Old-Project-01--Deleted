@@ -48,35 +48,40 @@ const modeldata = {
   }
 };
 
+const noDeficit =
+  modeldata.soildata.soilmoistureoptions.medium.saturation -
+  modeldata.soildata.soilmoistureoptions.medium.fieldcapacity;
+
+const deficitNoStress =
+  modeldata.soildata.soilmoistureoptions.medium.stressthreshold -
+  modeldata.soildata.soilmoistureoptions.medium.fieldcapacity;
+
+const deficitStress =
+  modeldata.soildata.soilmoistureoptions.medium.prewiltingpoint -
+  modeldata.soildata.soilmoistureoptions.medium.fieldcapacity;
+
+const severeStress =
+  modeldata.soildata.soilmoistureoptions.medium.wiltingpoint -
+  modeldata.soildata.soilmoistureoptions.medium.fieldcapacity;
+
+console.log(noDeficit);
+console.log(deficitNoStress);
+console.log(deficitStress);
+console.log(severeStress);
+
 export const determineColor = deficit => {
   if (deficit >= 0) {
     return "#2E933C";
   }
-  if (
-    deficit >
-      modeldata.soildata.soilmoistureoptions.medium.prewiltingpoint -
-        modeldata.soildata.soilmoistureoptions.medium.fieldcapacity &&
-    deficit < 0
-  ) {
+  if (deficit >= deficitNoStress && deficit < 0) {
     return "#F9DC5C";
   }
 
-  if (
-    deficit >
-      modeldata.soildata.soilmoistureoptions.medium.wiltingpoint -
-        modeldata.soildata.soilmoistureoptions.medium.fieldcapacity &&
-    deficit <=
-      modeldata.soildata.soilmoistureoptions.medium.prewiltingpoint -
-        modeldata.soildata.soilmoistureoptions.medium.fieldcapacity
-  ) {
+  if (deficit >= deficitStress && deficit < deficitNoStress) {
     return "#FC9E4F";
   }
 
-  if (
-    deficit <
-    modeldata.soildata.soilmoistureoptions.medium.wiltingpoint -
-      modeldata.soildata.soilmoistureoptions.medium.fieldcapacity
-  ) {
+  if (deficit < deficitStress) {
     return "#BA2D0B";
   }
 };

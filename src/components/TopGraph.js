@@ -66,10 +66,9 @@ class TopGraph extends Component {
           );
           const data = dataModel.slice(irrigationDayIdx, irrigationDayIdx + 3);
 
-          const results = data.map(obj => {
+          const results = data.map((obj, i) => {
             let p = { ...obj };
             p.color = determineColor(obj.deficit);
-
             return p;
           });
           // console.log(results);
@@ -77,32 +76,37 @@ class TopGraph extends Component {
           const ciccio = levels.map((level, i) => {
             let p = { ...level };
             p.header =
-              i === 0
-                ? "Threshold"
-                : format(new Date(results[i - 1].date), "EEE d");
-
-            let m = {};
-            results.map(obj => {
-              m.dayOne = p.color === obj.color ? results[0].deficit : null;
-              m.dayTwo = p.color === obj.color ? results[1].deficit : null;
-              m.dayThree = p.color === obj.color ? results[2].deficit : null;
-              return m;
-            });
-
-            return { ...p, ...m };
+              i === 0 ? "" : format(new Date(results[i - 1].date), "MMM EEE d");
+            return p;
           });
 
-          console.log(ciccio);
+          // console.log(ciccio);
+
+          const nello = ciccio.map(level => {
+            let p = { ...level };
+
+            p.dayOne =
+              level.color === results[0].color ? results[0].deficit : null;
+            p.dayTwo =
+              level.color === results[1].color ? results[1].deficit : null;
+            p.dayThree =
+              level.color === results[1].color ? results[2].deficit : null;
+
+            // console.log(p);
+            return p;
+          });
+
+          // console.log(nello);
           return (
             <Grid container>
               <Table className={classes.table}>
                 <TableHead>
                   <TableRow>
-                    {ciccio.map(d => (
+                    {nello.map(d => (
                       <TableCell
                         key={d.id}
                         padding="none"
-                        style={{ paddingLeft: 8 }}
+                        style={{ border: "none", textAlign: "center" }}
                       >
                         {d.header}
                       </TableCell>
@@ -110,30 +114,66 @@ class TopGraph extends Component {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {ciccio.map(d => {
+                  {nello.map(d => {
                     return (
                       <TableRow
                         key={d.id}
-                        style={{ background: d.color, height: 70 }}
+                        style={{
+                          border: "none",
+                          borderLeft: `16px solid ${d.color}`,
+                          height: 70
+                        }}
                       >
-                        <TableCell padding="none" style={{ paddingLeft: 8 }}>
+                        <TableCell
+                          padding="none"
+                          style={{
+                            border: "none",
+                            paddingLeft: 8,
+                            color: "rgba(0, 0, 0, 0.54)"
+                          }}
+                        >
                           {d.name}
                         </TableCell>
                         <TableCell
                           padding="none"
                           style={{
-                            paddingLeft: 8,
-                            fontSize: 16,
-                            fontWeight: "bold"
+                            border: "none",
+                            textAlign: "center"
                           }}
                         >
                           {d.dayOne}
                         </TableCell>
-                        <TableCell padding="none" style={{ paddingLeft: 8 }}>
-                          {d.dayTwo}
+                        <TableCell
+                          padding="none"
+                          style={{ border: "none", textAlign: "center" }}
+                        >
+                          {d.dayTwo && (
+                            <div
+                              style={{
+                                width: 10,
+                                height: 10,
+                                background: d.color,
+                                borderRadius: "50%",
+                                margin: "0 auto"
+                              }}
+                            />
+                          )}
                         </TableCell>
-                        <TableCell padding="none" style={{ paddingLeft: 8 }}>
-                          {d.dayThree}
+                        <TableCell
+                          padding="none"
+                          style={{ border: "none", textAlign: "center" }}
+                        >
+                          {d.dayThree && (
+                            <div
+                              style={{
+                                width: 10,
+                                height: 10,
+                                background: d.color,
+                                borderRadius: "50%",
+                                margin: "0 auto"
+                              }}
+                            />
+                          )}
                         </TableCell>
                       </TableRow>
                     );

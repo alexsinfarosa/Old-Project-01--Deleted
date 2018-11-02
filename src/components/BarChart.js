@@ -36,14 +36,14 @@ class BarChart3Days extends Component {
               <Typography
                 variant="button"
                 style={{
-                  // marginLeft: 32,
                   color: "#9E9E9E",
                   fontWeight: "bold",
-                  marginTop: 32
+                  marginTop: 32,
+                  marginBottom: 16
                 }}
               >
                 Since Last Irrigate:{" "}
-                <span style={{ color: "#242038" }}>
+                <span style={{ color: "#242038", fontWeight: "normal" }}>
                   {format(new Date(data[0].date), "MMM d, YYYY")}
                 </span>
               </Typography>
