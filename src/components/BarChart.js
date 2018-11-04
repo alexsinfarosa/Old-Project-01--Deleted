@@ -25,7 +25,7 @@ class BarChart3Days extends Component {
             obj => obj.date === irriDate
           );
 
-          const today = format(new Date("10/31/2018"), "MM/dd/YYYY");
+          const today = format(new Date("08/15/2018"), "MM/dd/YYYY");
           const todayIdx = dataModel.findIndex(obj => obj.date === today);
 
           const data = dataModel

@@ -21,6 +21,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
 
 import format from "date-fns/format";
+import { determineColor } from "./utils/utils";
 
 const styles = theme => ({
   iconOnFocus: {
@@ -65,6 +66,8 @@ class FieldList extends Component {
             deleteField,
             selectField
           } = context;
+          console.log(fields);
+          const today = format(new Date("08/15/2018"), "MM/dd/YYYY");
           return (
             <Grid container>
               <Grid
@@ -94,35 +97,45 @@ class FieldList extends Component {
 
               <Grid item xs={12}>
                 <List component="nav">
-                  {fields.map(field => (
-                    <div key={field.id}>
-                      <ListItem
-                        button
-                        divider
-                        style={{ height: 128 }}
-                        onClick={() => {
-                          selectField(field.id);
-                          handleIndex(mainIdx - 1, "mainIdx");
-                        }}
-                      >
-                        <ListItemText
-                          primary={field.fieldName}
-                          secondary={format(
-                            field.irrigationDate,
-                            "MMMM do, YYYY"
-                          )}
-                        />
-                        <ListItemSecondaryAction>
-                          <IconButton
-                            aria-label="Delete"
-                            onClick={() => this.handleClickOpen(field.id)}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                    </div>
-                  ))}
+                  {fields.map(field => {
+                    const todayObj = field.dataModel.find(
+                      obj => obj.date === today
+                    );
+                    const color = determineColor(todayObj.deficit);
+
+                    return (
+                      <div key={field.id}>
+                        <ListItem
+                          button
+                          divider
+                          style={{
+                            height: 128,
+                            borderLeft: `16px solid ${color}`
+                          }}
+                          onClick={() => {
+                            selectField(field.id);
+                            handleIndex(mainIdx - 1, "mainIdx");
+                          }}
+                        >
+                          <ListItemText
+                            primary={field.fieldName}
+                            secondary={format(
+                              field.irrigationDate,
+                              "MMMM do, YYYY"
+                            )}
+                          />
+                          <ListItemSecondaryAction>
+                            <IconButton
+                              aria-label="Delete"
+                              onClick={() => this.handleClickOpen(field.id)}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </ListItemSecondaryAction>
+                        </ListItem>
+                      </div>
+                    );
+                  })}
                 </List>
                 <Dialog
                   open={this.state.open}

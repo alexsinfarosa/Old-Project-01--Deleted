@@ -47,7 +47,7 @@ class FieldIrrigationDate extends Component {
           const { handleIndex, landingIdx } = context;
           const year = new Date(this.state.irrigationDate).getFullYear();
           const startSeason = `${year}-03-01`;
-          const endSeason = `${year}-10-31`;
+          const endSeason = `${year}-11-01`;
 
           return (
             <Grid
