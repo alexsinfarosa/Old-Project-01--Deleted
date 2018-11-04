@@ -61,7 +61,7 @@ class TopGraph extends Component {
         {context => {
           const { dataModel } = context;
 
-          const today = format(new Date("07/16/2018"), "MM/dd/YYYY");
+          const today = format(new Date("09/16/2018"), "MM/dd/YYYY");
           const todayIdx = dataModel.findIndex(obj => obj.date === today);
 
           const data = dataModel.slice(todayIdx, todayIdx + 3).map((obj, i) => {
