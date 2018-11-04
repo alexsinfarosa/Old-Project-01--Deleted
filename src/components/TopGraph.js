@@ -61,48 +61,33 @@ class TopGraph extends Component {
         {context => {
           const { dataModel } = context;
 
-          const today = format(new Date("10/05/2018"), "MM/dd/YYYY");
+          const today = format(new Date("10/31/2018"), "MM/dd/YYYY");
           const todayIdx = dataModel.findIndex(obj => obj.date === today);
 
-          const data = dataModel.slice(todayIdx, todayIdx + 3);
-
-          const results = data.map((obj, i) => {
+          const data = dataModel.slice(todayIdx, todayIdx + 3).map((obj, i) => {
             let p = { ...obj };
             p.color = determineColor(obj.deficit);
             return p;
           });
-          // console.log(results);
+          // console.log(data);
 
           const ciccio = levels.map((level, i) => {
             let p = { ...level };
             p.header =
-              i === 0 ? "" : format(new Date(results[i - 1].date), "MMM do");
+              i === 0 ? "" : format(new Date(data[i - 1].date), "MMM do");
+            p.dayOne = level.color === data[0].color ? data[0].deficit : null;
+            p.dayTwo = level.color === data[1].color ? data[1].deficit : null;
+            p.dayThree = level.color === data[2].color ? data[2].deficit : null;
             return p;
           });
-
           // console.log(ciccio);
 
-          const nello = ciccio.map(level => {
-            let p = { ...level };
-
-            p.dayOne =
-              level.color === results[0].color ? results[0].deficit : null;
-            p.dayTwo =
-              level.color === results[1].color ? results[1].deficit : null;
-            p.dayThree =
-              level.color === results[2].color ? results[2].deficit : null;
-
-            // console.log(p);
-            return p;
-          });
-
-          console.log(nello);
           return (
             <Grid container>
               <Table className={classes.table}>
                 <TableHead>
                   <TableRow>
-                    {nello.map(d => (
+                    {ciccio.map(d => (
                       <TableCell
                         key={d.id}
                         padding="none"
@@ -114,7 +99,7 @@ class TopGraph extends Component {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {nello.map(d => {
+                  {ciccio.map(d => {
                     return (
                       <TableRow
                         key={d.id}
@@ -142,8 +127,8 @@ class TopGraph extends Component {
                             fontWeight: "bold"
                           }}
                         >
-                          {d.dayOne <= 0 && d.dayOne}
-                          {d.dayOne && (
+                          {d.dayOne < 0 && d.dayOne}
+                          {(d.dayOne || d.dayOne === 0) && (
                             <div
                               style={{
                                 width: 10,

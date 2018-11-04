@@ -12,7 +12,7 @@
     "date-fns": "2.0.0-alpha.16",
     "gh-pages": "^2.0.1",
     "hide-virtual-keyboard": "^1.0.1",
-    "material-ui-pickers": "^1.0.0-rc.17",
+    "material-ui-pickers": "^1.0.1",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-geocode": "^0.1.2",

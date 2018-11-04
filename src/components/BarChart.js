@@ -20,13 +20,12 @@ class BarChart3Days extends Component {
       <AppConsumer>
         {context => {
           const { dataModel, irrigationDate } = context;
-
           const irriDate = format(new Date(irrigationDate), "MM/dd/YYYY");
           const irrigationDayIdx = dataModel.findIndex(
             obj => obj.date === irriDate
           );
 
-          const today = format(new Date("10/05/2018"), "MM/dd/YYYY");
+          const today = format(new Date("10/31/2018"), "MM/dd/YYYY");
           const todayIdx = dataModel.findIndex(obj => obj.date === today);
 
           const data = dataModel
@@ -37,7 +36,7 @@ class BarChart3Days extends Component {
               return p;
             });
 
-          console.log(data);
+          // console.log(data);
           return (
             <>
               <Typography

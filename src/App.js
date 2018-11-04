@@ -41,7 +41,7 @@ class App extends Component {
       handleIndex: this.handleIndex,
       navigateToMain: this.navigateToMain,
       navigateToLanding: this.navigateToLanding,
-      forecastData: [],
+      forecastData: null,
       fetchForecastData: this.fetchForecastData
     };
   }
@@ -66,7 +66,6 @@ class App extends Component {
       this.state.longitude,
       this.state.soilCapacity
     );
-
     const field = {
       id: Date.now(),
       fieldName: this.state.address.split(",")[0],
@@ -154,7 +153,7 @@ class App extends Component {
         // console.log(res.data);
         const { currently, daily } = res.data;
         const forecastData = { currently, daily };
-        return forecastData;
+        this.setState({ forecastData });
       })
       .catch(err => {
         console.log("Failed to load forecast weather data", err);

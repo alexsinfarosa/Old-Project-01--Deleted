@@ -51,8 +51,6 @@ const styles = theme => ({
   }
 });
 
-// TODO: handle case when forecast array is empty
-
 class Forecast extends Component {
   render() {
     const { classes } = this.props;
@@ -61,7 +59,7 @@ class Forecast extends Component {
         {context => {
           // console.log("Forecast");
           const { handleIndex, mainIdx, forecastData, address } = context;
-          console.log(forecastData);
+          // console.log(forecastData);
           return (
             <Grid container>
               <Grid
@@ -84,7 +82,7 @@ class Forecast extends Component {
                 </Grid>
               </Grid>
 
-              {forecastData.length > 0 && (
+              {forecastData && (
                 <Grid
                   container
                   justify="center"
