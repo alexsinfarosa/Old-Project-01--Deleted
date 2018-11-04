@@ -66,8 +66,8 @@ class FieldList extends Component {
             deleteField,
             selectField
           } = context;
-          console.log(fields);
-          const today = format(new Date("08/15/2018"), "MM/dd/YYYY");
+          // console.log(fields);
+          const today = format(new Date("07/16/2018"), "MM/dd/YYYY");
           return (
             <Grid container>
               <Grid
