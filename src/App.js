@@ -99,7 +99,8 @@ class App extends Component {
       : this.writeToLocalstorage(fields);
   };
 
-  selectField = id => {
+  selectField = async id => {
+    this.setState({ isLoading: true });
     const field = this.state.fields.find(field => field.id === id);
     this.setState({
       id: field.id,
@@ -113,15 +114,34 @@ class App extends Component {
       forecastData: field.forecastData,
       dataModel: field.dataModel
     });
-
+    // console.log(field);
     const countHrs = differenceInHours(new Date(), new Date(field.id));
+
     if (countHrs > 3) {
-      this.fetchForecastData(field.latitude, field.longitude);
-      const idx = this.state.fields.findIndex(field => field.id === id);
+      console.log("more than 3 hours...");
+      const dataModel = await getPET(
+        this.state.irrigationDate,
+        this.state.latitude,
+        this.state.longitude,
+        this.state.soilCapacity
+      );
+      const forecastData = this.fetchForecastData(
+        this.state.latitude,
+        this.state.longitude
+      );
+      this.setState({ dataModel, forecastData });
+
+      const idx = this.state.fields.findIndex(
+        field => field.id === this.state.id
+      );
       const copyFields = [...this.state.fields];
-      copyFields[idx].forecastData = this.state.forecastData;
+      copyFields[idx].id = Date.now();
+      copyFields[idx].dataModel = dataModel;
+      copyFields[idx].forecastData = forecastData;
+
       this.writeToLocalstorage(copyFields);
     }
+    this.setState({ isLoading: false });
   };
 
   fetchForecastData = (latitude, longitude) => {
@@ -134,7 +154,7 @@ class App extends Component {
         // console.log(res.data);
         const { currently, daily } = res.data;
         const forecastData = { currently, daily };
-        this.setState({ forecastData, isLoading: false });
+        return forecastData;
       })
       .catch(err => {
         console.log("Failed to load forecast weather data", err);
@@ -182,21 +202,27 @@ class App extends Component {
       if (this.state.fields.length !== 0) {
         const countHrs = differenceInHours(new Date(), new Date(this.state.id));
         if (countHrs > 3) {
-          this.fetchForecastData(this.state.latitude, this.state.longitude);
-          const idx = this.state.fields.findIndex(
-            field => field.id === this.state.id
-          );
-          const copyFields = [...this.state.fields];
-          copyFields[idx].forecastData = this.state.forecastData;
-
+          console.log("more than 3 hours...");
           const dataModel = await getPET(
             this.state.irrigationDate,
             this.state.latitude,
             this.state.longitude,
             this.state.soilCapacity
           );
+          const forecastData = this.fetchForecastData(
+            this.state.latitude,
+            this.state.longitude
+          );
+          this.setState({ dataModel, forecastData });
 
+          const idx = this.state.fields.findIndex(
+            field => field.id === this.state.id
+          );
+          const copyFields = [...this.state.fields];
+          copyFields[idx].id = Date.now();
           copyFields[idx].dataModel = dataModel;
+          copyFields[idx].forecastData = forecastData;
+
           this.writeToLocalstorage(copyFields);
         }
       }

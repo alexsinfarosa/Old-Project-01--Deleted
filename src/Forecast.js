@@ -61,7 +61,7 @@ class Forecast extends Component {
         {context => {
           // console.log("Forecast");
           const { handleIndex, mainIdx, forecastData, address } = context;
-
+          console.log(forecastData);
           return (
             <Grid container>
               <Grid
@@ -84,7 +84,7 @@ class Forecast extends Component {
                 </Grid>
               </Grid>
 
-              {forecastData && (
+              {forecastData.length > 0 && (
                 <Grid
                   container
                   justify="center"

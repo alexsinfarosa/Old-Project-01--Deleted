@@ -59,12 +59,12 @@ class TopGraph extends Component {
     return (
       <AppConsumer>
         {context => {
-          const { dataModel, irrigationDate } = context;
-          const irriDate = format(new Date(irrigationDate), "MM/dd/YYYY");
-          const irrigationDayIdx = dataModel.findIndex(
-            obj => obj.date === irriDate
-          );
-          const data = dataModel.slice(irrigationDayIdx, irrigationDayIdx + 3);
+          const { dataModel } = context;
+
+          const today = format(new Date("10/05/2018"), "MM/dd/YYYY");
+          const todayIdx = dataModel.findIndex(obj => obj.date === today);
+
+          const data = dataModel.slice(todayIdx, todayIdx + 3);
 
           const results = data.map((obj, i) => {
             let p = { ...obj };
@@ -90,13 +90,13 @@ class TopGraph extends Component {
             p.dayTwo =
               level.color === results[1].color ? results[1].deficit : null;
             p.dayThree =
-              level.color === results[1].color ? results[2].deficit : null;
+              level.color === results[2].color ? results[2].deficit : null;
 
             // console.log(p);
             return p;
           });
 
-          // console.log(nello);
+          console.log(nello);
           return (
             <Grid container>
               <Table className={classes.table}>
@@ -142,7 +142,7 @@ class TopGraph extends Component {
                             fontWeight: "bold"
                           }}
                         >
-                          {d.dayOne}
+                          {d.dayOne <= 0 && d.dayOne}
                           {d.dayOne && (
                             <div
                               style={{
@@ -159,7 +159,7 @@ class TopGraph extends Component {
                           padding="none"
                           style={{ border: "none", textAlign: "center" }}
                         >
-                          {d.dayTwo}
+                          {d.dayTwo <= 0 && d.dayTwo}
                           {d.dayTwo && (
                             <div
                               style={{
@@ -176,7 +176,7 @@ class TopGraph extends Component {
                           padding="none"
                           style={{ border: "none", textAlign: "center" }}
                         >
-                          {d.dayThree}
+                          {d.dayThree <= 0 && d.dayThree}
                           {d.dayThree && (
                             <div
                               style={{
