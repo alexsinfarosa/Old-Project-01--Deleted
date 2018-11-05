@@ -11,6 +11,7 @@ import Landing from "./Landing";
 
 import differenceInHours from "date-fns/differenceInHours";
 import { getPET } from "./utils/utils";
+import AdjustDeficit from "./AdjustDeficit";
 
 class App extends Component {
   constructor(props) {
@@ -20,6 +21,7 @@ class App extends Component {
       mainIdx: 1,
       landingIdx: 0,
       isLanding: false,
+      displayDeficitScreen: true,
 
       id: null,
       soilCapacity: "medium",
@@ -42,7 +44,8 @@ class App extends Component {
       navigateToMain: this.navigateToMain,
       navigateToLanding: this.navigateToLanding,
       forecastData: null,
-      fetchForecastData: this.fetchForecastData
+      fetchForecastData: this.fetchForecastData,
+      setDisplayDeficitScreen: this.setDisplayDeficitScreen
     };
   }
 
@@ -55,6 +58,7 @@ class App extends Component {
   handleIndex = (idx, comp) => this.setState({ [comp]: idx });
   handleField = ({ ...field }) => this.setState({ ...field });
   handleIrrigationDate = irrigationDate => this.setState({ irrigationDate });
+  setDisplayDeficitScreen = d => this.setState({ displayDeficitScreen: d });
 
   // CRUD OPERATIONS--------------------------------------------------------
   addField = async () => {
@@ -245,10 +249,12 @@ class App extends Component {
               alignItems: "center"
             }}
           >
-            <CircularProgress />
+            <CircularProgress style={{ color: "#843EA4" }} />
           </div>
         ) : fields.length === 0 || isLanding ? (
           <Landing />
+        ) : this.state.displayDeficitScreen ? (
+          <AdjustDeficit dataModel={this.state.dataModel} />
         ) : (
           <Main />
         )}

@@ -37,7 +37,12 @@ class Field extends Component {
       <AppConsumer>
         {context => {
           // console.log("Field");
-          const { handleIndex, mainIdx, fieldName } = context;
+          const {
+            handleIndex,
+            mainIdx,
+            fieldName,
+            setDisplayDeficitScreen
+          } = context;
           return (
             <Grid container>
               <Grid
@@ -100,7 +105,7 @@ class Field extends Component {
                   variant="contained"
                   color="primary"
                   style={{ height: 70, borderRadius: 0 }}
-                  // size="large"
+                  onClick={() => setDisplayDeficitScreen(true)}
                 >
                   I watered!
                 </Button>
