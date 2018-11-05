@@ -5,13 +5,16 @@ import axios from "axios";
 import { PROXYDARKSKY } from "./utils/api";
 
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Fade from "@material-ui/core/Fade";
 
 import Main from "./Main";
 import Landing from "./Landing";
 
 import differenceInHours from "date-fns/differenceInHours";
-import { getPET } from "./utils/utils";
+import { getPET, runWaterDeficitModel } from "./utils/utils";
 import AdjustDeficit from "./AdjustDeficit";
+
+import format from "date-fns/format";
 
 class App extends Component {
   constructor(props) {
@@ -21,7 +24,8 @@ class App extends Component {
       mainIdx: 1,
       landingIdx: 0,
       isLanding: false,
-      displayDeficitScreen: true,
+      displayDeficitScreen: false,
+      deficitAdjustment: null,
 
       id: null,
       soilCapacity: "medium",
@@ -45,7 +49,9 @@ class App extends Component {
       navigateToLanding: this.navigateToLanding,
       forecastData: null,
       fetchForecastData: this.fetchForecastData,
-      setDisplayDeficitScreen: this.setDisplayDeficitScreen
+      setDisplayDeficitScreen: this.setDisplayDeficitScreen,
+      resetWaterDeficit: this.resetWaterDeficit,
+      setDeficitAdjustment: this.setDeficitAdjustment
     };
   }
 
@@ -59,6 +65,11 @@ class App extends Component {
   handleField = ({ ...field }) => this.setState({ ...field });
   handleIrrigationDate = irrigationDate => this.setState({ irrigationDate });
   setDisplayDeficitScreen = d => this.setState({ displayDeficitScreen: d });
+  setDeficitAdjustment = d =>
+    this.setState({ deficitAdjustment: d }, () => {
+      this.resetWaterDeficit();
+      this.setDisplayDeficitScreen(false);
+    });
 
   // CRUD OPERATIONS--------------------------------------------------------
   addField = async () => {
@@ -68,7 +79,8 @@ class App extends Component {
       this.state.irrigationDate,
       this.state.latitude,
       this.state.longitude,
-      this.state.soilCapacity
+      this.state.soilCapacity,
+      0
     );
     const field = {
       id: Date.now(),
@@ -102,6 +114,40 @@ class App extends Component {
       : this.writeToLocalstorage(fields);
   };
 
+  resetWaterDeficit = () => {
+    const irrigationDate = format(new Date("09/16/2018"), "MM/dd/YYYY");
+    const copyFields = [...this.state.fields];
+    const field = copyFields.find(field => field.id === this.state.id);
+    field.irrigationDate = irrigationDate;
+
+    const dataModel = [...this.state.dataModel];
+    const irrigationDateIdx = dataModel.findIndex(
+      obj => obj.date === irrigationDate
+    );
+    // console.log(irrigationDateIdx);
+    // console.log(dataModel.slice(irrigationDateIdx));
+
+    const data = dataModel.slice(irrigationDateIdx);
+    const pcpns = data.map(d => d.pcp);
+    const pets = data.map(d => d.pet);
+    pets[0] += this.state.deficitAdjustment;
+
+    // console.log(pets);
+
+    const temp = runWaterDeficitModel(pcpns, pets, 0, this.state.soilCapacity);
+    const results = temp.deficitDaily.map((val, i) => {
+      let p = {};
+      p.date = data[i].date;
+      p.deficit = +val.toFixed(2);
+      p.pet = pets[i];
+      p.pcp = pcpns[i];
+      return p;
+    });
+
+    console.log(results);
+    this.setState({ irrigationDate, dataModel: results });
+  };
+
   selectField = async id => {
     this.setState({ isLoading: true });
     const field = this.state.fields.find(field => field.id === id);
@@ -126,7 +172,8 @@ class App extends Component {
         this.state.irrigationDate,
         this.state.latitude,
         this.state.longitude,
-        this.state.soilCapacity
+        this.state.soilCapacity,
+        0
       );
       const forecastData = this.fetchForecastData(
         this.state.latitude,
@@ -210,7 +257,8 @@ class App extends Component {
             this.state.irrigationDate,
             this.state.latitude,
             this.state.longitude,
-            this.state.soilCapacity
+            this.state.soilCapacity,
+            0
           );
           const forecastData = this.fetchForecastData(
             this.state.latitude,
@@ -254,7 +302,9 @@ class App extends Component {
         ) : fields.length === 0 || isLanding ? (
           <Landing />
         ) : this.state.displayDeficitScreen ? (
-          <AdjustDeficit dataModel={this.state.dataModel} />
+          <Fade in={this.state.displayDeficitScreen}>
+            <AdjustDeficit dataModel={this.state.dataModel} />
+          </Fade>
         ) : (
           <Main />
         )}

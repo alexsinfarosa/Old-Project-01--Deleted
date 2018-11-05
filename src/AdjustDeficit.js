@@ -11,6 +11,8 @@ import Slider from "@material-ui/lab/Slider";
 
 import format from "date-fns/format";
 
+import { determineColor } from "./utils/utils";
+
 const styles = theme => ({
   padding: {
     paddingTop: theme.spacing.unit,
@@ -40,7 +42,11 @@ class AdjustDeficit extends Component {
     return (
       <AppConsumer>
         {context => {
-          const { dataModel, setDisplayDeficitScreen } = context;
+          const {
+            dataModel,
+            setDisplayDeficitScreen,
+            setDeficitAdjustment
+          } = context;
           const today = format(new Date("09/16/2018"), "MM/dd/YYYY");
           const todayIdx = dataModel.findIndex(obj => obj.date === today);
           const todayDeficit = dataModel[todayIdx].deficit;
@@ -81,7 +87,15 @@ class AdjustDeficit extends Component {
                     variant="button"
                     gutterBottom
                     align="center"
-                    style={{ marginBottom: 32 }}
+                    style={{
+                      width: "70%",
+                      margin: "0 auto",
+                      marginBottom: 64,
+                      borderBottom: `5px solid ${determineColor(
+                        todayDeficit + this.state.value
+                      )}`,
+                      borderRadius: 8
+                    }}
                   >
                     {`Current Water Deficit: ${(
                       todayDeficit + this.state.value
@@ -109,7 +123,12 @@ class AdjustDeficit extends Component {
                   <Typography
                     variant="h4"
                     gutterBottom
-                    style={{ marginBottom: 32 }}
+                    style={{
+                      marginBottom: 32,
+                      border: "1px solid #eee",
+                      padding: 8,
+                      borderRadius: 10
+                    }}
                   >
                     {this.state.value.toFixed(2)}{" "}
                     <span style={{ fontSize: 14 }}>unit</span>
@@ -152,9 +171,11 @@ class AdjustDeficit extends Component {
                   variant="contained"
                   color="primary"
                   style={{ height: 70, borderRadius: 0 }}
-                  onDragEnd={() => setDisplayDeficitScreen(false)}
+                  onClick={() => {
+                    setDeficitAdjustment(this.state.value);
+                  }}
                 >
-                  Done!
+                  Update!
                 </Button>
               </Grid>
             </Grid>

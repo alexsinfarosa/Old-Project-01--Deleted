@@ -145,7 +145,7 @@ class TopGraph extends Component {
                           padding="none"
                           style={{ border: "none", textAlign: "center" }}
                         >
-                          {d.dayTwo <= 0 && d.dayTwo}
+                          {/*{d.dayTwo <= 0 && d.dayTwo}*/}
                           {d.dayTwo && (
                             <div
                               style={{
@@ -162,7 +162,7 @@ class TopGraph extends Component {
                           padding="none"
                           style={{ border: "none", textAlign: "center" }}
                         >
-                          {d.dayThree <= 0 && d.dayThree}
+                          {/*{d.dayThree <= 0 && d.dayThree}*/}
                           {d.dayThree && (
                             <div
                               style={{

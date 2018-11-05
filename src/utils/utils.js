@@ -129,7 +129,7 @@ const getWaterStressCoeff = (Dr, TAW) => {
   return Ks;
 };
 
-export const getPET = (sdate, lat, lon, soilCapacity) => {
+export const getPET = (sdate, lat, lon, soilCapacity, initDeficit) => {
   console.log("getPET CALLED!");
   const year = new Date(sdate).getFullYear().toString();
   const latitude = lat.toFixed(4);
@@ -143,16 +143,23 @@ export const getPET = (sdate, lat, lon, soilCapacity) => {
       const dates = [...res.data.dates_precip, ...res.data.dates_precip_fcst];
       const pcpns = [...res.data.precip, ...res.data.precip_fcst];
       const pets = [...res.data.pet, ...res.data.pet_fcst];
-      const results = runWaterDeficitModel(pcpns, pets, 0, soilCapacity);
+      const results = runWaterDeficitModel(
+        pcpns,
+        pets,
+        initDeficit,
+        soilCapacity
+      );
 
       const data = results.deficitDaily.map((val, i) => {
         let p = {};
         p.date = `${dates[i]}/${year}`;
         p.deficit = +val.toFixed(2);
+        p.pet = pets[i];
+        p.pcp = pcpns[i];
         return p;
       });
 
-      // console.log(data);
+      console.log(data);
       return data;
     })
     .catch(err => {
@@ -160,7 +167,8 @@ export const getPET = (sdate, lat, lon, soilCapacity) => {
     });
 };
 
-const runWaterDeficitModel = (precip, pet, initDeficit, soilcap) => {
+export const runWaterDeficitModel = (precip, pet, initDeficit, soilcap) => {
+  // console.log(precip, pet, initDeficit, soilcap);
   // -----------------------------------------------------------------------------------------
   // Calculate daily water deficit (inches) from daily precipitation, evapotranspiration, soil drainage and runoff.
   //
