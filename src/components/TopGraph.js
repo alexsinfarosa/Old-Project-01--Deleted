@@ -59,8 +59,7 @@ class TopGraph extends Component {
     return (
       <AppConsumer>
         {context => {
-          const { dataModel, today } = context;
-          const todayIdx = dataModel.findIndex(obj => obj.date === today);
+          const { dataModel, todayIdx } = context;
 
           const todayPlusTwo = dataModel
             .slice(todayIdx, todayIdx + 3)

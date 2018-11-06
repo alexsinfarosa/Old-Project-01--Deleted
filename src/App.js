@@ -14,7 +14,7 @@ import differenceInHours from "date-fns/differenceInHours";
 import { getPET, runWaterDeficitModel } from "./utils/utils";
 import AdjustDeficit from "./AdjustDeficit";
 
-// import format from "date-fns/format";
+import format from "date-fns/format";
 
 class App extends Component {
   constructor(props) {
@@ -25,8 +25,9 @@ class App extends Component {
       landingIdx: 0,
       isLanding: false,
       displayDeficitScreen: false,
-      deficitAdjustment: null,
-      today: "07/07/2018", // Testing...
+      deficitAdjustment: 0,
+      today: "",
+      todayIdx: 0,
 
       id: null,
       soilCapacity: "medium",
@@ -80,11 +81,14 @@ class App extends Component {
       this.state.latitude,
       this.state.longitude,
       this.state.soilCapacity,
-      0
+      0,
+      this.state.deficitAdjustment,
+      this.state.todayIdx
     );
+
     const field = {
       id: Date.now(),
-      fieldName: this.state.address.split(",")[0],
+      fieldName: this.state.fieldName,
       soilCapacity: this.state.soilCapacity,
       cropType: this.state.cropType,
       address: this.state.address,
@@ -117,6 +121,7 @@ class App extends Component {
   resetWaterDeficit = () => {
     const irrigationDate = this.state.today;
     const copyFields = [...this.state.fields];
+    console.log(copyFields);
     const field = copyFields.find(field => field.id === this.state.id);
     field.irrigationDate = irrigationDate;
 
@@ -179,7 +184,9 @@ class App extends Component {
       this.state.latitude,
       this.state.longitude,
       this.state.soilCapacity,
-      0
+      0,
+      this.state.deficitAdjustment,
+      this.state.todayIdx
     );
 
     const forecastData = await this.fetchForecastData(
@@ -260,6 +267,15 @@ class App extends Component {
     try {
       await this.readFromLocalstorage();
       if (this.state.fields.length !== 0) {
+        // set up initial variables into state
+        const today = format(new Date("07/07/2018"), "MM/dd/YYYY");
+        const todayIdx = this.state.dataModel.findIndex(
+          obj => obj.date === today
+        );
+        console.log(today, todayIdx);
+        this.setState({ today, todayIdx });
+
+        // Reloading data if more than 3 hours
         const countHrs = differenceInHours(new Date(), new Date(this.state.id));
         if (countHrs > 3) {
           console.log("DidMount - more than 3 hours...");

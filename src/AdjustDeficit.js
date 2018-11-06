@@ -9,8 +9,6 @@ import Button from "@material-ui/core/Button";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import Slider from "@material-ui/lab/Slider";
 
-import format from "date-fns/format";
-
 import { determineColor } from "./utils/utils";
 
 const styles = theme => ({
@@ -45,9 +43,10 @@ class AdjustDeficit extends Component {
           const {
             dataModel,
             setDisplayDeficitScreen,
-            setDeficitAdjustment
+            setDeficitAdjustment,
+            today
           } = context;
-          const today = format(new Date("09/16/2018"), "MM/dd/YYYY");
+
           const todayIdx = dataModel.findIndex(obj => obj.date === today);
           const todayDeficit = dataModel[todayIdx].deficit;
 

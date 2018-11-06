@@ -49,6 +49,7 @@ const styles = theme => ({
 class FieldLocation extends Component {
   state = {
     address: "",
+    fieldName: "",
     latitude: null,
     longitude: null,
     errorMessage: "",
@@ -60,6 +61,7 @@ class FieldLocation extends Component {
   handleFieldLocationChange = address => {
     this.setState({
       address,
+      fieldName: "",
       latitude: null,
       longitude: null,
       errorMessage: "",
@@ -70,7 +72,8 @@ class FieldLocation extends Component {
 
   handleSelectAddress = address => {
     // console.log(address);
-    this.setState({ address });
+    const fieldName = address.split(",")[0];
+    this.setState({ address, fieldName });
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
       .then(({ lat, lng }) => {
@@ -91,6 +94,7 @@ class FieldLocation extends Component {
   handleCloseClick = () => {
     this.setState({
       address: "",
+      fieldName: "",
       latitude: null,
       longitude: null,
       errorMessage: "",
@@ -128,7 +132,8 @@ class FieldLocation extends Component {
     Geocode.fromLatLng(`${latitude}`, `${longitude}`).then(
       response => {
         const address = response.results[0].formatted_address;
-        this.setState({ isGeocoding: false, address });
+        const fieldName = address.split(",")[0];
+        this.setState({ isGeocoding: false, address, fieldName });
       },
       error => {
         this.setState({ isGeocoding: false });
@@ -140,6 +145,7 @@ class FieldLocation extends Component {
   render() {
     const {
       address,
+      fieldName,
       errorMessage,
       latitude,
       longitude,
@@ -303,7 +309,7 @@ class FieldLocation extends Component {
                   className={classes.button}
                   onClick={() => {
                     handleIndex(context.landingIdx + 1, "landingIdx");
-                    handleField({ address, latitude, longitude });
+                    handleField({ address, latitude, longitude, fieldName });
                     fetchForecastData(latitude, longitude);
                   }}
                 >

@@ -19,8 +19,7 @@ class BarChart3Days extends Component {
     return (
       <AppConsumer>
         {context => {
-          const { dataModel, today } = context;
-          const todayIdx = dataModel.findIndex(obj => obj.date === today);
+          const { dataModel, todayIdx } = context;
           const upToToday = dataModel.slice(0, todayIdx + 1);
           const days = upToToday.length;
           // console.log(upToToday, days);

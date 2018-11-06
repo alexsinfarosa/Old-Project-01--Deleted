@@ -129,7 +129,15 @@ const getWaterStressCoeff = (Dr, TAW) => {
   return Ks;
 };
 
-export const getPET = (sdate, lat, lon, soilCapacity, initDeficit) => {
+export const getPET = (
+  sdate,
+  lat,
+  lon,
+  soilCapacity,
+  initDeficit,
+  deficitAdjustment,
+  todayIdx
+) => {
   console.log("getPET CALLED!");
   const year = new Date(sdate).getFullYear().toString();
   const latitude = lat.toFixed(4);
@@ -147,6 +155,8 @@ export const getPET = (sdate, lat, lon, soilCapacity, initDeficit) => {
         pcpns,
         pets,
         initDeficit,
+        deficitAdjustment,
+        todayIdx,
         soilCapacity
       );
 
@@ -167,7 +177,14 @@ export const getPET = (sdate, lat, lon, soilCapacity, initDeficit) => {
     });
 };
 
-export const runWaterDeficitModel = (precip, pet, initDeficit, soilcap) => {
+export const runWaterDeficitModel = (
+  precip,
+  pet,
+  initDeficit,
+  deficitAdjustment,
+  todayIdx,
+  soilcap
+) => {
   // console.log(precip, pet, initDeficit, soilcap);
   // -----------------------------------------------------------------------------------------
   // Calculate daily water deficit (inches) from daily precipitation, evapotranspiration, soil drainage and runoff.
@@ -275,6 +292,10 @@ export const runWaterDeficitModel = (precip, pet, initDeficit, soilcap) => {
     hourlyPrecip = totalDailyPrecip / 24;
     hourlyPET = (-1 * totalDailyPET) / 24;
     hourlyPotentialDrainage = dailyPotentialDrainageRate / 24;
+
+    // user action: manually adding water deficiency
+    // deficit = idx === todayIdx ? deficit + deficitAdjustment : deficit;
+    // console.log(idx, todayIdx, deficit);
 
     for (var hr = 1; hr <= 24; hr++) {
       // Calculate hourly drainage estimate. It is bounded by the potential drainage rate and available

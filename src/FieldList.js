@@ -64,10 +64,9 @@ class FieldList extends Component {
             navigateToLanding,
             fields,
             deleteField,
-            selectField
+            selectField,
+            today
           } = context;
-          // console.log(fields);
-          const today = format(new Date("09/16/2018"), "MM/dd/YYYY");
           return (
             <Grid container>
               <Grid
