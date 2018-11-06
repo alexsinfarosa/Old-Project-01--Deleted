@@ -14,7 +14,7 @@ import differenceInHours from "date-fns/differenceInHours";
 import { getPET, runWaterDeficitModel } from "./utils/utils";
 import AdjustDeficit from "./AdjustDeficit";
 
-import format from "date-fns/format";
+// import format from "date-fns/format";
 
 class App extends Component {
   constructor(props) {
@@ -26,6 +26,7 @@ class App extends Component {
       isLanding: false,
       displayDeficitScreen: false,
       deficitAdjustment: null,
+      today: "04/04/2018", // Testing...
 
       id: null,
       soilCapacity: "medium",
@@ -114,7 +115,7 @@ class App extends Component {
   };
 
   resetWaterDeficit = () => {
-    const irrigationDate = format(new Date("09/16/2018"), "MM/dd/YYYY");
+    const irrigationDate = this.state.today;
     const copyFields = [...this.state.fields];
     const field = copyFields.find(field => field.id === this.state.id);
     field.irrigationDate = irrigationDate;

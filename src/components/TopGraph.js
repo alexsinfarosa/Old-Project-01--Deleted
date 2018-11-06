@@ -59,9 +59,7 @@ class TopGraph extends Component {
     return (
       <AppConsumer>
         {context => {
-          const { dataModel } = context;
-
-          const today = format(new Date("09/16/2018"), "MM/dd/YYYY");
+          const { dataModel, today } = context;
           const todayIdx = dataModel.findIndex(obj => obj.date === today);
 
           const data = dataModel.slice(todayIdx, todayIdx + 3).map((obj, i) => {
@@ -81,7 +79,7 @@ class TopGraph extends Component {
             return p;
           });
 
-          // console.log(ciccio);
+          console.log(ciccio);
 
           return (
             <Grid container>
@@ -128,8 +126,8 @@ class TopGraph extends Component {
                             fontWeight: "bold"
                           }}
                         >
-                          {d.dayOne < 0 && d.dayOne}
-                          {(d.dayOne || d.dayOne === 0) && (
+                          {d.dayOne < 0}
+                          {d.dayOne !== null && (
                             <div
                               style={{
                                 width: 10,
@@ -146,7 +144,7 @@ class TopGraph extends Component {
                           style={{ border: "none", textAlign: "center" }}
                         >
                           {/*{d.dayTwo <= 0 && d.dayTwo}*/}
-                          {d.dayTwo && (
+                          {d.dayTwo !== null && (
                             <div
                               style={{
                                 width: 10,
@@ -163,7 +161,7 @@ class TopGraph extends Component {
                           style={{ border: "none", textAlign: "center" }}
                         >
                           {/*{d.dayThree <= 0 && d.dayThree}*/}
-                          {d.dayThree && (
+                          {d.dayThree !== null && (
                             <div
                               style={{
                                 width: 10,

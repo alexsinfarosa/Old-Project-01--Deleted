@@ -5,7 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 import withRoot from "../withRoot";
 import Typography from "@material-ui/core/Typography";
 
-import format from "date-fns/format";
+// import format from "date-fns/format";
 import { ComposedChart, Bar, Cell } from "recharts";
 import { determineColor } from "../utils/utils";
 
@@ -19,18 +19,15 @@ class BarChart3Days extends Component {
     return (
       <AppConsumer>
         {context => {
-          const { dataModel } = context;
-          // const irriDate = format(new Date(irrigationDate), "MM/dd/YYYY");
-          // const irrigationDayIdx = dataModel.findIndex(
-          //   obj => obj.date === irriDate
-          // );
-
-          const today = format(new Date("09/16/2018"), "MM/dd/YYYY");
+          const { dataModel, today } = context;
           const todayIdx = dataModel.findIndex(obj => obj.date === today);
-          // console.log(todayIdx - 29, todayIdx + 1);
-          const temp = dataModel.slice(0, todayIdx + 1);
-          // console.log(temp);
-          const data = temp.slice(-30).map(obj => {
+          const upToToday = dataModel.slice(0, todayIdx + 1);
+          const days = upToToday.length;
+          console.log(upToToday, days);
+
+          const startIdx = days > 30 ? days - 30 : 0;
+
+          const data = upToToday.slice(startIdx, days).map(obj => {
             let p = { ...obj };
             p.deficit = obj.deficit === 0 ? 0.0000001 : obj.deficit;
             return p;
@@ -48,10 +45,7 @@ class BarChart3Days extends Component {
                   marginBottom: 16
                 }}
               >
-                water deficit in the last 30 days
-                {/*<span style={{ color: "#242038", fontWeight: "normal" }}>
-                  {data[0] && format(new Date(data[0].date), "MMM d, YYYY")}
-              </span>*/}
+                water deficit in the last {days > 30 ? 30 : days} days
               </Typography>
 
               <ComposedChart
