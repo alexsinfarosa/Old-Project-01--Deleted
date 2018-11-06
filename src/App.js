@@ -36,7 +36,7 @@ class App extends Component {
       longitude: null,
       irrigationDate: new Date(),
       dataModel: [],
-
+      forecastData: null,
       fields: [],
 
       handleIrrigationDate: this.handleIrrigationDate,
@@ -47,7 +47,6 @@ class App extends Component {
       handleIndex: this.handleIndex,
       navigateToMain: this.navigateToMain,
       navigateToLanding: this.navigateToLanding,
-      forecastData: null,
       fetchForecastData: this.fetchForecastData,
       setDisplayDeficitScreen: this.setDisplayDeficitScreen,
       resetWaterDeficit: this.resetWaterDeficit,
@@ -144,11 +143,11 @@ class App extends Component {
       return p;
     });
 
-    console.log(results);
+    // console.log(results);
     this.setState({ irrigationDate, dataModel: results });
   };
 
-  selectField = async id => {
+  selectField = id => {
     this.setState({ isLoading: true });
     const field = this.state.fields.find(field => field.id === id);
     this.setState({
@@ -159,7 +158,7 @@ class App extends Component {
       address: field.address,
       latitude: field.latitude,
       longitude: field.longitude,
-      irrigationDate: field.irrigationDate,
+      irrigationDate: new Date(field.irrigationDate),
       forecastData: field.forecastData,
       dataModel: field.dataModel
     });
@@ -168,30 +167,39 @@ class App extends Component {
 
     if (countHrs > 3) {
       console.log("more than 3 hours...");
-      const dataModel = await getPET(
-        this.state.irrigationDate,
-        this.state.latitude,
-        this.state.longitude,
-        this.state.soilCapacity,
-        0
-      );
-      const forecastData = this.fetchForecastData(
-        this.state.latitude,
-        this.state.longitude
-      );
-      this.setState({ dataModel, forecastData });
-
-      const idx = this.state.fields.findIndex(
-        field => field.id === this.state.id
-      );
-      const copyFields = [...this.state.fields];
-      copyFields[idx].id = Date.now();
-      copyFields[idx].dataModel = dataModel;
-      copyFields[idx].forecastData = forecastData;
-
-      this.writeToLocalstorage(copyFields);
+      this.reloadPETAndForecastData();
     }
     this.setState({ isLoading: false });
+  };
+
+  reloadPETAndForecastData = async () => {
+    const dataModel = await getPET(
+      this.state.irrigationDate,
+      this.state.latitude,
+      this.state.longitude,
+      this.state.soilCapacity,
+      0
+    );
+
+    const forecastData = await this.fetchForecastData(
+      this.state.latitude,
+      this.state.longitude
+    );
+
+    const idx = this.state.fields.findIndex(
+      field => field.id === this.state.id
+    );
+
+    const id = Date.now();
+    this.setState({ dataModel, forecastData, id });
+
+    const copyFields = [...this.state.fields];
+
+    copyFields[idx].id = id;
+    copyFields[idx].dataModel = dataModel;
+    copyFields[idx].forecastData = forecastData;
+
+    this.writeToLocalstorage(copyFields);
   };
 
   fetchForecastData = (latitude, longitude) => {
@@ -223,6 +231,7 @@ class App extends Component {
     // console.log(localStorageRef);
     if (localStorageRef) {
       const params = JSON.parse(localStorageRef);
+      // console.log(params);
       const field = {
         id: params[0].id,
         fieldName: params[0].fieldName,
@@ -252,29 +261,8 @@ class App extends Component {
       if (this.state.fields.length !== 0) {
         const countHrs = differenceInHours(new Date(), new Date(this.state.id));
         if (countHrs > 3) {
-          console.log("more than 3 hours...");
-          const dataModel = await getPET(
-            this.state.irrigationDate,
-            this.state.latitude,
-            this.state.longitude,
-            this.state.soilCapacity,
-            0
-          );
-          const forecastData = this.fetchForecastData(
-            this.state.latitude,
-            this.state.longitude
-          );
-          this.setState({ dataModel, forecastData });
-
-          const idx = this.state.fields.findIndex(
-            field => field.id === this.state.id
-          );
-          const copyFields = [...this.state.fields];
-          copyFields[idx].id = Date.now();
-          copyFields[idx].dataModel = dataModel;
-          copyFields[idx].forecastData = forecastData;
-
-          this.writeToLocalstorage(copyFields);
+          console.log("DidMount - more than 3 hours...");
+          this.reloadPETAndForecastData();
         }
       }
       this.setState({ isLoading: false });

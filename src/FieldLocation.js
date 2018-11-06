@@ -182,11 +182,6 @@ class FieldLocation extends Component {
                   <ArrowBackIcon
                     style={{ paddingBottom: 2 }}
                     onClick={() => {
-                      handleField({
-                        address: "",
-                        latitude: null,
-                        longitude: null
-                      });
                       fields.length > 0
                         ? navigateToMain(2)
                         : handleIndex(landingIdx - 1, "landingIdx");

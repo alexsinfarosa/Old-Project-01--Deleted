@@ -27,16 +27,16 @@ class BarChart3Days extends Component {
 
           const today = format(new Date("09/16/2018"), "MM/dd/YYYY");
           const todayIdx = dataModel.findIndex(obj => obj.date === today);
-          console.log(todayIdx - 29, todayIdx + 1);
+          // console.log(todayIdx - 29, todayIdx + 1);
           const temp = dataModel.slice(0, todayIdx + 1);
-          console.log(temp);
+          // console.log(temp);
           const data = temp.slice(-30).map(obj => {
             let p = { ...obj };
             p.deficit = obj.deficit === 0 ? 0.0000001 : obj.deficit;
             return p;
           });
 
-          console.log(data);
+          // console.log(data);
           return (
             <>
               <Typography
