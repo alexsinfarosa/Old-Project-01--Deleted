@@ -26,7 +26,7 @@ class App extends Component {
       isLanding: false,
       displayDeficitScreen: false,
       deficitAdjustment: null,
-      today: "04/04/2018", // Testing...
+      today: "07/07/2018", // Testing...
 
       id: null,
       soilCapacity: "medium",

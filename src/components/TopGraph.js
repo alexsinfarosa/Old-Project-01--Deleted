@@ -62,31 +62,43 @@ class TopGraph extends Component {
           const { dataModel, today } = context;
           const todayIdx = dataModel.findIndex(obj => obj.date === today);
 
-          const data = dataModel.slice(todayIdx, todayIdx + 3).map((obj, i) => {
-            let p = { ...obj };
-            p.color = determineColor(obj.deficit);
-            return p;
-          });
-          // console.log(data);
+          const todayPlusTwo = dataModel
+            .slice(todayIdx, todayIdx + 3)
+            .map((obj, i) => {
+              let p = { ...obj };
+              p.color = determineColor(obj.deficit);
+              return p;
+            });
+          // console.log(todayPlusTwo);
 
-          const ciccio = levels.map((level, i) => {
+          const results = levels.map((level, i) => {
             let p = { ...level };
             p.header =
-              i === 0 ? "" : format(new Date(data[i - 1].date), "MMM do");
-            p.dayOne = level.color === data[0].color ? data[0].deficit : null;
-            p.dayTwo = level.color === data[1].color ? data[1].deficit : null;
-            p.dayThree = level.color === data[2].color ? data[2].deficit : null;
+              i === 0
+                ? ""
+                : format(new Date(todayPlusTwo[i - 1].date), "MMM do");
+            p.dayOne =
+              level.color === todayPlusTwo[0].color
+                ? todayPlusTwo[0].deficit
+                : null;
+            p.dayTwo =
+              level.color === todayPlusTwo[1].color
+                ? todayPlusTwo[1].deficit
+                : null;
+            p.dayThree =
+              level.color === todayPlusTwo[2].color
+                ? todayPlusTwo[2].deficit
+                : null;
             return p;
           });
 
-          console.log(ciccio);
-
+          // console.log(results);
           return (
             <Grid container>
               <Table className={classes.table}>
                 <TableHead>
                   <TableRow>
-                    {ciccio.map(d => (
+                    {results.map(d => (
                       <TableCell
                         key={d.id}
                         padding="none"
@@ -98,7 +110,7 @@ class TopGraph extends Component {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {ciccio.map(d => {
+                  {results.map(d => {
                     return (
                       <TableRow
                         key={d.id}
@@ -126,7 +138,7 @@ class TopGraph extends Component {
                             fontWeight: "bold"
                           }}
                         >
-                          {d.dayOne < 0}
+                          {d.dayOne < 0 && d.dayOne}
                           {d.dayOne !== null && (
                             <div
                               style={{
