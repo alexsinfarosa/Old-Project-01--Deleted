@@ -81,9 +81,7 @@ class App extends Component {
       this.state.latitude,
       this.state.longitude,
       this.state.soilCapacity,
-      0,
-      this.state.deficitAdjustment,
-      this.state.todayIdx
+      0
     );
 
     const field = {
@@ -120,37 +118,38 @@ class App extends Component {
 
   resetWaterDeficit = () => {
     const irrigationDate = this.state.today;
-    const copyFields = [...this.state.fields];
-    console.log(copyFields);
-    const field = copyFields.find(field => field.id === this.state.id);
-    field.irrigationDate = irrigationDate;
-
     const dataModel = [...this.state.dataModel];
-    const irrigationDateIdx = dataModel.findIndex(
-      obj => obj.date === irrigationDate
+    const pcpns = dataModel.map(d => d.pcp);
+    const pets = dataModel.map(d => d.pet);
+
+    console.log(this.state.deficitAdjustment, this.state.todayIdx);
+    const recalculateDeficit = runWaterDeficitModel(
+      pcpns,
+      pets,
+      0,
+      this.state.soilCapacity,
+      this.state.deficitAdjustment,
+      this.state.todayIdx
     );
-    // console.log(irrigationDateIdx);
-    // console.log(dataModel.slice(irrigationDateIdx));
 
-    const data = dataModel.slice(irrigationDateIdx);
-    const pcpns = data.map(d => d.pcp);
-    const pets = data.map(d => d.pet);
-    pets[0] += this.state.deficitAdjustment;
-
-    // console.log(pets);
-
-    const temp = runWaterDeficitModel(pcpns, pets, 0, this.state.soilCapacity);
-    const results = temp.deficitDaily.map((val, i) => {
+    const results = recalculateDeficit.deficitDaily.map((val, i) => {
       let p = {};
-      p.date = data[i].date;
+      p.date = dataModel[i].date;
       p.deficit = +val.toFixed(2);
       p.pet = pets[i];
       p.pcp = pcpns[i];
       return p;
     });
 
-    // console.log(results);
-    this.setState({ irrigationDate, dataModel: results });
+    const copyFields = [...this.state.fields];
+    const idx = this.state.fields.findIndex(
+      field => field.id === this.state.id
+    );
+    copyFields[idx].irrigationDate = irrigationDate;
+    copyFields[idx].dataModel = results;
+
+    this.setState({ irrigationDate, dataModel: results, fields: copyFields });
+    this.writeToLocalstorage(copyFields);
   };
 
   selectField = id => {
@@ -184,9 +183,7 @@ class App extends Component {
       this.state.latitude,
       this.state.longitude,
       this.state.soilCapacity,
-      0,
-      this.state.deficitAdjustment,
-      this.state.todayIdx
+      0
     );
 
     const forecastData = await this.fetchForecastData(
@@ -272,7 +269,7 @@ class App extends Component {
         const todayIdx = this.state.dataModel.findIndex(
           obj => obj.date === today
         );
-        console.log(today, todayIdx);
+
         this.setState({ today, todayIdx });
 
         // Reloading data if more than 3 hours

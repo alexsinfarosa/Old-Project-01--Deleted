@@ -32,7 +32,7 @@ class BarChart3Days extends Component {
             return p;
           });
 
-          // console.log(results);
+          console.log(results);
           return (
             <>
               {results.length >= 3 && (

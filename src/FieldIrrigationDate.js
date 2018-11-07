@@ -36,7 +36,8 @@ class FieldIrrigationDate extends Component {
     const isAfterToday = isAfter(new Date(today), new Date(endSeason));
     // console.log({ isAfterToday });
     if (isAfterToday) {
-      this.setState({ irrigationDate: new Date(endSeason) });
+      // this.setState({ irrigationDate: new Date(endSeason) });
+      this.setState({ irrigationDate: new Date("07/07/2018") });
     }
   }
 

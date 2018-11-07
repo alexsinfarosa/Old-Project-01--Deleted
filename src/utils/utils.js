@@ -129,15 +129,7 @@ const getWaterStressCoeff = (Dr, TAW) => {
   return Ks;
 };
 
-export const getPET = (
-  sdate,
-  lat,
-  lon,
-  soilCapacity,
-  initDeficit,
-  deficitAdjustment,
-  todayIdx
-) => {
+export const getPET = (sdate, lat, lon, soilCapacity, initDeficit) => {
   console.log("getPET CALLED!");
   const year = new Date(sdate).getFullYear().toString();
   const latitude = lat.toFixed(4);
@@ -155,9 +147,9 @@ export const getPET = (
         pcpns,
         pets,
         initDeficit,
-        deficitAdjustment,
-        todayIdx,
-        soilCapacity
+        soilCapacity,
+        0,
+        0
       );
 
       const data = results.deficitDaily.map((val, i) => {
@@ -181,9 +173,9 @@ export const runWaterDeficitModel = (
   precip,
   pet,
   initDeficit,
+  soilcap,
   deficitAdjustment,
-  todayIdx,
-  soilcap
+  todayIdx
 ) => {
   // console.log(precip, pet, initDeficit, soilcap);
   // -----------------------------------------------------------------------------------------
@@ -293,10 +285,6 @@ export const runWaterDeficitModel = (
     hourlyPET = (-1 * totalDailyPET) / 24;
     hourlyPotentialDrainage = dailyPotentialDrainageRate / 24;
 
-    // user action: manually adding water deficiency
-    // deficit = idx === todayIdx ? deficit + deficitAdjustment : deficit;
-    // console.log(idx, todayIdx, deficit);
-
     for (var hr = 1; hr <= 24; hr++) {
       // Calculate hourly drainage estimate. It is bounded by the potential drainage rate and available
       // water in excess of the field capacity. We assume drainage does not occur below field capacity.
@@ -339,6 +327,10 @@ export const runWaterDeficitModel = (
       );
     }
 
+    // user action: manually adding water deficiency
+    deficit = idx === todayIdx ? deficit + deficitAdjustment : deficit;
+    // console.log(idx, todayIdx, deficitAdjustment, deficit);
+
     deficitDailyChange.push(deficit - deficitDaily[deficitDaily.length - 1]);
     deficitDaily.push(deficit);
     drainageDaily.push(totalDailyDrainage);
@@ -348,6 +340,7 @@ export const runWaterDeficitModel = (
   }
 
   // console.log('INSIDE WATER DEFICIT MODEL');
+  // console.log(deficitDaily);
 
   return {
     deficitDailyChange: deficitDailyChange,
