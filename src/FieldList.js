@@ -97,9 +97,13 @@ class FieldList extends Component {
               <Grid item xs={12}>
                 <List component="nav">
                   {fields.map(field => {
-                    const todayObj = field.dataModel.find(
-                      obj => obj.date === today
-                    );
+                    let todayObj = { deficit: 0 };
+                    if (field.dataModel) {
+                      todayObj = field.dataModel.find(
+                        obj => obj.date === today
+                      );
+                    }
+
                     const color = determineColor(todayObj.deficit);
 
                     return (
@@ -110,12 +114,32 @@ class FieldList extends Component {
                           style={{
                             height: 128,
                             borderLeft: `16px solid ${color}`
+                            // borderBottom: "none"
                           }}
                           onClick={() => {
                             selectField(field.id);
                             handleIndex(mainIdx - 1, "mainIdx");
                           }}
                         >
+                          <div
+                            style={{
+                              marginLeft: -32
+                            }}
+                          >
+                            <Button
+                              variant="fab"
+                              style={{
+                                background: color,
+                                boxShadow: "none"
+                              }}
+                              mini
+                            >
+                              <span style={{ fontSize: 13 }}>
+                                {todayObj.deficit}
+                              </span>
+                            </Button>
+                          </div>
+
                           <ListItemText
                             primary={field.fieldName}
                             secondary={format(
@@ -123,6 +147,7 @@ class FieldList extends Component {
                               "MMMM do, YYYY"
                             )}
                           />
+
                           <ListItemSecondaryAction>
                             <IconButton
                               aria-label="Delete"

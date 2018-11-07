@@ -32,7 +32,7 @@ class BarChart3Days extends Component {
             return p;
           });
 
-          console.log(results);
+          // console.log(results);
           return (
             <>
               {results.length >= 3 && (
@@ -42,7 +42,7 @@ class BarChart3Days extends Component {
                     style={{
                       color: "#9E9E9E",
                       fontWeight: "bold",
-                      marginTop: 32,
+                      marginTop: 16,
                       marginBottom: 16
                     }}
                   >
@@ -53,7 +53,7 @@ class BarChart3Days extends Component {
                     width={window.innerWidth}
                     height={150}
                     data={results}
-                    margin={{ top: 16, right: -2, left: -2, bottom: 0 }}
+                    margin={{ top: 16, right: -2, left: -2, bottom: 16 }}
                   >
                     {results && (
                       <Bar dataKey="deficit">

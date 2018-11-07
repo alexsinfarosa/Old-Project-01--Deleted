@@ -47,7 +47,7 @@ const styles = theme => ({
   },
   rowLevel: {
     width: "100%",
-    height: 70,
+    height: 60,
     justifyContent: "center",
     alignItems: "center"
   }
@@ -154,7 +154,9 @@ class TopGraph extends Component {
                           padding="none"
                           style={{ border: "none", textAlign: "center" }}
                         >
-                          {/*{d.dayTwo <= 0 && d.dayTwo}*/}
+                          {d.dayTwo <= 0 && (
+                            <span style={{ color: "#fff" }}>{d.dayTwo}</span>
+                          )}
                           {d.dayTwo !== null && (
                             <div
                               style={{
@@ -171,7 +173,9 @@ class TopGraph extends Component {
                           padding="none"
                           style={{ border: "none", textAlign: "center" }}
                         >
-                          {/*{d.dayThree <= 0 && d.dayThree}*/}
+                          {d.dayThree <= 0 && (
+                            <span style={{ color: "#fff" }}>{d.dayThree}</span>
+                          )}
                           {d.dayThree !== null && (
                             <div
                               style={{
