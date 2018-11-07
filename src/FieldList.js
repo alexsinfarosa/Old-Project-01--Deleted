@@ -97,12 +97,9 @@ class FieldList extends Component {
               <Grid item xs={12}>
                 <List component="nav">
                   {fields.map(field => {
-                    let todayObj = { deficit: 0 };
-                    if (field.dataModel) {
-                      todayObj = field.dataModel.find(
-                        obj => obj.date === today
-                      );
-                    }
+                    const todayObj = field.dataModel.find(
+                      obj => obj.date === today
+                    );
 
                     const color = determineColor(todayObj.deficit);
 

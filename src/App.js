@@ -84,8 +84,11 @@ class App extends Component {
       0
     );
 
+    const todayIdx = dataModel.findIndex(obj => obj.date === this.state.today);
+    const id = Date.now();
+
     const field = {
-      id: Date.now(),
+      id,
       fieldName: this.state.fieldName,
       soilCapacity: this.state.soilCapacity,
       cropType: this.state.cropType,
@@ -96,8 +99,9 @@ class App extends Component {
       forecastData: this.state.forecastData,
       dataModel: dataModel
     };
+
     const fields = [field, ...this.state.fields];
-    this.setState({ dataModel, fields, isLoading: false });
+    this.setState({ id, todayIdx, dataModel, fields, isLoading: false });
     this.writeToLocalstorage(fields);
   };
 
@@ -117,12 +121,10 @@ class App extends Component {
   };
 
   resetWaterDeficit = () => {
-    const irrigationDate = this.state.today;
     const dataModel = [...this.state.dataModel];
     const pcpns = dataModel.map(d => d.pcp);
     const pets = dataModel.map(d => d.pet);
 
-    console.log(this.state.deficitAdjustment, this.state.todayIdx);
     const recalculateDeficit = runWaterDeficitModel(
       pcpns,
       pets,
@@ -141,14 +143,19 @@ class App extends Component {
       return p;
     });
 
+    const id = Date.now();
+    const irrigationDate = new Date(this.state.today);
+    this.setState({ id, irrigationDate, dataModel });
+
     const copyFields = [...this.state.fields];
     const idx = this.state.fields.findIndex(
       field => field.id === this.state.id
     );
-    copyFields[idx].irrigationDate = irrigationDate;
+
+    copyFields[idx].id = id;
+    copyFields[idx].irrigationDate = new Date(this.state.today);
     copyFields[idx].dataModel = results;
 
-    this.setState({ irrigationDate, dataModel: results, fields: copyFields });
     this.writeToLocalstorage(copyFields);
   };
 
@@ -178,6 +185,7 @@ class App extends Component {
   };
 
   reloadPETAndForecastData = async () => {
+    console.log("reloadPETForecastData");
     const dataModel = await getPET(
       this.state.irrigationDate,
       this.state.latitude,
@@ -191,19 +199,19 @@ class App extends Component {
       this.state.longitude
     );
 
+    const id = Date.now();
+    const irrigationDate = new Date(this.state.today);
+    this.setState({ id, irrigationDate, dataModel, forecastData });
+
+    const copyFields = [...this.state.fields];
     const idx = this.state.fields.findIndex(
       field => field.id === this.state.id
     );
 
-    const id = Date.now();
-    this.setState({ dataModel, forecastData, id });
-
-    const copyFields = [...this.state.fields];
-
     copyFields[idx].id = id;
+    copyFields[idx].irrigationDate = irrigationDate;
     copyFields[idx].dataModel = dataModel;
     copyFields[idx].forecastData = forecastData;
-
     this.writeToLocalstorage(copyFields);
   };
 
@@ -232,9 +240,11 @@ class App extends Component {
   };
 
   readFromLocalstorage = () => {
+    console.log("readFromLocalStorage");
     const localStorageRef = localStorage.getItem("nrcc-irrigation-tool");
     // console.log(localStorageRef);
     if (localStorageRef) {
+      console.log("setting values from localstorage");
       const params = JSON.parse(localStorageRef);
       // console.log(params);
       const field = {
@@ -249,7 +259,6 @@ class App extends Component {
         forecastData: params[0].forecastData,
         dataModel: params[0].dataModel
       };
-
       this.setState({ fields: params, ...field });
     }
   };
@@ -260,20 +269,21 @@ class App extends Component {
 
   // LIFE CYLCES--------------------------------------------------------------
   async componentDidMount() {
-    this.setState({ isLoading: true });
     try {
+      const today = format(new Date("07/07/2018"), "MM/dd/YYYY");
+      this.setState({ today, isLoading: true });
       await this.readFromLocalstorage();
       if (this.state.fields.length !== 0) {
         // set up initial variables into state
-        const today = format(new Date("07/07/2018"), "MM/dd/YYYY");
         const todayIdx = this.state.dataModel.findIndex(
           obj => obj.date === today
         );
 
-        this.setState({ today, todayIdx });
+        this.setState({ todayIdx });
 
         // Reloading data if more than 3 hours
         const countHrs = differenceInHours(new Date(), new Date(this.state.id));
+
         if (countHrs > 3) {
           console.log("DidMount - more than 3 hours...");
           this.reloadPETAndForecastData();

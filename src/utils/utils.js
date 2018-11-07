@@ -328,8 +328,9 @@ export const runWaterDeficitModel = (
     }
 
     // user action: manually adding water deficiency
+    // console.log(`BEF: ${idx}, ${todayIdx}, ${deficitAdjustment}, ${deficit})}`);
     deficit = idx === todayIdx ? deficit + deficitAdjustment : deficit;
-    // console.log(idx, todayIdx, deficitAdjustment, deficit);
+    // console.log(`AFT: ${idx}, ${todayIdx}, ${deficitAdjustment}, ${deficit})}`);
 
     deficitDailyChange.push(deficit - deficitDaily[deficitDaily.length - 1]);
     deficitDaily.push(deficit);
