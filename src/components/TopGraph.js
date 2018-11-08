@@ -60,7 +60,7 @@ class TopGraph extends Component {
       <AppConsumer>
         {context => {
           const { dataModel, todayIdx } = context;
-          // console.log(todayIdx);
+          console.log(dataModel[todayIdx]);
           const todayPlusTwo = dataModel
             .slice(todayIdx, todayIdx + 3)
             .map((obj, i) => {

@@ -328,9 +328,22 @@ export const runWaterDeficitModel = (
     }
 
     // user action: manually adding water deficiency
-    // console.log(`BEF: ${idx}, ${todayIdx}, ${deficitAdjustment}, ${deficit})}`);
-    deficit = idx === todayIdx ? deficit + deficitAdjustment : deficit;
-    // console.log(`AFT: ${idx}, ${todayIdx}, ${deficitAdjustment}, ${deficit})}`);
+    let deficitAdjustmentSum = 0;
+    if (deficitAdjustment.length > 0) {
+      deficitAdjustmentSum = deficitAdjustment.reduce(
+        (acc, curr) => acc + curr
+      );
+    }
+    // console.log(
+    //   `BEF: ${idx ===
+    //     todayIdx}, ${idx}, ${todayIdx}, ${deficitAdjustment}, ${deficitAdjustmentSum}, ${deficit})}`
+    // );
+
+    deficit = idx === todayIdx ? deficit + deficitAdjustmentSum : deficit;
+    // console.log(
+    //   `AFT: ${idx ===
+    //     todayIdx}, ${idx}, ${todayIdx}, ${deficitAdjustment}, ${deficitAdjustmentSum},${deficit})}`
+    // );
 
     deficitDailyChange.push(deficit - deficitDaily[deficitDaily.length - 1]);
     deficitDaily.push(deficit);

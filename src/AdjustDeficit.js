@@ -44,12 +44,10 @@ class AdjustDeficit extends Component {
             dataModel,
             setDisplayDeficitScreen,
             setDeficitAdjustment,
-            today
+            todayIdx
           } = context;
 
-          const todayIdx = dataModel.findIndex(obj => obj.date === today);
           const todayDeficit = dataModel[todayIdx].deficit;
-
           return (
             <Grid container style={{ background: "#fff" }}>
               <Grid

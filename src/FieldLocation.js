@@ -297,7 +297,7 @@ class FieldLocation extends Component {
                     The address you provided is outside of North East.
                   </Typography>
                   <Typography variant="caption" align="center">
-                    No data is available in your area.
+                    No data is available.
                   </Typography>
                 </div>
               ) : (latitude && longitude) || isGeocoding ? (

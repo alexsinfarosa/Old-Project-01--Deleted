@@ -25,7 +25,7 @@ class App extends Component {
       landingIdx: 0,
       isLanding: false,
       displayDeficitScreen: false,
-      deficitAdjustment: 0,
+      deficitAdjustment: [],
       today: "",
       todayIdx: 0,
 
@@ -66,11 +66,14 @@ class App extends Component {
   handleField = ({ ...field }) => this.setState({ ...field });
   handleIrrigationDate = irrigationDate => this.setState({ irrigationDate });
   setDisplayDeficitScreen = d => this.setState({ displayDeficitScreen: d });
-  setDeficitAdjustment = d =>
-    this.setState({ deficitAdjustment: d }, () => {
+  setDeficitAdjustment = d => {
+    const deficitAdjustment = [...this.state.deficitAdjustment];
+    deficitAdjustment.push(d);
+    this.setState({ deficitAdjustment }, () => {
       this.resetWaterDeficit();
       this.setDisplayDeficitScreen(false);
     });
+  };
 
   // CRUD OPERATIONS--------------------------------------------------------
   addField = async () => {
@@ -97,7 +100,8 @@ class App extends Component {
       longitude: this.state.longitude,
       irrigationDate: this.state.irrigationDate,
       forecastData: this.state.forecastData,
-      dataModel: dataModel
+      dataModel: dataModel,
+      deficitAdjustment: []
     };
 
     const fields = [field, ...this.state.fields];
@@ -122,6 +126,7 @@ class App extends Component {
 
   resetWaterDeficit = () => {
     const dataModel = [...this.state.dataModel];
+    console.log(dataModel);
     const pcpns = dataModel.map(d => d.pcp);
     const pets = dataModel.map(d => d.pet);
 
@@ -143,20 +148,26 @@ class App extends Component {
       return p;
     });
 
+    this.setState({ dataModel: results });
+
+    const fields = [...this.state.fields];
+    const idx = fields.findIndex(field => field.id === this.state.id);
+
     const id = Date.now();
-    const irrigationDate = new Date(this.state.today);
-    this.setState({ id, irrigationDate, dataModel });
+    const irrigationDate = new Date(id);
 
-    const copyFields = [...this.state.fields];
-    const idx = this.state.fields.findIndex(
-      field => field.id === this.state.id
-    );
+    fields[idx].id = id;
+    fields[idx].irrigationDate = irrigationDate;
+    fields[idx].dataModel = results;
+    fields[idx].deficitAdjustment = this.state.deficitAdjustment;
 
-    copyFields[idx].id = id;
-    copyFields[idx].irrigationDate = new Date(this.state.today);
-    copyFields[idx].dataModel = results;
+    this.setState({
+      id,
+      irrigationDate,
+      fields
+    });
 
-    this.writeToLocalstorage(copyFields);
+    this.writeToLocalstorage(fields);
   };
 
   selectField = id => {
@@ -171,7 +182,8 @@ class App extends Component {
       longitude: field.longitude,
       irrigationDate: new Date(field.irrigationDate),
       forecastData: field.forecastData,
-      dataModel: field.dataModel
+      dataModel: field.dataModel,
+      deficitAdjustment: field.deficitAdjustment
     });
     // console.log(field);
     const countHrs = differenceInHours(new Date(), new Date(field.id));
@@ -252,7 +264,8 @@ class App extends Component {
         longitude: params[0].longitude,
         irrigationDate: new Date(params[0].irrigationDate),
         forecastData: params[0].forecastData,
-        dataModel: params[0].dataModel
+        dataModel: params[0].dataModel,
+        deficitAdjustment: params[0].deficitAdjustment
       };
       this.setState({ fields: params, ...field });
     }
