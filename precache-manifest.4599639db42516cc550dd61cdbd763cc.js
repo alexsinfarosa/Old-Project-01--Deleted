@@ -4,7 +4,7 @@ self.__precacheManifest = [
     "url": "/irriToolV4/static/media/partly-cloudy-night.4417c72b.png"
   },
   {
-    "revision": "7b5dcdce4dd1817aaee6",
+    "revision": "038dfe56505521cabf72",
     "url": "/irriToolV4/static/css/main.444d0ccf.chunk.css"
   },
   {
@@ -28,8 +28,8 @@ self.__precacheManifest = [
     "url": "/irriToolV4/static/media/partly-cloudy-day.37d1a866.png"
   },
   {
-    "revision": "7b5dcdce4dd1817aaee6",
-    "url": "/irriToolV4/static/js/main.7b5dcdce.chunk.js"
+    "revision": "038dfe56505521cabf72",
+    "url": "/irriToolV4/static/js/main.038dfe56.chunk.js"
   },
   {
     "revision": "f5cb0adf43144970d9c18cdaf3ea16ae",
@@ -56,7 +56,7 @@ self.__precacheManifest = [
     "url": "/irriToolV4/static/media/drops.b802c3a4.svg"
   },
   {
-    "revision": "7fc94155d1219c13bb8542e73a7470f6",
+    "revision": "b735a3b80095d7735c6ad8699162e848",
     "url": "/irriToolV4/index.html"
   }
 ];
