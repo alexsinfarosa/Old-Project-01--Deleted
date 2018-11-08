@@ -160,7 +160,6 @@ class App extends Component {
   };
 
   selectField = id => {
-    this.setState({ isLoading: true });
     const field = this.state.fields.find(field => field.id === id);
     this.setState({
       id: field.id,
@@ -186,6 +185,7 @@ class App extends Component {
 
   reloadPETAndForecastData = async () => {
     console.log("reloadPETForecastData");
+    this.setState({ isLoading: true });
     const dataModel = await getPET(
       this.state.irrigationDate,
       this.state.latitude,
@@ -194,25 +194,20 @@ class App extends Component {
       0
     );
 
-    const forecastData = await this.fetchForecastData(
-      this.state.latitude,
-      this.state.longitude
-    );
-
-    const id = Date.now();
-    const irrigationDate = new Date(this.state.today);
-    this.setState({ id, irrigationDate, dataModel, forecastData });
-
     const copyFields = [...this.state.fields];
     const idx = this.state.fields.findIndex(
       field => field.id === this.state.id
     );
 
+    const id = Date.now();
     copyFields[idx].id = id;
-    copyFields[idx].irrigationDate = irrigationDate;
     copyFields[idx].dataModel = dataModel;
-    copyFields[idx].forecastData = forecastData;
+    await this.fetchForecastData(this.state.latitude, this.state.longitude);
+    copyFields[idx].forecastData = this.state.forecastData;
+
+    this.setState({ id, dataModel });
     this.writeToLocalstorage(copyFields);
+    this.setState({ isLoading: false });
   };
 
   fetchForecastData = (latitude, longitude) => {
